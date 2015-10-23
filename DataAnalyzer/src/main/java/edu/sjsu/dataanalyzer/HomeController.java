@@ -35,5 +35,7 @@ public class HomeController {
 		
 		return "home";
 	}
+
+//This is a controller for webapp
 	
 }
