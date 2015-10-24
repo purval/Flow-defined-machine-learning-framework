@@ -79,4 +79,78 @@ public class InputProcessor {
 		//Less priority
 		//Also you might need to send to hdfs in this format. Not sure though.
 	}
+	
+	public static boolean missingValueScrubber(String filepath,String attribute,String missingValue, float value) throws Exception{
+	//replace with 0,mean,median,mode or remove entire row, custom value substitute
+		
+		BufferedReader br;
+	    if (filepath.startsWith("hdfs://")) {
+	    	Configuration configuration = new Configuration();
+		    FileSystem fs = null;
+	    	fs = FileSystem.get(configuration);
+	    	Path path = new Path(filepath);
+	    	br=new BufferedReader(new InputStreamReader(fs.open(path)));
+	    } else {
+	    	br = new BufferedReader(new FileReader(filepath));
+	    }
+		
+        String line;
+        line=br.readLine(); // Ignore assuming first one is metadata
+        
+		if(attribute=="MEAN"){ //average value
+			while ((line = br.readLine()) != null) {
+	        	String[] row = line.split(",");
+	        	int mean=0;
+	        	int count=0;
+	        	for(int i=0;i<row.length;i++){
+	        		if(!row[i].equalsIgnoreCase(missingValue)){
+	        			count++;
+	        			mean+= Integer.parseInt(row[i]);
+	        		}
+	        	}
+	        	mean = mean/count;
+	        	// NOW REPLACE BLANK VALUE WITH MEAN
+	        	for(int i=0;i<row.length;i++){
+	        		if(row[i].equalsIgnoreCase(missingValue)){
+	        			row[i]=mean+"";
+	        		}
+	        	}
+	        	return true;
+			}
+		} else if(attribute=="MEDIAN"){ // middle value
+			while ((line = br.readLine()) != null) {
+	        	String[] row = line.split(",");
+	        	for(int i=0;i<row.length;i++){
+	        		
+	        	}
+			}
+		} else if(attribute=="MODE"){ // most frequently occuring value
+			while ((line = br.readLine()) != null) {
+	        	String[] row = line.split(",");
+	        	for(int i=0;i<row.length;i++){
+	        		
+	        	}
+			}
+		} else if(attribute=="REMOVE_ROW"){
+			while ((line = br.readLine()) != null) {
+	        	String[] row = line.split(",");
+	        	for(int i=0;i<row.length;i++){
+	        		
+	        	}
+			}
+		} else if(attribute=="CUSTOM_VALUE"){
+			while ((line = br.readLine()) != null) {
+	        	String[] row = line.split(",");
+	        	for(int i=0;i<row.length;i++){
+	        		
+	        	}
+			}
+		}
+		
+        
+        br.close();
+        return true;
+		
+	}
+	
 }
