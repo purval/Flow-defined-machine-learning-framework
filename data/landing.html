@@ -1,0 +1,570 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Fault Detection ML </title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/text.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/grid.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/layout.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/nav.css" media="screen" />
+    <!--[if IE 6]><link rel="stylesheet" type="text/css" href="css/ie6.css" media="screen" /><![endif]-->
+    <!--[if IE 7]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" /><![endif]-->
+    <link href="css/table/demo_page.css" rel="stylesheet" type="text/css" />
+    <!-- BEGIN: load jquery -->
+    <script src="js/jquery-1.6.4.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/jquery-ui/jquery.ui.core.min.js"></script>
+    <script src="js/jquery-ui/jquery.ui.widget.min.js" type="text/javascript"></script>
+    <script src="js/jquery-ui/jquery.ui.accordion.min.js" type="text/javascript"></script>
+    <script src="js/jquery-ui/jquery.effects.core.min.js" type="text/javascript"></script>
+    <script src="js/jquery-ui/jquery.effects.slide.min.js" type="text/javascript"></script>
+    <script src="js/jquery-ui/jquery.ui.mouse.min.js" type="text/javascript"></script>
+    <script src="js/jquery-ui/jquery.ui.sortable.min.js" type="text/javascript"></script>
+    <script src="js/table/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="go.js"></script>
+<script type="text/javascript" src="bootstrap.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- END: load jquery -->
+    <script type="text/javascript" src="js/table/table.js"></script>
+    <script src="js/setup.js" type="text/javascript"></script>
+    <style>
+* {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -155px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer, .push {
+    height: 155px; /* .push must be the same height as .footer */
+}
+#infoDraggable {
+  font: 12px helvetica, sans-serif;
+}
+label {
+  font: 12px helvetica, sans-serif;
+  color: white;
+}
+    </style>
+
+<script type="text/javascript">
+
+        $(document).ready(function () {
+            setupLeftMenu();
+
+            $('.datatable').dataTable();
+			setSidebarHeight();
+
+
+        });
+
+  function init() {
+    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+    var $ = go.GraphObject.make;  // for conciseness in defining templates
+
+    myDiagram =
+      $(go.Diagram, "myDiagram",  // must name or refer to the DIV HTML element
+        {
+          initialContentAlignment: go.Spot.Center,
+          allowDrop: true,  // must be true to accept drops from the Palette
+          "LinkDrawn": showLinkLabel,  // this DiagramEvent listener is defined below
+          "LinkRelinked": showLinkLabel,
+          "animationManager.duration": 800, // slightly longer than default (600ms) animation
+          "undoManager.isEnabled": true  // enable undo & redo
+        });
+
+    // when the document is modified, add a "*" to the title and enable the "Save" button
+    myDiagram.addDiagramListener("Modified", function(e) {
+      var button = document.getElementById("SaveButton");
+      if (button) button.disabled = !myDiagram.isModified;
+      var idx = document.title.indexOf("*");
+      if (myDiagram.isModified) {
+        if (idx < 0) document.title += "*";
+      } else {
+        if (idx >= 0) document.title = document.title.substr(0, idx);
+      }
+    });
+
+    // helper definitions for node templates
+
+    function nodeStyle() {
+      return [
+        // The Node.location comes from the "loc" property of the node data,
+        // converted by the Point.parse static method.
+        // If the Node.location is changed, it updates the "loc" property of the node data,
+        // converting back using the Point.stringify static method.
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        {
+          // the Node.location is at the center of each node
+          locationSpot: go.Spot.Center,
+          //isShadowed: true,
+          //shadowColor: "#888",
+          // handle mouse enter/leave events to show/hide the ports
+          mouseEnter: function (e, obj) { showPorts(obj.part, true); },
+          mouseLeave: function (e, obj) { showPorts(obj.part, false); }
+        }
+      ];
+    }
+
+    // Define a function for creating a "port" that is normally transparent.
+    // The "name" is used as the GraphObject.portId, the "spot" is used to control how links connect
+    // and where the port is positioned on the node, and the boolean "output" and "input" arguments
+    // control whether the user can draw links from or to the port.
+    function makePort(name, spot, output, input) {
+      // the port is basically just a small circle that has a white stroke when it is made visible
+      return $(go.Shape, "Circle",
+               {
+                  fill: "transparent",
+                  stroke: null,  // this is changed to "white" in the showPorts function
+                  desiredSize: new go.Size(8, 8),
+                  alignment: spot, alignmentFocus: spot,  // align the port on the main Shape
+                  portId: name,  // declare this object to be a "port"
+                  fromSpot: spot, toSpot: spot,  // declare where links may connect at this port
+                  fromLinkable: output, toLinkable: input,  // declare whether the user may draw links to/from here
+                  cursor: "pointer"  // show a different cursor to indicate potential link point
+               });
+    }
+
+    // define the Node templates for regular nodes
+
+    var lightText = 'whitesmoke';
+
+    myDiagram.nodeTemplateMap.add("",  // the default category
+      $(go.Node, "Spot", nodeStyle(),
+        // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+        $(go.Panel, "Auto",
+          $(go.Shape, "Rectangle",
+            { fill: "grey", stroke: null },
+            new go.Binding("figure", "figure")),
+          $(go.TextBlock,
+            {
+              font: "bold 11pt Helvetica, Arial, sans-serif black",
+              stroke: lightText,
+              margin: 8,
+              maxSize: new go.Size(160, NaN),
+              wrap: go.TextBlock.WrapFit,
+              editable: true
+            },
+            new go.Binding("text").makeTwoWay())
+        ),
+        // four named ports, one on each side:
+        makePort("T", go.Spot.Top, false, true),
+        makePort("L", go.Spot.Left, true, true),
+        makePort("R", go.Spot.Right, true, true),
+        makePort("B", go.Spot.Bottom, true, false)
+      ));
+
+    myDiagram.nodeTemplateMap.add("Start",
+      $(go.Node, "Spot", nodeStyle(),
+        $(go.Panel, "Auto",
+          $(go.Shape, "Circle",
+            { minSize: new go.Size(40, 40), fill: "#387C44", stroke: null }),
+          $(go.TextBlock, "Start",
+            { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText },
+            new go.Binding("text"))
+        ),
+        // three named ports, one on each side except the top, all output only:
+        makePort("L", go.Spot.Left, true, false),
+        makePort("R", go.Spot.Right, true, false),
+        makePort("B", go.Spot.Bottom, true, false)
+      ));
+
+    myDiagram.nodeTemplateMap.add("End",
+      $(go.Node, "Spot", nodeStyle(),
+        $(go.Panel, "Auto",
+          $(go.Shape, "Circle",
+            { minSize: new go.Size(40, 40), fill: "#DC3C00", stroke: null }),
+          $(go.TextBlock, "End",
+            { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText },
+            new go.Binding("text"))
+        ),
+        // three named ports, one on each side except the bottom, all input only:
+        makePort("T", go.Spot.Top, false, true),
+        makePort("L", go.Spot.Left, false, true),
+        makePort("R", go.Spot.Right, false, true)
+      ));
+
+    myDiagram.nodeTemplateMap.add("Comment",
+      $(go.Node, "Auto", nodeStyle(),
+        $(go.Shape, "File",
+          { fill: "#EFFAB4", stroke: null }),
+        $(go.TextBlock,
+          {
+            margin: 5,
+            maxSize: new go.Size(200, NaN),
+            wrap: go.TextBlock.WrapFit,
+            textAlign: "center",
+            editable: true,
+            font: "bold 12pt Helvetica, Arial, sans-serif",
+            stroke: '#454545'
+          },
+          new go.Binding("text").makeTwoWay())
+        // no ports, because no links are allowed to connect with a comment
+      ));
+
+
+    // replace the default Link template in the linkTemplateMap
+    myDiagram.linkTemplate =
+      $(go.Link,  // the whole link panel
+        {
+          routing: go.Link.AvoidsNodes,
+          curve: go.Link.JumpOver,
+          corner: 5, toShortLength: 4,
+          relinkableFrom: true,
+          relinkableTo: true,
+          reshapable: true,
+          resegmentable: true,
+          // mouse-overs subtly highlight links:
+          mouseEnter: function(e, link) { link.findObject("HIGHLIGHT").stroke = "rgba(30,144,255,0.2)"; },
+          mouseLeave: function(e, link) { link.findObject("HIGHLIGHT").stroke = "transparent"; }
+        },
+        new go.Binding("points").makeTwoWay(),
+        $(go.Shape,  // the highlight shape, normally transparent
+          { isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT" }),
+        $(go.Shape,  // the link path shape
+          { isPanelMain: true, stroke: "gray", strokeWidth: 2 }),
+        $(go.Shape,  // the arrowhead
+          { toArrow: "standard", stroke: null, fill: "gray"}),
+        $(go.Panel, "Auto",  // the link label, normally not visible
+          { visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5},
+          new go.Binding("visible", "visible").makeTwoWay(),
+          $(go.Shape, "RoundedRectangle",  // the label shape
+            { fill: "#F8F8F8", stroke: null }),
+          $(go.TextBlock, "Yes",  // the label
+            {
+              textAlign: "center",
+              font: "10pt helvetica, arial, sans-serif",
+              stroke: "#333333",
+              editable: true
+            },
+            new go.Binding("text", "text").makeTwoWay())
+        )
+      );
+
+    // Make link labels visible if coming out of a "conditional" node.
+    // This listener is called by the "LinkDrawn" and "LinkRelinked" DiagramEvents.
+    function showLinkLabel(e) {
+      var label = e.subject.findObject("LABEL");
+      if (label !== null) label.visible = (e.subject.fromNode.data.figure === "Diamond");
+    }
+
+    // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
+    myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
+    myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
+
+    load();  // load an initial diagram from some JSON text
+
+    // initialize the Palette that is on the left side of the page
+    myPalette =
+      $(go.Palette, "myPalette",  // must name or refer to the DIV HTML element
+        {
+          "animationManager.duration": 800, // slightly longer than default (600ms) animation
+          nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
+          model: new go.GraphLinksModel([  // specify the contents of the Palette
+            { category: "Start", text: "Start" },
+            { text: "Step" },
+            { text: "If", figure: "Diamond" },
+            { category: "End", text: "End" },
+            { category: "Comment", text: "Comment" }
+          ])
+        });
+
+  }
+
+  // Make all ports on a node visible when the mouse is over the node
+  function showPorts(node, show) {
+    var diagram = node.diagram;
+    if (!diagram || diagram.isReadOnly || !diagram.allowLink) return;
+    node.ports.each(function(port) {
+        port.stroke = (show ? "white" : null);
+      });
+  }
+
+
+  // Show the diagram's model in JSON format that the user may edit
+  function save() {
+    document.getElementById("mySavedModel").value = myDiagram.model.toJson();
+    myDiagram.isModified = false;
+  }
+  function load() {
+    myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+  }
+
+  // add an SVG rendering of the diagram at the end of this page
+  function makeSVG() {
+    var svg = myDiagram.makeSvg({
+        scale: 0.5
+      });
+    svg.style.border = "1px solid black";
+    obj = document.getElementById("SVGArea");
+    obj.appendChild(svg);
+    if (obj.children.length > 0) {
+      obj.replaceChild(svg, obj.children[0]);
+    }
+  }
+
+</script>
+</head>
+<body onload="init()">
+    <div class="container_12">
+        <div class="grid_12 header-repeat">
+            <div id="branding">
+                <div class="floatleft" style="color: white; font-weight: bold;">
+                   <h3> Semiconductor Fabrication <I><h4> Machine Learning </h4></I> </h3> </div>
+                <div class="floatright">
+                    <div class="floatleft">
+                        <img src="img/img-profile.jpg" alt="Profile Pic" /></div>
+                    <div class="floatleft marginleft10">
+                        <ul class="inline-ul floatleft">
+                            <li>Hello Admin</li>
+                            <li><a href="#">Config</a></li>
+                            <li><a href="#">Logout</a></li>
+                        </ul>
+                        <br />
+                        <span class="small grey">Last Login: 3 hours ago</span>
+                    </div>
+                </div>
+                <div class="clear">
+                </div>
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="grid_12">
+            <ul class="nav main">
+                <li class="ic-dashboard"><a href="dashboard.html"><span>Dashboard</span></a> </li>
+                <li class="ic-form-style"><a href="javascript:"><span>Controls</span></a>
+                    <ul>
+                        <li><a href="form-controls.html">Forms</a> </li>
+                        <li><a href="buttons.html">Buttons</a> </li>
+                        <li><a href="form-controls.html">Full Page Example</a> </li>
+                        <li><a href="table.html">Page with Sidebar Example</a> </li>
+                    </ul>
+                </li>
+				<li class="ic-typography"><a href="typography.html"><span>Typography</span></a></li>
+                <li class="ic-charts"><a href="charts.html"><span>Charts & Graphs</span></a></li>
+                <li class="ic-grid-tables"><a href="table.html"><span>Data Analyses</span></a></li>
+                <li class="ic-gallery dd"><a href="javascript:"><span>Image Galleries</span></a>
+               		 <ul>
+                        <li><a href="image-gallery.html">Pretty Photo</a> </li>
+                        <li><a href="gallery-with-filter.html">Gallery with Filter</a> </li>
+                    </ul>
+                </li>
+                <li class="ic-notifications"><a href="notifications.html"><span>Notifications</span></a></li>
+
+            </ul>
+          
+        </div>
+        <div class="clear">
+        </div>
+        <div class="grid_2">
+            <div class="box sidemenu">
+                <div class="block" id="section-menu">
+                      
+    
+                    <ul class="section menu">
+                        <li><a class="menuitem">Saved Dataset</a>
+                            <ul class="submenu">
+                                <li><a >LAM Research</a> </li>
+                                <li><a>Automobile price data</a> </li>
+                                <li><a class="active">SECOM Dataset</a> </li>
+                            </ul>
+                        </li>
+                        <li><a class="menuitem">Data Transformation</a>
+                            <ul class="submenu">
+                                <li><a>Partition & Sample</a> </li>
+                                <li><a>Split</a> </li>
+                            </ul>
+                        </li>
+                        <li><a class="menuitem">Feature Selection</a>
+                            <ul class="submenu">
+                                <li><a>Filter Based </a> </li>
+                                <li><a>Fisher Linear Discriminant</a> </li>
+                                <li><a>Permutation Feature Importance</a> </li>
+
+                            </ul>
+                        </li>
+                        <li><a class="menuitem">Machine Learning</a>
+                            <ul class="submenu">
+                                <li><a>Evaluate</a> 
+                                <ol>
+		                        <li><a>Cross Validate Model</a> </li>
+		                        <li><a>Evaluate Model</a> </li>
+                                </ol>
+                                </li>
+                               <li><a>Initialize Model</a> 
+                                <ol>
+		                        <li><a>Support Vector Machine</a> </li>
+		                        <li><a>Anomaly based</a> </li>
+                                </ol>
+                                </li>
+                                <li><a>Classification</a> 
+                                <ol>
+		                        <li><a>Decision Forest</a> </li>
+		                        <li><a>Decision Jungle</a> </li>
+		                        <li><a>Logistic Regression</a> </li>
+		                        <li><a>Neural Network</a> </li>
+                                </ol>
+                                </li>
+                                <li><a>Clustering</a> 
+                                <ol>
+		                        <li><a>K-Means Clustering</a> </li>
+                                </ol>
+                                </li>
+                                <li><a>Regression</a> 
+                                <ol>
+		                        <li><a>Bayesian Linear Regression</a> </li>
+		                        <li><a>Boosted Decision Tree</a> </li>
+		                        <li><a>Bayesian Linear Regression</a> </li>
+		                        <li><a>Decision Forest Tree</a> </li>
+                                </ol>
+                                </li>
+                                
+                                  
+                               
+                           </ul>
+                        </li>
+                    </ul>
+                     
+                </div>
+            </div>
+        </div>
+  
+ <!-- <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-play"> Run</span></button> -->
+
+
+
+<!--div style="margin-left: 20%; color: Blue;"><strong><h2>Semiconductor Fabrication Fault Detection  </h2><strong> </div -->
+<div id="sample">
+  <div style="width:100%; white-space:nowrap;">
+    <span style="display: inline-block; vertical-align: top; padding: 5px; width:100px">
+      <div id="myPalette" style="border: solid 1px gray; height: 420px"></div>
+    </span>
+
+    <span style="display: inline-block; vertical-align: top; padding: 5px; width:50%">
+      <div id="dataset" style="border: solid 1px gray; height: 420px">
+      <form action="insertInDb.php"
+          method= "post">
+
+        <fieldset align="center">
+                    <legend style="color: white;">DATASET for ANALYSIS </legend>
+			             <!--  <p>
+			                   <label><B>Product name :</B></label>
+			                   <input name="product" type="text" placeholder="Car/Furniture/Laptop/Phone"/>
+			               </p>
+			               <p>
+			                   <label><B>Description :</B></label>
+			                   <textarea rows="4" cols="50" name="description" placeholder="Describe your product!" ></textarea>
+			               </p>
+			               <p>
+					  <label><B>Amount :</B></label>
+					  <input name="amount" type="text" placeholder="00.00$" />
+				       </p> -->
+                                       <p>
+					  <label><B>Choose a data set :</B></label>
+						<select name="dataset">
+						<option value="SECOM">SECOM</option>
+						<option value="LAM Research">LAM Research</option>
+         					</select>
+				       </p>
+
+                                       <p>
+					  <label><B>Chamber :</B></label>
+						<select name="chamber">
+						<option value="chamber1">Chamber 1</option>
+						<option value="chamber2">Chamber 2</option>
+						<option value="chamber3">Chamber 3</option>
+						<option value="chamber4">Chamber 4</option>
+						<option value="chamber5">Chamber 5</option>
+						<option value="chamber6">Chamber 6</option>
+						<option value="chamber7">Chamber 7</option>
+						<option value="chamber8">Chamber 8</option>
+         					</select>
+				       </p>
+			               <p>
+					  <label><B>Period :</B></label>
+					  <input name="period" type="text" placeholder="2001-2010" />
+				       </p>
+			               <p>
+					  <label><B>OR</B></label>
+				       </p>
+			               <p>
+					  <label><B>Upload a dataset</B></label>
+					  <input type="file" accept=".xls,.xlsx" />
+				       </p>
+                                
+
+				      <!-- <p>
+					   <label><B>Negotiable ?</B></label>
+					   <select name="bargain">
+					       <option value="yes" selected>Yes</option>
+					       <option value="no">No</option>
+
+					   </select>
+				       </p>
+                                       <p>
+			               	<label><B>Condition : </B></label>
+					       	<input type="radio"
+					       	       name="condition"
+					       	       value="used"
+					       	       checked /> Used
+					       	<input type="radio"
+					       	       name="condition"
+					       	       value="new" /> New
+			              	</p> -->
+
+                                       </br></br></br></br></br>
+					    <p>
+						<input type="submit" value="Submit" ></input>
+						<button onclick="#">Cancel</button>
+					    </p>
+              </fieldset>
+    </form>
+      </div>
+    </span>
+  </div>
+
+>
+<!--
+<nav class="navbar navbar-inverse navbar-bottom" style="padding:0 0 120px 0">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <h5 id='footer-header'> SITEMAP </h3>
+                    <div class="col-sm-4" style="padding: 0 0 0 0px">
+                        <p>News</p>
+                        <p>contact</p>
+                    </div>
+                    <div class="col-sm-4" style="padding: 0 0 0 0px">
+                        <p>FAQ</p>
+                        <p>Privacy Policy</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <h5 id='footer-header'> xxxx </h3>
+                    <p>yyyyyyyyyyyyy</p>
+                </div>
+                <div class="col-sm-4">
+                    <h5 id='footer-header'> xxxxx </h3>
+                    <p>uuuuuuuuuuuuuuu</p>
+                </div>
+            </div>
+        </div>
+    </nav> -->
+
+    </div>
+    <div class="clear">
+    </div>
+    <div id="site_info">
+        <p>
+            Copyright <a href="#">San Jose State Students!! </a>. All Rights Reserved.
+        </p>
+    </div>
+</body>
+</html>
