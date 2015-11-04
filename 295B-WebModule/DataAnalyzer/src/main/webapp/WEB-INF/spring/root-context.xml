@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 	
-	<!-- Root Context: defines shared resources visible to all other web components -->
-		
-</beans>
+	<context:annotation-config />
+	
+	<context:component-scan base-package="edu.sjsu.dataanalyzer" />
+
+	<annotation-driven />
+	
+	<!-- <beans:bean id="config" class="edu.sjsu.dataanalyzer.bean.ConfigProperties">
+        <beans:property name="mongodUrl" value="localhost" />
+        <beans:property name="mongodPort" value="27017" />
+        <beans:property name="db" value="cmpedb" />
+    </beans:bean> -->
+    
+    <beans:bean id="mongoConnector" class="edu.sjsu.dataanalyzer.dbutils.MongoConnector">
+        <!-- <beans:property name="config" ref="config"></beans:property> -->
+    </beans:bean>
+    
+    <beans:bean id="userService" class="edu.sjsu.dataanalyzer.service.UserService">
+        <!-- <beans:property name="config" ref="config"></beans:property> -->
+        <beans:property name="mongoConnector" ref="mongoConnector"></beans:property>
+    </beans:bean> 
+</beans:beans>
