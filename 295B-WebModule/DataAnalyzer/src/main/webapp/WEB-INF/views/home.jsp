@@ -32,7 +32,7 @@
 <body>
 
 
-<P>  The time on the server is ${serverTime}. </P>
+
 
 <section class="vbox">
   <header class="bg-white header header-md navbar navbar-fixed-top-xs box-shadow custome_bg">
@@ -156,12 +156,12 @@
                   </li>
                   <li  class="active"> <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <i class="i i-docs icon"> </i> <span class="font-bold">Pages</span> </a>
                     <ul class="nav dk">
-                      <li  class="active"> <a href="profile.html" class="auto"> <i class="i i-dot"></i> <span>Profile</span> </a> </li>
-                      <li > <a href="invoice.html" class="auto"> <i class="i i-dot"></i> <span>Invoice</span> </a> </li>
-                      <li > <a href="intro.html" class="auto"> <i class="i i-dot"></i> <span>Intro</span> </a> </li>
-                      <li > <a href="master.html" class="auto"> <i class="i i-dot"></i> <span>Master</span> </a> </li>
-                      <li > <a href="gmap.html" class="auto"> <i class="i i-dot"></i> <span>Google Map</span> </a> </li>
-                      <li > <a href="jvectormap.html" class="auto"> <i class="i i-dot"></i> <span>Vector Map</span> </a> </li>
+                      <li  class="active"> <a href="profile.html" class="auto"> <i class="i i-dot"></i> <span>Experiment</span> </a> </li>
+                      <li > <a href="invoice.html" class="auto"> <i class="i i-dot"></i> <span>Dataset Selection</span> </a> </li>
+                      <li > <a href="intro.html" class="auto"> <i class="i i-dot"></i> <span>Column Slection</span> </a> </li>
+                      <li > <a href="master.html" class="auto"> <i class="i i-dot"></i> <span>Target Selection</span> </a> </li>
+                      <li > <a href="gmap.html" class="auto"> <i class="i i-dot"></i> <span>Choose Algorithms</span> </a> </li>
+                      <li > <a href="jvectormap.html" class="auto"> <i class="i i-dot"></i> <span>Draw Analysis</span> </a> </li>
                       <li > <a href="signin.html" class="auto"> <i class="i i-dot"></i> <span>Signin</span> </a> </li>
                       <li > <a href="signup.html" class="auto"> <i class="i i-dot"></i> <span>Signup</span> </a> </li>
                       <li > <a href="404.html" class="auto"> <i class="i i-dot"></i> <span>404</span> </a> </li>
@@ -230,16 +230,14 @@
                                 <div class="tab-content">
                                 <div id="step1" class="tab-pane active">
                                   <div class="form-group">
-                                    <label class="col-sm-2 label-sm"><Strong>Choose Experiment</Strong></label>
+                                    <label class="col-sm-2 label-sm"><Strong>Choose a type!</Strong></label>
                                     <div class="col-sm-10">
                                   <p>
                                       <button class="btn btn-large btn-primary" type="button">My Experiments</button>
-                                      <button class="btn btn-large" type="button">Choose this to view your existing Experiments </button>
-                                      </p>
+                                        </p>
                                       <p>
-                                        <button class="btn btn-primary btn-large" type="button">New Experiment!!</button>
-                                        <button class="btn" type="button">Choose this to start a new Experiment!!</button>
-                                      </p>
+                                        <button class="btn btn-primary btn-large" type="button">New Experiment</button>
+                                           </p>
                                     </div>
                                     </div>
                               </div>
@@ -272,7 +270,103 @@
                             </div>
                           </form>
                         </div>
-                            <div id="step3" class="tab-pane">This is step 3</div>
+                            <div id="step3" class="tab-pane">
+                            <label class="text1"><h3>Select columns for your customized Analysis. Also choose one Target.</h3></label>
+                           <div class="table-responsive">
+                            <table class="table">
+                               <tr class="active"> 
+                                  <th class="active">Select</th>
+								  <th class="active">Measures</th>
+								  <th class="active">Target</th>
+							  </tr>
+                               <tr class="active"> 
+                                  <td class="active"></td>
+								  <td class="active"></td>
+								  <td class="active"></td>
+							  </tr>
+							   <tr class="active"> 
+                                  <td class="active"></td>
+								  <td class="active"></td>
+								  <td class="active"></td>
+							  </tr>
+                            </table>
+                            
+                            
+                            </div>
+                            </div>
+                          <div id="step4" class="tab-pane">
+                          <label class="text1"> <h3>Values for precision </h3></label>
+                           <div class="table-responsive">
+                            <table class="table">
+                               <tr class="active"> 
+                                  <td class="active"><label>Split Percentage</label></td>
+								  <td class="active">
+								        <select>
+										  <option value="50-50">50-50</option>
+										  <option value="70-30">70-30</option>
+										</select>
+								  </td>
+
+							  </tr>
+							   <tr class="active"> 
+                                  <td class="active">Missing Values Replacement</td>
+
+								  <td class="active"><input type="text" name="custom"></td>
+							  </tr>
+						      <tr class="active"> 
+                                  <td class="active">Replace with</td>
+                                  <td class="active">
+								        <select>
+										  <option value="Mean">Mean</option>
+										  <option value="Median">Median</option>
+										  <option value="Median">Custom Value</option>										  
+										</select>
+								  </td>
+
+							  </tr>
+                            </table>
+                            
+                            
+                            </div>
+                            </div>
+                        <div id="step5" class="tab-pane">
+                           <div class="table-responsive">
+                            <table class="table table-bordered">
+                               <tr class="active"> 
+                                  <th class="active">Algorithm</th>
+								  <th class="active">Select</th>
+								 
+							  </tr>
+                               <tr class=""> 
+                                  <td class="">PCA</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								 
+							  </tr>
+							  <tr class="active"> 
+                                  <td class="">K-Means</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								  
+							  </tr>
+							  <tr class=""> 
+                                  <td class="">SVM</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								  
+							  </tr>
+					          <tr class="active"> 
+                                  <td class="">Knn</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								  
+							  </tr>
+						      <tr class=""> 
+                                  <td class="">Logistic Regression</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								 
+							  </tr>
+                            </table>
+                            
+                            
+                            </div>
+                            </div>
                             <ul class="pager wizard m-b-sm">
                               <li style="display:none;" class="previous first"><a href="#">First</a></li>
                               <li class="previous"><a href="#">Previous</a></li>

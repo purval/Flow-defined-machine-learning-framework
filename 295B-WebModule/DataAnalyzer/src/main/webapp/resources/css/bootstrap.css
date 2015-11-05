@@ -2081,7 +2081,7 @@ fieldset[disabled] .btn-default.active {
 }
 .btn-primary {
   color: #fff;
-  background-color: #428bca;
+  background-color: #1aae88;
   border-color: #357ebd;
 }
 .btn-primary:hover,
@@ -2090,7 +2090,7 @@ fieldset[disabled] .btn-default.active {
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary {
   color: #fff;
-  background-color: #3276b1;
+  background-color: #1aae88;
   border-color: #285e8e;
 }
 .btn-primary:active,
@@ -2113,7 +2113,7 @@ fieldset[disabled] .btn-primary:active,
 .btn-primary.disabled.active,
 .btn-primary[disabled].active,
 fieldset[disabled] .btn-primary.active {
-  background-color: #428bca;
+  background-color: #1aae88;
   border-color: #357ebd;
 }
 .btn-primary .badge {
@@ -4242,23 +4242,27 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .pager li > a:hover,
 .pager li > a:focus {
   text-decoration: none;
-  background-color: #eee;
+  background-color: #333333;
 }
 .pager .next > a,
 .pager .next > span {
   float: right;
+    color: white;
+  background-color: #333333;
 }
 .pager .previous > a,
 .pager .previous > span {
   float: left;
+  color: white;
+  background-color: #333333;
 }
 .pager .disabled > a,
 .pager .disabled > a:hover,
 .pager .disabled > a:focus,
 .pager .disabled > span {
-  color: #999;
+  color: white;
   cursor: not-allowed;
-  background-color: #fff;
+  background-color: #333333;
 }
 .label {
   display: inline;
