@@ -9,34 +9,10 @@
 <title>Data Analyses tool</title>
 
 <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/generic.css" />" rel="stylesheet">
 <script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 
-<style>
-.navbar-default1 {
-    background-color: #F8F8F8;
-    border-color: #E7E7E7;
-}
-.navbar-custom {
-    background-color:#4682B4;
-    color:#ffffff;
-    border-radius:0;
-}
-
-.navbar-custom .navbar-nav > li > a {
-    color:#fff;
-}
-.navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
-    color: #ffffff;
-    background-color:transparent;
-}
-.navbar-custom .navbar-brand {
-    color:#eeeeee;
-}
-.text1{
-color:#4682B4;
-}
-</style>
 </head>
 <body align="center">
 <nav class="navbar navbar-custom">
