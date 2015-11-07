@@ -279,16 +279,46 @@
 								  <th class="active">Measures</th>
 								  <th class="active">Target</th>
 							  </tr>
-                               <tr class="active"> 
-                                  <td class="active"></td>
-								  <td class="active"></td>
-								  <td class="active"></td>
+                               <tr class=""> 
+                                  <td class=""> Sensor 1</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								  <td class=""><input type="radio" name="target" value=""></input></td>
 							  </tr>
 							   <tr class="active"> 
-                                  <td class="active"></td>
-								  <td class="active"></td>
-								  <td class="active"></td>
+                                  <td class="active">Sensor 2</td>
+								  <td class="active"><input type="checkbox" value=""></input></td>
+								  <td class="active"><input type="radio" name="target" value=""></input></td>
 							  </tr>
+							  <tr class=""> 
+                                  <td class=""> Sensor 3</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								  <td class=""><input type="radio" name="target" value=""></input></td>
+							  </tr>
+							   <tr class="active"> 
+                                  <td class="active">Sensor 4</td>
+								  <td class="active"><input type="checkbox" value=""></input></td>
+								  <td class="active"><input type="radio" name="target" value=""></input></td>
+							  </tr>
+                               <tr class=""> 
+                                  <td class=""> Sensor 4</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								  <td class=""><input type="radio" name="target" value=""></input></td>
+							  </tr>
+							   <tr class="active"> 
+                                  <td class="active">Sensor 5</td>
+								  <td class="active"><input type="checkbox" value=""></input></td>
+								  <td class="active"><input type="radio" name="target" value=""></input></td>
+							  </tr>		
+                               <tr class=""> 
+                                  <td class=""> Sensor 6</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								  <td class=""><input type="radio" name="target" value=""></input></td>
+							  </tr>
+							   <tr class="active"> 
+                                  <td class="active">Sensor 7</td>
+								  <td class="active"><input type="checkbox" value=""></input></td>
+								  <td class="active"><input type="radio" name="target" value=""></input></td>
+							  </tr>								  					  
                             </table>
                             
                             
@@ -311,7 +341,7 @@
 							   <tr class="active"> 
                                   <td class="active">Missing Values Replacement</td>
 
-								  <td class="active"><input type="text" name="custom"></td>
+								  <td class="active"><input type="text" name="custom" placeholder="0"></td>
 							  </tr>
 						      <tr class="active"> 
                                   <td class="active">Replace with</td>
