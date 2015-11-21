@@ -46,4 +46,25 @@ public class HomeController {
 		return new ModelAndView("LAM","json",values);
 		//return "LAM";
 	}
+	
+	@RequestMapping(value = "/lam/date", method = RequestMethod.GET)
+	public String getDates(Locale locale, Model model) {		
+		
+		
+		return "LAM";
+	}
+	
+	@RequestMapping(value = "/lam/date/file", method = RequestMethod.GET)
+	public String getFiles(Locale locale, Model model) {		
+		
+		
+		return "LAM";
+	}
+	
+	@RequestMapping(value = "/lam/date/file/attribute", method = RequestMethod.GET)
+	public String getAttributes(Locale locale, Model model) {		
+		
+		
+		return "LAM";
+	}
 }
