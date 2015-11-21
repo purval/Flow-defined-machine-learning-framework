@@ -1,9 +1,6 @@
 package edu.sjsu.dataanalyzer.service;
 
-import org.json.JSONObject;
-
 import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
 
 import edu.sjsu.dataanalyzer.bean.User;
 
