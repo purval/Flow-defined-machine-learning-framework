@@ -15,14 +15,13 @@
 <link  href="<c:url value="/resources/css/icon.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/font.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/app.css"  />" rel="stylesheet">
-<script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
-<script src="<c:url value="/resources/js/go.js" />"></script>
-
-
 <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/generic.css" />" rel="stylesheet">
 <script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
+<script src="<c:url value="/resources/js/go.js" />"></script>
+
 <style>
 .custome_bg {
 	background:#1aae88;
