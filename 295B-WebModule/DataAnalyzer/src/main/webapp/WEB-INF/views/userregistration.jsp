@@ -7,67 +7,96 @@
 <meta charset="utf-8" />
 <title>Data Analyses tool</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<link  href="<c:url value="/resources/css/bootstrap.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/animate.css"  />" rel="stylesheet">
+<link  href="<c:url value="/resources/css/font-awesome.min.css" />" rel="stylesheet">
+<link  href="<c:url value="/resources/css/icon.css"  />" rel="stylesheet">
+<link  href="<c:url value="/resources/css/font.css"  />" rel="stylesheet">
+<link  href="<c:url value="/resources/css/app.css"  />" rel="stylesheet">
+<script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
+<script src="<c:url value="/resources/js/go.js" />"></script>
+
+
 <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/generic.css" />" rel="stylesheet">
 <script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-
+<style>
+.custome_bg {
+	background:#1aae88;
+}
+</style>
 
 </head>
-<body align="center">
-<nav class="navbar navbar-custom">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Fault Detection Analysis</a>
-    </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Structfish <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Hi User</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">My Account</a></li>
-            <li><a href="#">My History</a></li>
-            <li><a href="#">My Jukebox</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+<body align="center">
+
+<section class="vbox">
+
+  <header class="bg-white header header-md navbar navbar-fixed-top-xs box-shadow custome_bg">
+    <div class="navbar-header aside-md dk"> <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav"> <i class="fa fa-bars"></i> </a> <a href="home.html" class="navbar-brand"><img src="<c:url value="/resources/images/logo.png"/>" class="m-r-sm" alt="scale"/> <span class="hidden-nav-xs">Fault Detection</span> </a> <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user"> <i class="fa fa-cog"></i> </a> </div>
+    <ul class="nav navbar-nav hidden-xs">
+      <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="i i-grid"></i> </a>
+        <section class="dropdown-menu aside-lg bg-white on animated fadeInLeft">
+          <div class="row m-l-none m-r-none m-t m-b text-center">
+            <div class="col-xs-4">
+              <div class="padder-v"> <a href="#"> <span class="m-b-xs block"> <i class="i i-mail i-2x text-primary-lt"></i> </span> <small class="text-muted">Mailbox</small> </a> </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="padder-v"> <a href="#"> <span class="m-b-xs block"> <i class="i i-calendar i-2x text-danger-lt"></i> </span> <small class="text-muted">Calendar</small> </a> </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="padder-v"> <a href="#"> <span class="m-b-xs block"> <i class="i i-map i-2x text-success-lt"></i> </span> <small class="text-muted">Map</small> </a> </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="padder-v"> <a href="#"> <span class="m-b-xs block"> <i class="i i-paperplane i-2x text-info-lt"></i> </span> <small class="text-muted">Trainning</small> </a> </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="padder-v"> <a href="#"> <span class="m-b-xs block"> <i class="i i-images i-2x text-muted"></i> </span> <small class="text-muted">Photos</small> </a> </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="padder-v"> <a href="#"> <span class="m-b-xs block"> <i class="i i-clock i-2x text-warning-lter"></i> </span> <small class="text-muted">Timeline</small> </a> </div>
+            </div>
+          </div>
+        </section>
+      </li>
+    </ul>
+    <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" role="search">
+      <div class="form-group">
+        <div class="input-group"> <span class="input-group-btn">
+          <button type="submit" class="btn btn-sm bg-white b-white btn-icon"><i class="fa fa-search"></i></button>
+          </span>
+          <input type="text" class="form-control input-sm no-border" placeholder="Search apps, projects...">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">About</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">My Account</a></li>
-            <li><a href="#">My History</a></li>
-            <li><a href="#">My Jukebox</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+      </div>
+    </form>
+    <ul class="nav navbar-nav navbar-right m-n hidden-xs nav-user user">
+      <li class="hidden-xs"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="i i-chat3"></i> <span class="badge badge-sm up bg-danger count">2</span> </a>
+        <section class="dropdown-menu aside-xl animated flipInY">
+          <section class="panel bg-white">
+            <div class="panel-heading b-light bg-light"> <strong>You have <span class="count">2</span> notifications</strong> </div>
+            <div class="list-group list-group-alt"> <a href="#" class="media list-group-item"> <span class="pull-left thumb-sm"> <img src="<c:url value="/resources/images/a0.png"/>" class="img-circle" alt=""/> </span> <span class="media-body block m-b-none"> Use awesome animate.css<br>
+              <small class="text-muted">10 minutes ago</small> </span> </a> <a href="#" class="media list-group-item"> <span class="media-body block m-b-none"> 1.0 initial released<br>
+              <small class="text-muted">1 hour ago</small> </span> </a> </div>
+            <div class="panel-footer text-sm"> <a href="#" class="pull-right"><i class="fa fa-cog"></i></a> <a href="#notes" data-toggle="class:show animated fadeInRight">See all the notifications</a> </div>
+          </section>
+        </section>
+      </li>
+      <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="thumb-sm avatar pull-left"> <img src="<c:url value="/resources/images/a0.png"/>" alt="Image"/> </span> Karuna <b class="caret"></b> </a>
+        <ul class="dropdown-menu animated fadeInRight">
+          <li> <span class="arrow top"></span> <a href="#">Settings</a> </li>
+          <li> <a href="profile.html">Profile</a> </li>
+          <li> <a href="#"> <span class="badge bg-danger pull-right">3</span> Notifications </a> </li>
+          <li> <a href="docs.html">Help</a> </li>
+          <li class="divider"></li>
+          <li> <a href="modal.lockme.html" data-toggle="ajaxModal" >Logout</a> </li>
+        </ul>
+      </li>
+    </ul>
+  </header>
+
+
 
 
      <marquee>  </marquee>
@@ -105,6 +134,7 @@
                     
           </fieldset>
 </form:form>
-<div class="navbar navbar-custom navbar-fixed-bottom" role="navigation"> Semiconductor Fault Detection Analysis. Copyrights: Structfish 2015</div>
+<div class="navbar navbar-custom navbar-fixed-bottom custome_bg" role="navigation"> Semiconductor Fault Detection Analysis. Copyrights: Structfish 2015</div>
+</section>
 </body>
 </html>
