@@ -17,13 +17,13 @@
 <link  href="<c:url value="/resources/css/icon.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/font.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/app.css"  />" rel="stylesheet">
+<script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
 <script src="<c:url value="/resources/js/go.js" />"></script>
-
+<script src="<c:url value="/resources/js/ajax.js" />"></script>
 
 <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/generic.css" />" rel="stylesheet">
-<script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 
 <script src="http://www.amcharts.com/lib/3/amcharts.js"></script>
@@ -49,83 +49,6 @@
 
 </head>
 
-<script>
-
-
-<%
-DBObject dat = (DBObject)request.getAttribute("json");
-//List <Float> val = null;
-//String attrib = "BiasMatchSeriesCapPosition_AI";
-String attribute = (String) dat.get("Attribute");
-String unit = (String) dat.get("Unit");
-//DBObject attribValues = (DBObject) attribData.get("Values");
-
-%>
-var jsonData = <%=dat.get("Values")%>;
-var x=jsonData;
-var attri = "<%=attribute%>";
-var uni = "<%=unit%>";
-var chart1 = AmCharts.makeChart("chartdiv", {
-    "type": "serial",
-    "theme": "light",
-    "marginRight": 70,
-    "autoMarginOffset": 20,
-    "titles": [
-       		{
-       			"text": attri,
-       			"size": 18
-       		}
-       	],
-    "dataProvider": jsonData,
-    "balloon": {
-        "cornerRadius": 6
-    },
-    "valueAxes": [{
-    	"id": "v1",
-        "axisAlpha": 0,
-        "title": uni
-    }],
-    "graphs": [{
-        "balloonText": "[[category]]<br><b><span style='font-size:14px;'>[[value]] UNIT</span></b>",
-        "bullet": "round",
-        "title":"timmeee",
-        "bulletSize": 6,
-        "connect": false,
-        "lineColor": "#b6d278",
-        "lineThickness": 2,
-        "negativeLineColor": "#487dac",
-        "valueField": "Value",
-        "animationPlayed": true,
-        "title":"[[Time]]",
-        "descriptionField": "name",
-        "valueAxis": "v1"
-        
-    }],
-    "chartCursor": {
-        "categoryBalloonDateFormat": "YYYY",
-        "cursorAlpha": 0.1,
-        "cursorColor": "#000000",
-        "fullWidth": true,
-        "graphBulletSize": 2
-    },
-    "chartScrollbar": {},
-    "dataDateFormat": "YYYY",
-    "categoryField": "Time",
-    "categoryAxis": {
-        "minorGridEnabled": true,
-        "labelRotation": 60
-    },
-    "export": {
-        "enabled": true
-    }
-});
-
-chart.addListener("dataUpdated", zoomChart);
-
-function zoomChart(){
-    chart.zoomToDates(new Date(1970, 0), new Date(1995, 0));
-}
-</script>
 
 
 <body>
@@ -315,7 +238,7 @@ function zoomChart(){
 
 						<div class="inline">
 							<div class="dropdown">
-								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+								<button id="chamber" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
 									Select Chamber <span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
@@ -390,13 +313,13 @@ function zoomChart(){
 </section>
 </section>
 </section>
-<script src="js/jquery.min.js"></script>
-<!-- Bootstrap -->
+<!-- <script src="js/jquery.min.js"></script>
+Bootstrap
 <script src="js/bootstrap.js"></script>
-<!-- App -->
+App
 <script src="js/app.js"></script>
 <script src="js/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
-<script src="js/app.plugin.js"></script>
+<script src="js/app.plugin.js"></script> -->
 </body>
 </html>
