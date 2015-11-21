@@ -241,7 +241,7 @@
 								<button id="chamber" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
 									Select Chamber <span class="caret"></span>
 								</button>
-								<ul class="dropdown-menu">
+								<ul class="dropdown-menu" id="chamberUL">
 									<li><a href="#">PM1</a></li>
 									<li><a href="#">PM2</a></li>
 									<li><a href="#">PM3</a></li>

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.mongodb.DBObject;
@@ -48,10 +50,14 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/lam/date", method = RequestMethod.GET)
-	public String getDates(Locale locale, Model model) {		
+	public @ResponseBody String getDates(@RequestParam("chamber_id") String chamber_id) {		
+		String success = "success";
+		System.out.println("success -- "+chamber_id);
 		
-		
-		return "LAM";
+		UserService us = new UserService();
+		String values = us.getLAMdate(chamber_id);
+		System.out.println("Dates: "+values);
+		return values;
 	}
 	
 	@RequestMapping(value = "/lam/date/file", method = RequestMethod.GET)

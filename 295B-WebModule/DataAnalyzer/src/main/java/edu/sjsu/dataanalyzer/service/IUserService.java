@@ -18,4 +18,9 @@ public interface IUserService {
 	 * Mongo to LAM
 	 */
 	public DBObject getLAM();
+	
+	public String getLAMdate(String chamber);
+	public DBObject getLamDateAndFile(String chamber, String date);
+	public DBObject getLamDateFileAndAtribute(String chamber, String date, String fileName);
+
 }
