@@ -1,13 +1,15 @@
 package edu.sjsu.dataanalyzer.service;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-
 import edu.sjsu.dataanalyzer.bean.User;
 import edu.sjsu.dataanalyzer.dbutils.MongoConnector;
 
@@ -17,48 +19,48 @@ public class UserService implements IUserService{
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 	private MongoConnector connector = new MongoConnector();
 	//private ConfigProperties config;
-	
+
 	public void setMongoConnector(MongoConnector connector){
 		this.connector = connector;
 		//this.config = config;
 	}
-	
+
 	@Override
 	public User get(String email) {
 		logger.info("Retrieving an existing user");
-		
+
 		// Retrieve collection
 		DBCollection coll = connector.getCollection("cmpedb","usercollection");
-	
+
 		DBObject doc = new BasicDBObject();
-        doc.put("id", email);
-        
-        DBObject dbObject = coll.findOne(doc);
-        if(dbObject==null){
-        	return null;
-        }
-    	User user = new User();
-    	user.setEmail(dbObject.get("id").toString());
-    	user.setDisplayName(dbObject.get("displayname").toString());
-    	user.setPassword(dbObject.get("password").toString());
-    	
+		doc.put("id", email);
+
+		DBObject dbObject = coll.findOne(doc);
+		if(dbObject==null){
+			return null;
+		}
+		User user = new User();
+		user.setEmail(dbObject.get("id").toString());
+		user.setDisplayName(dbObject.get("displayname").toString());
+		user.setPassword(dbObject.get("password").toString());
+
 		return user;
 	}
 
 	@Override
 	public boolean add(User user) {
 		logger.info("Adding a new user");
-		
+
 		try {
 			DBCollection coll = connector.getCollection("cmpedb","usercollection");
 			BasicDBObject doc = new BasicDBObject();
-	        doc.put("id", user.getEmail() ); 
-	        doc.put("displayname", user.getDisplayName());
-	        doc.put("password", user.getPassword());
-	        coll.insert(doc);
-	        
+			doc.put("id", user.getEmail() ); 
+			doc.put("displayname", user.getDisplayName());
+			doc.put("password", user.getPassword());
+			coll.insert(doc);
+
 			return true;
-			
+
 		} catch (Exception e) {
 			logger.error("An error has occurred while trying to add new user", e);
 			return false;
@@ -67,25 +69,25 @@ public class UserService implements IUserService{
 
 	private DBObject getDBObject( String email ) {
 		logger.info("Retrieving an existing mongo object");
-		
+
 		DBCollection coll = connector.getCollection("cmpedb","usercollection");
 		DBObject doc = new BasicDBObject();
-        doc.put("id", email);
-        
+		doc.put("id", email);
+
 		return coll.findOne(doc);
 	}
-	
+
 	@Override
 	public boolean delete(String email) {
 		logger.info("Deleting existing person");
-		
+
 		try {
 			BasicDBObject item = (BasicDBObject) getDBObject(email);
 			DBCollection coll = connector.getCollection("cmpedb","usercollection");
-	        coll.remove(item);
-	        
+			coll.remove(item);
+
 			return true;
-			
+
 		} catch (Exception e) {
 			logger.error("An error has occurred while trying to delete new user", e);
 			return false;
@@ -95,23 +97,79 @@ public class UserService implements IUserService{
 	@Override
 	public boolean modifyUserDetails(User user) {
 		logger.info("Modifying user details");
-		
+
 		try {
 			BasicDBObject existing = (BasicDBObject) getDBObject( user.getEmail() );
-			
+
 			DBCollection coll = connector.getCollection("cmpedb","usercollection");
 			BasicDBObject edited = new BasicDBObject();
 			edited.put("id", user.getEmail()); 
 			edited.put("displayname", user.getDisplayName());
 			edited.put("password", user.getPassword());
-			
-	        coll.update(existing, edited);
-	        
+
+			coll.update(existing, edited);
+
 			return true;
-			
+
 		} catch (Exception e) {
 			logger.error("An error has occurred while trying to edit existing user", e);
 			return false;
 		}
 	}
+
+	@Override
+	public DBObject getLAM(){
+
+		logger.info("Retrieving an existing user");
+
+		JSONObject json = null;
+		// Retrieve collection
+		DBCollection coll = connector.getCollection("LAMDA","fullData");
+		
+		
+		BasicDBObject query = new BasicDBObject();
+		query.put("PM","PM3");
+		query.put("Date", "2015-08-17");
+		query.put("Recipe", "KTS_0420_CWAC2_Cl2_H2-NF3-30s O2-H2_120C-55_v2");
+		query.put("Attribute", "TCPRFTotalRFOnTime");
+		query.put("fileName", "WDLReplay.kts_6-9-07_09595494-23.229-11_10_30");
+		//query.put(key, val);
+		//query.put("contents.historicalData", "AverageIBValue");
+		DBCursor cur = coll.find(query);
+		//DBCursor temp = cur;
+		//System.out.println(cur);
+//		DBObject fullData,content,historicalData,BiasMatchSeriesCapPosition_AI;//,values = null;
+//		BasicDBList values=null;
+		
+		//System.out.println("CP1");
+//		while(cur.hasNext()){
+//			fullData= cur.next();
+//			//System.out.println("CURSOR QUERY: "+fullData);
+//			//content= (BasicDBObject) fullData.get("contents");
+//			System.out.println("CP2");
+//			//historicalData= (BasicDBObject) content.get("historicalData");
+//			//System.out.println("HISTORICAL DATA ONLY::: "+historicalData);
+//			System.out.println("CP3");
+//			BiasMatchSeriesCapPosition_AI= (BasicDBObject) fullData.get("BiasMatchSeriesCapPosition_AI");
+//			values = (BasicDBList) BiasMatchSeriesCapPosition_AI.get("Values");
+//			System.out.println("VALUES::: "+values);
+//
+//		}
+		
+		//BasicDBObject dat = (BasicDBObject) temp.next();
+		//return dat;
+		DBObject fullData = null;
+		//BasicDBList values=null;
+		//System.out.println("got data: "+cur);
+		while(cur.hasNext()){
+			fullData= cur.next();
+			 //values = (BasicDBList) fullData.get("Values");
+			System.out.println("got data::: "+fullData);
+		}
+		
+		return fullData;
+
+	}
+
+
 }
