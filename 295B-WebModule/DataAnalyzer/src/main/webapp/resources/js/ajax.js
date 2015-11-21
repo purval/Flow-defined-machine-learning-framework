@@ -1,27 +1,27 @@
 $(document).ready(function(){
-	
-	$( "#chamber" ).click(function() {
-		console.log($( "#chamber" ).val());
-	});
-      $( "#savename" ).click(function() {
-        var name = $("#name").val();
-          var nameObj = {
-          name : name
-        };
+	$('#chamberUL li > a').click(function(e){
+	    //$('#chamber').text(this.innerHTML);
+	    console.log(this.innerHTML);
+	    
+        var data = 'chamber_id='+this.innerHTML;
 
         $.ajax({
-          type: "POST",
-          url: "/company/"+$("#companyId").val()+"/name",
+          type: "GET",
+          url: "/dataanalyzer/lam/date",
           contentType: "application/json; charset=UTF-8",
           dataType: 'json',
-          data: JSON.stringify(nameObj),
+          data: data,
           crossDomain : true,
-          success: function( d ) {
-             console.log(d);
+          error: function( err ) {
+             console.log(err);
+          },success: function(d){
+        	  console.log(d);
           }
         });
-        $("#savename").hide();
-        $("#editname").show();
-        $("#name").prop('disabled', true);
-      });
+	    
+	});
+	/*$( "#chamber" ).click(function() {
+		console.log($( "#chamber" ).val());
+	});*/
+      
 });
