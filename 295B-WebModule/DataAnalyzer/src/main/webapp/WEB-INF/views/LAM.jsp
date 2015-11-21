@@ -1,3 +1,5 @@
+<%@page import="com.mongodb.DBObject"%>
+<%@page import="com.mongodb.BasicDBList"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -15,21 +17,118 @@
 <link  href="<c:url value="/resources/css/icon.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/font.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/app.css"  />" rel="stylesheet">
+<script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
+<script src="<c:url value="/resources/js/go.js" />"></script>
+
+
 <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/generic.css" />" rel="stylesheet">
 <script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-<script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
-<script src="<c:url value="/resources/js/go.js" />"></script>
+
+<script src="http://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="http://www.amcharts.com/lib/3/serial.js"></script>
+<script src="http://www.amcharts.com/lib/3/themes/light.js"></script>
 
 <style>
 .custome_bg {
 	background:#1aae88;
 }
-</style>
-</head>
-<body>
 
+#chartdiv {
+	width	: 100%;
+	height	: 500px;
+}
+.inline { 
+	display: inline-block; 
+    margin:10px;
+}
+</style>
+
+
+
+</head>
+
+<script>
+
+
+<%
+DBObject dat = (DBObject)request.getAttribute("json");
+//List <Float> val = null;
+//String attrib = "BiasMatchSeriesCapPosition_AI";
+String attribute = (String) dat.get("Attribute");
+String unit = (String) dat.get("Unit");
+//DBObject attribValues = (DBObject) attribData.get("Values");
+
+%>
+var jsonData = <%=dat.get("Values")%>;
+var x=jsonData;
+var attri = "<%=attribute%>";
+var uni = "<%=unit%>";
+var chart1 = AmCharts.makeChart("chartdiv", {
+    "type": "serial",
+    "theme": "light",
+    "marginRight": 70,
+    "autoMarginOffset": 20,
+    "titles": [
+       		{
+       			"text": attri,
+       			"size": 18
+       		}
+       	],
+    "dataProvider": jsonData,
+    "balloon": {
+        "cornerRadius": 6
+    },
+    "valueAxes": [{
+    	"id": "v1",
+        "axisAlpha": 0,
+        "title": uni
+    }],
+    "graphs": [{
+        "balloonText": "[[category]]<br><b><span style='font-size:14px;'>[[value]] UNIT</span></b>",
+        "bullet": "round",
+        "title":"timmeee",
+        "bulletSize": 6,
+        "connect": false,
+        "lineColor": "#b6d278",
+        "lineThickness": 2,
+        "negativeLineColor": "#487dac",
+        "valueField": "Value",
+        "animationPlayed": true,
+        "title":"[[Time]]",
+        "descriptionField": "name",
+        "valueAxis": "v1"
+        
+    }],
+    "chartCursor": {
+        "categoryBalloonDateFormat": "YYYY",
+        "cursorAlpha": 0.1,
+        "cursorColor": "#000000",
+        "fullWidth": true,
+        "graphBulletSize": 2
+    },
+    "chartScrollbar": {},
+    "dataDateFormat": "YYYY",
+    "categoryField": "Time",
+    "categoryAxis": {
+        "minorGridEnabled": true,
+        "labelRotation": 60
+    },
+    "export": {
+        "enabled": true
+    }
+});
+
+chart.addListener("dataUpdated", zoomChart);
+
+function zoomChart(){
+    chart.zoomToDates(new Date(1970, 0), new Date(1995, 0));
+}
+</script>
+
+
+<body>
 
 
 
@@ -83,7 +182,7 @@
           </section>
         </section>
       </li>
-      <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="thumb-sm avatar pull-left"> <img src="<c:url value="/resources/images/a0.png"/>" alt="Image"/> </span> User <b class="caret"></b> </a>
+      <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="thumb-sm avatar pull-left"> <img src="<c:url value="/resources/images/a0.png"/>" alt="Image"/> </span> Karuna <b class="caret"></b> </a>
         <ul class="dropdown-menu animated fadeInRight">
           <li> <span class="arrow top"></span> <a href="#">Settings</a> </li>
           <li> <a href="profile.html">Profile</a> </li>
@@ -119,7 +218,7 @@
                 <div class="text-muted text-sm hidden-nav-xs padder m-t-sm m-b-sm">Start</div>
                 <ul class="nav nav-main" data-ride="collapse">
                   <li > <a href="index.html" class="auto"> <i class="i i-statistics icon"> </i> <span class="font-bold">Overview</span> </a> </li>
-                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <b class="badge bg-danger pull-right">4</b> <i class="i i-stack icon"> </i> <span class="font-bold">Visualizations</span> </a>
+                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <b class="badge bg-danger pull-right">4</b> <i class="i i-stack icon"> </i> <span class="font-bold">Layouts</span> </a>
                     <ul class="nav dk">
                       <li > <a href="layout-color.html" class="auto"> <i class="i i-dot"></i> <span>Color option</span> </a> </li>
                       <li > <a href="layout-hbox.html" class="auto"> <i class="i i-dot"></i> <span>Hbox layout</span> </a> </li>
@@ -127,7 +226,7 @@
                       <li > <a href="layout-fluid.html" class="auto"> <i class="i i-dot"></i> <span>Fluid layout</span> </a> </li>
                     </ul>
                   </li>
-                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <i class="i i-lab icon"> </i> <span class="font-bold">Flow Graph</span> </a>
+                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <i class="i i-lab icon"> </i> <span class="font-bold">UI kit</span> </a>
                     <ul class="nav dk">
                       <li > <a href="buttons.html" class="auto"> <i class="i i-dot"></i> <span>Buttons</span> </a> </li>
                       <li > <a href="icons.html" class="auto"> <b class="badge bg-info pull-right">369</b> <i class="i i-dot"></i> <span>Icons</span> </a> </li>
@@ -163,16 +262,36 @@
                       <li > <a href="jvectormap.html" class="auto"> <i class="i i-dot"></i> <span>Draw Analysis</span> </a> </li>
                       <li > <a href="signin.html" class="auto"> <i class="i i-dot"></i> <span>Signin</span> </a> </li>
                       <li > <a href="signup.html" class="auto"> <i class="i i-dot"></i> <span>Signup</span> </a> </li>
+                      <li > <a href="404.html" class="auto"> <i class="i i-dot"></i> <span>404</span> </a> </li>
                     </ul>
                   </li>
-
+                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <i class="i i-grid2 icon"> </i> <span class="font-bold">Apps</span> </a>
+                    <ul class="nav dk">
+                      <li > <a href="mail.html" class="auto"> <b class="badge bg-success lt pull-right">2</b> <i class="i i-dot"></i> <span>Mailbox</span> </a> </li>
+                      <li > <a href="fullcalendar.html" class="auto"> <i class="i i-dot"></i> <span>Calendar</span> </a> </li>
+                      <li > <a href="project.html" class="auto"> <i class="i i-dot"></i> <span>Project</span> </a> </li>
+                      <li > <a href="media.html" class="auto"> <i class="i i-dot"></i> <span>Media</span> </a> </li>
+                    </ul>
+                  </li>
                 </ul>
-               
+                <div class="line dk hidden-nav-xs"></div>
+                <div class="text-muted text-xs hidden-nav-xs padder m-t-sm m-b-sm">Lables</div>
+                <ul class="nav">
+                  <li> <a href="mail.html#work"> <i class="i i-circle-sm text-info-dk"></i> <span>Work space</span> </a> </li>
+                  <li> <a href="mail.html#social"> <i class="i i-circle-sm text-success-dk"></i> <span>Connection</span> </a> </li>
+                  <li> <a href="mail.html#projects"> <i class="i i-circle-sm text-danger-dk"></i> <span>Projects</span> </a> </li>
+                </ul>
+                <div class="text-muted text-xs hidden-nav-xs padder m-t-sm m-b-sm">Circles</div>
+                <ul class="nav">
+                  <li> <a href="#"> <i class="i i-circle-sm-o text-success-lt"></i> <span>College</span> </a> </li>
+                  <li> <a href="#"> <i class="i i-circle-sm-o text-warning"></i> <span>Social</span> </a> </li>
+                </ul>
               </nav>
               <!-- / nav -->
             </div>
           </section>
-             </section>
+          <footer class="footer hidden-xs no-padder text-center-nav-xs"> <a href="modal.lockme.html" data-toggle="ajaxModal" class="btn btn-icon icon-muted btn-inactive pull-right m-l-xs m-r-xs hidden-nav-xs"> <i class="i i-logout"></i> </a> <a href="#nav" data-toggle="class:nav-xs" class="btn btn-icon icon-muted btn-inactive m-l-xs m-r-xs"> <i class="i i-circleleft text"></i> <i class="i i-circleright text-active"></i> </a> </footer>
+        </section>
       </aside>
       <!-- /.aside -->
       <section id="content">
@@ -190,200 +309,69 @@
                             <div class="col-sm-12">
                               <form action="" method="get" id="wizardform">
                                 <div class="panel panel-default">
-                                <div class="panel-heading">
-                                  <ul class="nav nav-tabs font-bold">
-                                    <li class="active"><a data-toggle="tab" href="#step1">Step 1</a></li>
-                                    <li class=""><a data-toggle="tab" href="#step2">Step 2</a></li>
-                                    <li class=""><a data-toggle="tab" href="#step3">Step 3</a></li>
-                                    <li class=""><a data-toggle="tab" href="#step4">Step 4</a></li>
-                                    <li class=""><a data-toggle="tab" href="#step5">Step 5</a></li>
-                                    <li class=""><a data-toggle="tab" href="#step6">Step 6</a></li>
-                                  </ul>
-                                </div>
-                                <div class="panel-body">
-                                <div class="line line-lg"></div>
-                                <div class="label-big"> Steps for Analysis..... </div>
-                                <div class="progress progress-xs m-t-md">
-                                  <div class="progress-bar bg-success" style="width: 100%;"></div>
-                                </div>
-                                <div class="tab-content">
-                                <div id="step1" class="tab-pane active">
-                                  <div class="form-group">
-                                    <label class="col-sm-2 label-sm"><Strong>Choose a type!</Strong></label>
-                                    <div class="col-sm-10">
-                                  <p>
-                                      <button class="btn btn-large btn-primary" type="button">My Experiments</button>
-                                        </p>
-                                      <p>
-                                        <button class="btn btn-primary btn-large" type="button">New Experiment</button>
-                                           </p>
-                                    </div>
-                                    </div>
+                                
+                                
                               </div>
-                            <div id="step2" class="tab-pane">
-                            <div class="form-group">
-                              <label class="col-sm-2 label-sm">File input</label>
-                              <div class="col-sm-10">
-                                <input type="file" class="filestyle" data-icon="false" data-classbutton="btn btn-default" data-classinput="form-control inline v-middle input-s" id="filestyle-0" style="position: fixed; left: -500px;">
-                                <div class="bootstrap-filestyle" style="display: inline;">
-                                  <input type="text" class="form-control inline v-middle input-s" disabled="">
-                                  <label for="filestyle-0" class="btn btn-default"><span>Choose file</span></label>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"><br />
-                                  <br />
-                                  <br />
-                                </div>
-                              </div>
-                              <div >
-                                <button type="submit" class="btn btn-default">Submit</button>
-                                <button type="submit" class="btn btn-default col-md-offset-1">Cancel</button>
-                              </div>
-                              <div class="row">
-                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"><br />
-                                  <br />
-                                  <br />
-                                </div>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                            <div id="step3" class="tab-pane">
-                            <label class="text1"><h3>Select columns for your customized Analysis. Also choose one Target.</h3></label>
-                           <div class="table-responsive">
-                            <table class="table">
-                               <tr class="active"> 
-                                  <th class="active">Select</th>
-								  <th class="active">Measures</th>
-								  <th class="active">Target</th>
-							  </tr>
-                               <tr class=""> 
-                                  <td class=""> Sensor 1</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  <td class=""><input type="radio" name="target" value=""></input></td>
-							  </tr>
-							   <tr class="active"> 
-                                  <td class="active">Sensor 2</td>
-								  <td class="active"><input type="checkbox" value=""></input></td>
-								  <td class="active"><input type="radio" name="target" value=""></input></td>
-							  </tr>
-							  <tr class=""> 
-                                  <td class=""> Sensor 3</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  <td class=""><input type="radio" name="target" value=""></input></td>
-							  </tr>
-							   <tr class="active"> 
-                                  <td class="active">Sensor 4</td>
-								  <td class="active"><input type="checkbox" value=""></input></td>
-								  <td class="active"><input type="radio" name="target" value=""></input></td>
-							  </tr>
-                               <tr class=""> 
-                                  <td class=""> Sensor 4</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  <td class=""><input type="radio" name="target" value=""></input></td>
-							  </tr>
-							   <tr class="active"> 
-                                  <td class="active">Sensor 5</td>
-								  <td class="active"><input type="checkbox" value=""></input></td>
-								  <td class="active"><input type="radio" name="target" value=""></input></td>
-							  </tr>		
-                               <tr class=""> 
-                                  <td class=""> Sensor 6</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  <td class=""><input type="radio" name="target" value=""></input></td>
-							  </tr>
-							   <tr class="active"> 
-                                  <td class="active">Sensor 7</td>
-								  <td class="active"><input type="checkbox" value=""></input></td>
-								  <td class="active"><input type="radio" name="target" value=""></input></td>
-							  </tr>								  					  
-                            </table>
-                            
-                            
-                            </div>
-                            </div>
-                          <div id="step4" class="tab-pane">
-                          <label class="text1"> <h3>Values for precision </h3></label>
-                           <div class="table-responsive">
-                            <table class="table">
-                               <tr class="active"> 
-                                  <td class="active"><label>Split Percentage</label></td>
-								  <td class="active">
-								        <select>
-										  <option value="50-50">50-50</option>
-										  <option value="70-30">70-30</option>
-										</select>
-								  </td>
 
-							  </tr>
-							   <tr class="active"> 
-                                  <td class="active">Missing Values Replacement</td>
-
-								  <td class="active"><input type="text" name="custom" placeholder="0"></td>
-							  </tr>
-						      <tr class="active"> 
-                                  <td class="active">Replace with</td>
-                                  <td class="active">
-								        <select>
-										  <option value="Mean">Mean</option>
-										  <option value="Median">Median</option>
-										  <option value="Median">Custom Value</option>										  
-										</select>
-								  </td>
-
-							  </tr>
-                            </table>
-                            
-                            
-                            </div>
-                            </div>
-                        <div id="step5" class="tab-pane">
-                           <div class="table-responsive">
-                            <table class="table table-bordered">
-                               <tr class="active"> 
-                                  <th class="active">Algorithm</th>
-								  <th class="active">Select</th>
-								 
-							  </tr>
-                               <tr class=""> 
-                                  <td class="">PCA</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								 
-							  </tr>
-							  <tr class="active"> 
-                                  <td class="">K-Means</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  
-							  </tr>
-							  <tr class=""> 
-                                  <td class="">SVM</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  
-							  </tr>
-					          <tr class="active"> 
-                                  <td class="">Knn</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  
-							  </tr>
-						      <tr class=""> 
-                                  <td class="">Logistic Regression</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								 
-							  </tr>
-                            </table>
-                            
-                            
-                            </div>
-                            </div>
-                            <ul class="pager wizard m-b-sm">
-                              <li style="display:none;" class="previous first"><a href="#">First</a></li>
-                              <li class="previous"><a href="#">Previous</a></li>
-                              <li style="display:none;" class="next last "><a href="#">Last</a></li>
-                              <li class="next "><a href="#">Next</a></li>
-                            </ul>
-                          </div>
-                          </form>
+						<div class="inline">
+							<div class="dropdown">
+								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+									Select Chamber <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a href="#">PM1</a></li>
+									<li><a href="#">PM2</a></li>
+									<li><a href="#">PM3</a></li>
+									<li><a href="#">PM4</a></li>
+								</ul>
+							</div>
+						</div>	
+						<div class="inline">
+							<div class="dropdown">
+								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+									Select Job Date <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" id="options">
+									<li><a href="#">PM1</a></li>
+									<li><a href="#">PM2</a></li>
+									<li><a href="#">PM3</a></li>
+									<li><a href="#">PM4</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="inline">
+							<div class="dropdown">
+								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+									Select File Name <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a href="#">PM1</a></li>
+									<li><a href="#">PM2</a></li>
+									<li><a href="#">PM3</a></li>
+									<li><a href="#">PM4</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="inline">
+							<div class="dropdown">
+								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+									Select Attribute <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a href="#">PM1</a></li>
+									<li><a href="#">PM2</a></li>
+									<li><a href="#">PM3</a></li>
+									<li><a href="#">PM4</a></li>
+								</ul>
+							</div>
+						</div>	
+							
+							<div id="chartdiv"></div>								
+                         
+                         
+                         
+                         
+                         
                         </div>
 
                       </div>

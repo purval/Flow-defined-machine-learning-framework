@@ -10,6 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.mongodb.DBObject;
+
+import edu.sjsu.dataanalyzer.service.UserService;
 
 /**
  * Handles requests for the application home page.
@@ -31,5 +36,14 @@ public class HomeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "home";
+	}
+	
+	@RequestMapping(value = "/lam", method = RequestMethod.GET)
+	public ModelAndView lam(Locale locale, Model model) {		
+		
+		UserService us = new UserService();
+		DBObject values = us.getLAM();
+		return new ModelAndView("LAM","json",values);
+		//return "LAM";
 	}
 }
