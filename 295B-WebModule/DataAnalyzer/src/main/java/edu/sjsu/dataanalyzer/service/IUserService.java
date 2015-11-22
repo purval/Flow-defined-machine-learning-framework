@@ -1,5 +1,7 @@
 package edu.sjsu.dataanalyzer.service;
 
+import java.util.List;
+
 import com.mongodb.DBObject;
 
 import edu.sjsu.dataanalyzer.bean.User;
@@ -17,10 +19,10 @@ public interface IUserService {
 	/*
 	 * Mongo to LAM
 	 */
-	public DBObject getLAM();
+	public DBObject getLAM(String chamber, String date,String fileName,String Attribute);
 	
-	public String getLAMdate(String chamber);
-	public DBObject getLamDateAndFile(String chamber, String date);
-	public DBObject getLamDateFileAndAtribute(String chamber, String date, String fileName);
+	public List getLAMdate(String chamber);
+	public List getLamDateAndFile(String chamber, String date);
+	public List getLamDateFileAndAtribute(String chamber, String date, String fileName);
 
 }
