@@ -1,5 +1,3 @@
-<%@page import="com.mongodb.DBObject"%>
-<%@page import="com.mongodb.BasicDBList"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -17,100 +15,36 @@
 <link  href="<c:url value="/resources/css/icon.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/font.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/app.css"  />" rel="stylesheet">
+<link href="<c:url value="/resources/css/generic.css" />" rel="stylesheet">
 <script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
+<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
 <script src="<c:url value="/resources/js/go.js" />"></script>
-<script src="<c:url value="/resources/js/ajax.js" />"></script>
-
-<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
-<link href="<c:url value="/resources/css/generic.css" />" rel="stylesheet">
-<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-
-<script src="http://www.amcharts.com/lib/3/amcharts.js"></script>
-<script src="http://www.amcharts.com/lib/3/serial.js"></script>
-<script src="http://www.amcharts.com/lib/3/themes/light.js"></script>
 
 <style>
 .custome_bg {
 	background:#1aae88;
 }
-
-#chartdiv {
-	width	: 100%;
-	height	: 500px;
-}
-.inline { 
-	display: inline-block; 
-    margin:10px;
-}
 </style>
-
-<script>
-
-</script>
-
-
-
-
 </head>
-
-
-
 <body>
+
 
 
 
 <section class="vbox">
   <header class="bg-white header header-md navbar navbar-fixed-top-xs box-shadow custome_bg">
     <div class="navbar-header aside-md dk"> <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav"> <i class="fa fa-bars"></i> </a> <a href="home.html" class="navbar-brand"><img src="<c:url value="/resources/images/logo.png"/>" class="m-r-sm" alt="scale"/> <span class="hidden-nav-xs">Fault Detection</span> </a> <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user"> <i class="fa fa-cog"></i> </a> </div>
-    <ul class="nav navbar-nav hidden-xs">
-      <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="i i-grid"></i> </a>
-        <section class="dropdown-menu aside-lg bg-white on animated fadeInLeft">
-          <div class="row m-l-none m-r-none m-t m-b text-center">
-            <div class="col-xs-4">
-              <div class="padder-v"> <a href="#"> <span class="m-b-xs block"> <i class="i i-mail i-2x text-primary-lt"></i> </span> <small class="text-muted">Mailbox</small> </a> </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="padder-v"> <a href="#"> <span class="m-b-xs block"> <i class="i i-calendar i-2x text-danger-lt"></i> </span> <small class="text-muted">Calendar</small> </a> </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="padder-v"> <a href="#"> <span class="m-b-xs block"> <i class="i i-map i-2x text-success-lt"></i> </span> <small class="text-muted">Map</small> </a> </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="padder-v"> <a href="#"> <span class="m-b-xs block"> <i class="i i-paperplane i-2x text-info-lt"></i> </span> <small class="text-muted">Trainning</small> </a> </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="padder-v"> <a href="#"> <span class="m-b-xs block"> <i class="i i-images i-2x text-muted"></i> </span> <small class="text-muted">Photos</small> </a> </div>
-            </div>
-            <div class="col-xs-4">
-              <div class="padder-v"> <a href="#"> <span class="m-b-xs block"> <i class="i i-clock i-2x text-warning-lter"></i> </span> <small class="text-muted">Timeline</small> </a> </div>
-            </div>
-          </div>
-        </section>
-      </li>
-    </ul>
-    <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" role="search">
-      <div class="form-group">
-        <div class="input-group"> <span class="input-group-btn">
-          <button type="submit" class="btn btn-sm bg-white b-white btn-icon"><i class="fa fa-search"></i></button>
-          </span>
-          <input type="text" class="form-control input-sm no-border" placeholder="Search apps, projects...">
-        </div>
-      </div>
-    </form>
+
+<div>
+<form class="navbar-form navbar-left">
+  <input type="text" class="input-large search-query">
+  <button  type="submit"  class="btn btn-small btn-primary navbar-right">Search</button>
+</form>
+</div>
     <ul class="nav navbar-nav navbar-right m-n hidden-xs nav-user user">
-      <li class="hidden-xs"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="i i-chat3"></i> <span class="badge badge-sm up bg-danger count">2</span> </a>
-        <section class="dropdown-menu aside-xl animated flipInY">
-          <section class="panel bg-white">
-            <div class="panel-heading b-light bg-light"> <strong>You have <span class="count">2</span> notifications</strong> </div>
-            <div class="list-group list-group-alt"> <a href="#" class="media list-group-item"> <span class="pull-left thumb-sm"> <img src="<c:url value="/resources/images/a0.png"/>" class="img-circle" alt=""/> </span> <span class="media-body block m-b-none"> Use awesome animate.css<br>
-              <small class="text-muted">10 minutes ago</small> </span> </a> <a href="#" class="media list-group-item"> <span class="media-body block m-b-none"> 1.0 initial released<br>
-              <small class="text-muted">1 hour ago</small> </span> </a> </div>
-            <div class="panel-footer text-sm"> <a href="#" class="pull-right"><i class="fa fa-cog"></i></a> <a href="#notes" data-toggle="class:show animated fadeInRight">See all the notifications</a> </div>
-          </section>
-        </section>
-      </li>
-      <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="thumb-sm avatar pull-left"> <img src="<c:url value="/resources/images/a0.png"/>" alt="Image"/> </span> Karuna <b class="caret"></b> </a>
+
+      <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="thumb-sm avatar pull-left"> <img src="<c:url value="/resources/images/a0.png"/>" alt="Image"/> </span> User <b class="caret"></b> </a>
         <ul class="dropdown-menu animated fadeInRight">
           <li> <span class="arrow top"></span> <a href="#">Settings</a> </li>
           <li> <a href="profile.html">Profile</a> </li>
@@ -146,7 +80,7 @@
                 <div class="text-muted text-sm hidden-nav-xs padder m-t-sm m-b-sm">Start</div>
                 <ul class="nav nav-main" data-ride="collapse">
                   <li > <a href="index.html" class="auto"> <i class="i i-statistics icon"> </i> <span class="font-bold">Overview</span> </a> </li>
-                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <b class="badge bg-danger pull-right">4</b> <i class="i i-stack icon"> </i> <span class="font-bold">Layouts</span> </a>
+                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <b class="badge bg-danger pull-right">4</b> <i class="i i-stack icon"> </i> <span class="font-bold">Visualizations</span> </a>
                     <ul class="nav dk">
                       <li > <a href="layout-color.html" class="auto"> <i class="i i-dot"></i> <span>Color option</span> </a> </li>
                       <li > <a href="layout-hbox.html" class="auto"> <i class="i i-dot"></i> <span>Hbox layout</span> </a> </li>
@@ -154,7 +88,7 @@
                       <li > <a href="layout-fluid.html" class="auto"> <i class="i i-dot"></i> <span>Fluid layout</span> </a> </li>
                     </ul>
                   </li>
-                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <i class="i i-lab icon"> </i> <span class="font-bold">UI kit</span> </a>
+                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <i class="i i-lab icon"> </i> <span class="font-bold"></span> </a>
                     <ul class="nav dk">
                       <li > <a href="buttons.html" class="auto"> <i class="i i-dot"></i> <span>Buttons</span> </a> </li>
                       <li > <a href="icons.html" class="auto"> <b class="badge bg-info pull-right">369</b> <i class="i i-dot"></i> <span>Icons</span> </a> </li>
@@ -190,36 +124,16 @@
                       <li > <a href="jvectormap.html" class="auto"> <i class="i i-dot"></i> <span>Draw Analysis</span> </a> </li>
                       <li > <a href="signin.html" class="auto"> <i class="i i-dot"></i> <span>Signin</span> </a> </li>
                       <li > <a href="signup.html" class="auto"> <i class="i i-dot"></i> <span>Signup</span> </a> </li>
-                      <li > <a href="404.html" class="auto"> <i class="i i-dot"></i> <span>404</span> </a> </li>
                     </ul>
                   </li>
-                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <i class="i i-grid2 icon"> </i> <span class="font-bold">Apps</span> </a>
-                    <ul class="nav dk">
-                      <li > <a href="mail.html" class="auto"> <b class="badge bg-success lt pull-right">2</b> <i class="i i-dot"></i> <span>Mailbox</span> </a> </li>
-                      <li > <a href="fullcalendar.html" class="auto"> <i class="i i-dot"></i> <span>Calendar</span> </a> </li>
-                      <li > <a href="project.html" class="auto"> <i class="i i-dot"></i> <span>Project</span> </a> </li>
-                      <li > <a href="media.html" class="auto"> <i class="i i-dot"></i> <span>Media</span> </a> </li>
-                    </ul>
-                  </li>
+
                 </ul>
-                <div class="line dk hidden-nav-xs"></div>
-                <div class="text-muted text-xs hidden-nav-xs padder m-t-sm m-b-sm">Lables</div>
-                <ul class="nav">
-                  <li> <a href="mail.html#work"> <i class="i i-circle-sm text-info-dk"></i> <span>Work space</span> </a> </li>
-                  <li> <a href="mail.html#social"> <i class="i i-circle-sm text-success-dk"></i> <span>Connection</span> </a> </li>
-                  <li> <a href="mail.html#projects"> <i class="i i-circle-sm text-danger-dk"></i> <span>Projects</span> </a> </li>
-                </ul>
-                <div class="text-muted text-xs hidden-nav-xs padder m-t-sm m-b-sm">Circles</div>
-                <ul class="nav">
-                  <li> <a href="#"> <i class="i i-circle-sm-o text-success-lt"></i> <span>College</span> </a> </li>
-                  <li> <a href="#"> <i class="i i-circle-sm-o text-warning"></i> <span>Social</span> </a> </li>
-                </ul>
+               
               </nav>
               <!-- / nav -->
             </div>
           </section>
-          <footer class="footer hidden-xs no-padder text-center-nav-xs"> <a href="modal.lockme.html" data-toggle="ajaxModal" class="btn btn-icon icon-muted btn-inactive pull-right m-l-xs m-r-xs hidden-nav-xs"> <i class="i i-logout"></i> </a> <a href="#nav" data-toggle="class:nav-xs" class="btn btn-icon icon-muted btn-inactive m-l-xs m-r-xs"> <i class="i i-circleleft text"></i> <i class="i i-circleright text-active"></i> </a> </footer>
-        </section>
+             </section>
       </aside>
       <!-- /.aside -->
       <section id="content">
@@ -237,93 +151,161 @@
                             <div class="col-sm-12">
                               <form action="" method="get" id="wizardform">
                                 <div class="panel panel-default">
-                                
-                                
-                              </div>
+                                <div class="panel-heading">
+                                  <ul class="nav nav-tabs font-bold">
+                                    <li class="active"><a data-toggle="tab" href="#step1">Step 1</a></li>
+                                    <li class=""><a data-toggle="tab" href="#step2">Step 2</a></li>
+<!--                                     <li class=""><a data-toggle="tab" href="#step3">Step 3</a></li> -->
 
-						<!-- <div class="inline">
-							<div class="dropdown">
-								<button id="chamber" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-									Select Chamber <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" id="chamberUL">
-<<<<<<< HEAD
-									<li><a href="#">PM1</a></li>
-									<li><a href="#">PM2</a></li>
-									<li><a href="#">PM3</a></li>
-									<li><a href="#">PM4</a></li>
-								</ul>
-							</div>
-						</div>	
-						<div class="inline">
-							<div class="dropdown">
-								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-									Select Job Date <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" id="options">
-									<li><a href="#">PM1</a></li>
-									<li><a href="#">PM2</a></li>
-									<li><a href="#">PM3</a></li>
-									<li><a href="#">PM4</a></li>
-								</ul>
-							</div>
-						</div>
-						<div class="inline">
-							<div class="dropdown">
-								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-									Select File Name <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">PM1</a></li>
-									<li><a href="#">PM2</a></li>
-									<li><a href="#">PM3</a></li>
-									<li><a href="#">PM4</a></li>
-								</ul>
-							</div>
-						</div>
-						<div class="inline">
-							<div class="dropdown">
-								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-									Select Attribute <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-=======
->>>>>>> d79ba8da98b7315353fac8a8ce7921ea7195b427
-									<li><a href="#">PM1</a></li>
-									<li><a href="#">PM2</a></li>
-									<li><a href="#">PM3</a></li>
-									<li><a href="#">PM4</a></li>
-								</ul>
-							</div>
-						</div> -->	
-						
-						<select id="chamberUL">
-								<option val="#" selected>Select Chamber</option>
-							    <option val="PM1">PM1</option>
-							    <option val="PM2">PM2</option>
-							    <option val="PM3">PM3</option>
-							    <option val="PM4">PM4</option>
-						</select>
-						
-						<select id="dateUL">
-							<option val="#" selected>Select Date</option>
-							
-						</select>
-						<select id="fileUL">
-							<option val="#" selected>Select File</option>
-						</select>
-					
-						<select id="attributeUL">
-							<option val="#" selected>Select Attribute</option>
-						</select>
-						
-							
-							<div id="chartdiv"></div>								
+                                  </ul>
+                                </div>
+                                </div>
+                                <div class="panel-body">
+                                <div class="line line-lg"></div>
+                                <div class="label-big"> Steps for Analysis..... </div>
+                                <div class="progress progress-xs m-t-md">
+                                  <div class="progress-bar bg-success" style="width: 100%;"></div>
+                                </div>
+                                
+                                <div class="tab-content">
+                                <div id="step1" class="tab-pane active">
+                          <label class="text1"><h3>Select columns for your customized Analysis. Also choose one Target.</h3></label>
+                           <div class="table-responsive">
+                            <table class="table">
+                               <tr class="active"> 
+                                  <th class="active">Select</th>
+								  <th class="active">Measures</th>
+								  <th class="active">Target</th>
+							  </tr>
+                               <tr class=""> 
+                                  <td class=""> Sensor 1</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								  <td class=""><input type="radio" name="target" value=""></input></td>
+							  </tr>
+							   <tr class="active"> 
+                                  <td class="active">Sensor 2</td>
+								  <td class="active"><input type="checkbox" value=""></input></td>
+								  <td class="active"><input type="radio" name="target" value=""></input></td>
+							  </tr>
+							  <tr class=""> 
+                                  <td class=""> Sensor 3</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								  <td class=""><input type="radio" name="target" value=""></input></td>
+							  </tr>
+							   <tr class="active"> 
+                                  <td class="active">Sensor 4</td>
+								  <td class="active"><input type="checkbox" value=""></input></td>
+								  <td class="active"><input type="radio" name="target" value=""></input></td>
+							  </tr>
+                               <tr class=""> 
+                                  <td class=""> Sensor 4</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								  <td class=""><input type="radio" name="target" value=""></input></td>
+							  </tr>
+							   <tr class="active"> 
+                                  <td class="active">Sensor 5</td>
+								  <td class="active"><input type="checkbox" value=""></input></td>
+								  <td class="active"><input type="radio" name="target" value=""></input></td>
+							  </tr>		
+                               <tr class=""> 
+                                  <td class=""> Sensor 6</td>
+								  <td class=""><input type="checkbox" value=""></input></td>
+								  <td class=""><input type="radio" name="target" value=""></input></td>
+							  </tr>
+							   <tr class="active"> 
+                                  <td class="active">Sensor 7</td>
+								  <td class="active"><input type="checkbox" value=""></input></td>
+								  <td class="active"><input type="radio" name="target" value=""></input></td>
+							  </tr>								  					  
+                            </table>
+                            
+                            
+                            </div>
+                              </div>
+                            <div id="step2" class="tab-pane">
+                           <label class="text1"> <h3>Values for precision </h3></label>
+                           <div class="table-responsive">
+                            <table class="table">
+                               <tr class="active"> 
+                                  <td class="active"><label>Split Percentage</label></td>
+								  <td class="active">
+								        <select>
+										  <option value="50-50">50-50</option>
+										  <option value="70-30">70-30</option>
+										</select>
+								  </td>
+
+							  </tr>
+							   <tr class="active"> 
+                                  <td class="active">Missing Values Replacement</td>
+
+								  <td class="active"><input type="text" name="custom" placeholder="0"></td>
+							  </tr>
+						      <tr class="active"> 
+                                  <td class="active">Replace with</td>
+                                  <td class="active">
+								        <select>
+										  <option value="Mean">Mean</option>
+										  <option value="Median">Median</option>
+										  <option value="Median">Custom Value</option>										  
+										</select>
+								  </td>
+
+							  </tr>
+                            </table>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                          </form>
+                        </div>
+                            <div id="step3" class="tab-pane">
+<!--                            <div class="table-responsive"> -->
+<!--                             <table class="table table-bordered"> -->
+<!--                                <tr class="active">  -->
+<!--                                   <th class="active">Algorithm</th> -->
+<!-- 								  <th class="active">Select</th> -->
+								 
+<!-- 							  </tr> -->
+<!--                                <tr class="">  -->
+<!--                                   <td class="">PCA</td> -->
+<!-- 								  <td class=""><input type="checkbox" value=""></input></td> -->
+								 
+<!-- 							  </tr> -->
+<!-- 							  <tr class="active">  -->
+<!--                                   <td class="">K-Means</td> -->
+<!-- 								  <td class=""><input type="checkbox" value=""></input></td> -->
+								  
+<!-- 							  </tr> -->
+<!-- 							  <tr class="">  -->
+<!--                                   <td class="">SVM</td> -->
+<!-- 								  <td class=""><input type="checkbox" value=""></input></td> -->
+								  
+<!-- 							  </tr> -->
+<!-- 					          <tr class="active">  -->
+<!--                                   <td class="">Knn</td> -->
+<!-- 								  <td class=""><input type="checkbox" value=""></input></td> -->
+								  
+<!-- 							  </tr> -->
+<!-- 						      <tr class="">  -->
+<!--                                   <td class="">Logistic Regression</td> -->
+<!-- 								  <td class=""><input type="checkbox" value=""></input></td> -->
+								 
+<!-- 							  </tr> -->
+<!--                             </table> -->
+                            
+                            
+<!--                             </div> -->
+                            </div>
                          
-                         
-                         
-                         
-                         
+                            <ul class="pager wizard m-b-sm">
+                              <li style="display:none;" class="previous first"><a href="#">First</a></li>
+                              <li class="previous"><a href="#">Previous</a></li>
+                              <li style="display:none;" class="next last "><a href="#">Last</a></li>
+                              <li class="next "><a href="#">Next</a></li>
+                            </ul>
+                          </div>
+                          </form>
                         </div>
 
                       </div>
@@ -342,13 +324,13 @@
 </section>
 </section>
 </section>
-<!-- <script src="js/jquery.min.js"></script>
-Bootstrap
+<script src="js/jquery.min.js"></script>
+<!-- Bootstrap -->
 <script src="js/bootstrap.js"></script>
-App
+<!-- App -->
 <script src="js/app.js"></script>
 <script src="js/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
-<script src="js/app.plugin.js"></script> -->
+<script src="js/app.plugin.js"></script>
 </body>
 </html>
