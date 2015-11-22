@@ -45,6 +45,11 @@
 }
 </style>
 
+<script>
+
+</script>
+
+
 
 
 </head>
@@ -236,7 +241,7 @@
                                 
                               </div>
 
-						<div class="inline">
+						<!-- <div class="inline">
 							<div class="dropdown">
 								<button id="chamber" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
 									Select Chamber <span class="caret"></span>
@@ -248,46 +253,28 @@
 									<li><a href="#">PM4</a></li>
 								</ul>
 							</div>
-						</div>	
-						<div class="inline">
-							<div class="dropdown">
-								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-									Select Job Date <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" id="options">
-									<li><a href="#">PM1</a></li>
-									<li><a href="#">PM2</a></li>
-									<li><a href="#">PM3</a></li>
-									<li><a href="#">PM4</a></li>
-								</ul>
-							</div>
-						</div>
-						<div class="inline">
-							<div class="dropdown">
-								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-									Select File Name <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">PM1</a></li>
-									<li><a href="#">PM2</a></li>
-									<li><a href="#">PM3</a></li>
-									<li><a href="#">PM4</a></li>
-								</ul>
-							</div>
-						</div>
-						<div class="inline">
-							<div class="dropdown">
-								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-									Select Attribute <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">PM1</a></li>
-									<li><a href="#">PM2</a></li>
-									<li><a href="#">PM3</a></li>
-									<li><a href="#">PM4</a></li>
-								</ul>
-							</div>
-						</div>	
+						</div> -->	
+						
+						<select id="chamberUL">
+								<option val="#" selected>Select Chamber</option>
+							    <option val="PM1">PM1</option>
+							    <option val="PM2">PM2</option>
+							    <option val="PM3">PM3</option>
+							    <option val="PM4">PM4</option>
+						</select>
+						
+						<select id="dateUL">
+							<option val="#" selected>Select Date</option>
+							
+						</select>
+						<select id="fileUL">
+							<option val="#" selected>Select File</option>
+						</select>
+					
+						<select id="attributeUL">
+							<option val="#" selected>Select Attribute</option>
+						</select>
+						
 							
 							<div id="chartdiv"></div>								
                          
