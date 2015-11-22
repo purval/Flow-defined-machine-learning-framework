@@ -1,9 +1,8 @@
-<%@page import="com.mongodb.DBObject"%>
-<%@page import="com.mongodb.BasicDBList"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -17,46 +16,22 @@
 <link  href="<c:url value="/resources/css/icon.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/font.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/app.css"  />" rel="stylesheet">
-<script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
 <script src="<c:url value="/resources/js/go.js" />"></script>
-<script src="<c:url value="/resources/js/ajax.js" />"></script>
+
 
 <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/generic.css" />" rel="stylesheet">
+<script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-
-<script src="http://www.amcharts.com/lib/3/amcharts.js"></script>
-<script src="http://www.amcharts.com/lib/3/serial.js"></script>
-<script src="http://www.amcharts.com/lib/3/themes/light.js"></script>
-
 <style>
 .custome_bg {
 	background:#1aae88;
 }
-
-#chartdiv {
-	width	: 100%;
-	height	: 500px;
-}
-.inline { 
-	display: inline-block; 
-    margin:10px;
-}
 </style>
-
-<script>
-
-</script>
-
-
-
-
 </head>
-
-
-
 <body>
+
 
 
 
@@ -110,7 +85,7 @@
           </section>
         </section>
       </li>
-      <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="thumb-sm avatar pull-left"> <img src="<c:url value="/resources/images/a0.png"/>" alt="Image"/> </span> Karuna <b class="caret"></b> </a>
+      <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="thumb-sm avatar pull-left"> <img src="<c:url value="/resources/images/a0.png"/>" alt="Image"/> </span> User <b class="caret"></b> </a>
         <ul class="dropdown-menu animated fadeInRight">
           <li> <span class="arrow top"></span> <a href="#">Settings</a> </li>
           <li> <a href="profile.html">Profile</a> </li>
@@ -146,7 +121,7 @@
                 <div class="text-muted text-sm hidden-nav-xs padder m-t-sm m-b-sm">Start</div>
                 <ul class="nav nav-main" data-ride="collapse">
                   <li > <a href="index.html" class="auto"> <i class="i i-statistics icon"> </i> <span class="font-bold">Overview</span> </a> </li>
-                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <b class="badge bg-danger pull-right">4</b> <i class="i i-stack icon"> </i> <span class="font-bold">Layouts</span> </a>
+                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <b class="badge bg-danger pull-right">4</b> <i class="i i-stack icon"> </i> <span class="font-bold">Visualizations</span> </a>
                     <ul class="nav dk">
                       <li > <a href="layout-color.html" class="auto"> <i class="i i-dot"></i> <span>Color option</span> </a> </li>
                       <li > <a href="layout-hbox.html" class="auto"> <i class="i i-dot"></i> <span>Hbox layout</span> </a> </li>
@@ -154,7 +129,7 @@
                       <li > <a href="layout-fluid.html" class="auto"> <i class="i i-dot"></i> <span>Fluid layout</span> </a> </li>
                     </ul>
                   </li>
-                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <i class="i i-lab icon"> </i> <span class="font-bold">UI kit</span> </a>
+                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <i class="i i-lab icon"> </i> <span class="font-bold">Flow Graph</span> </a>
                     <ul class="nav dk">
                       <li > <a href="buttons.html" class="auto"> <i class="i i-dot"></i> <span>Buttons</span> </a> </li>
                       <li > <a href="icons.html" class="auto"> <b class="badge bg-info pull-right">369</b> <i class="i i-dot"></i> <span>Icons</span> </a> </li>
@@ -190,165 +165,62 @@
                       <li > <a href="jvectormap.html" class="auto"> <i class="i i-dot"></i> <span>Draw Analysis</span> </a> </li>
                       <li > <a href="signin.html" class="auto"> <i class="i i-dot"></i> <span>Signin</span> </a> </li>
                       <li > <a href="signup.html" class="auto"> <i class="i i-dot"></i> <span>Signup</span> </a> </li>
-                      <li > <a href="404.html" class="auto"> <i class="i i-dot"></i> <span>404</span> </a> </li>
                     </ul>
                   </li>
-                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <i class="i i-grid2 icon"> </i> <span class="font-bold">Apps</span> </a>
-                    <ul class="nav dk">
-                      <li > <a href="mail.html" class="auto"> <b class="badge bg-success lt pull-right">2</b> <i class="i i-dot"></i> <span>Mailbox</span> </a> </li>
-                      <li > <a href="fullcalendar.html" class="auto"> <i class="i i-dot"></i> <span>Calendar</span> </a> </li>
-                      <li > <a href="project.html" class="auto"> <i class="i i-dot"></i> <span>Project</span> </a> </li>
-                      <li > <a href="media.html" class="auto"> <i class="i i-dot"></i> <span>Media</span> </a> </li>
-                    </ul>
-                  </li>
+
                 </ul>
-                <div class="line dk hidden-nav-xs"></div>
-                <div class="text-muted text-xs hidden-nav-xs padder m-t-sm m-b-sm">Lables</div>
-                <ul class="nav">
-                  <li> <a href="mail.html#work"> <i class="i i-circle-sm text-info-dk"></i> <span>Work space</span> </a> </li>
-                  <li> <a href="mail.html#social"> <i class="i i-circle-sm text-success-dk"></i> <span>Connection</span> </a> </li>
-                  <li> <a href="mail.html#projects"> <i class="i i-circle-sm text-danger-dk"></i> <span>Projects</span> </a> </li>
-                </ul>
-                <div class="text-muted text-xs hidden-nav-xs padder m-t-sm m-b-sm">Circles</div>
-                <ul class="nav">
-                  <li> <a href="#"> <i class="i i-circle-sm-o text-success-lt"></i> <span>College</span> </a> </li>
-                  <li> <a href="#"> <i class="i i-circle-sm-o text-warning"></i> <span>Social</span> </a> </li>
-                </ul>
+               
               </nav>
               <!-- / nav -->
             </div>
           </section>
-          <footer class="footer hidden-xs no-padder text-center-nav-xs"> <a href="modal.lockme.html" data-toggle="ajaxModal" class="btn btn-icon icon-muted btn-inactive pull-right m-l-xs m-r-xs hidden-nav-xs"> <i class="i i-logout"></i> </a> <a href="#nav" data-toggle="class:nav-xs" class="btn btn-icon icon-muted btn-inactive m-l-xs m-r-xs"> <i class="i i-circleleft text"></i> <i class="i i-circleright text-active"></i> </a> </footer>
-        </section>
+             </section>
       </aside>
       <!-- /.aside -->
-      <section id="content">
-        <section class="vbox">
-          <section class="scrollable">
-            <section class="hbox stretch">
-              <aside class="bg-light lter b-r">
-                <section class="vbox">
-                  <section class="scrollable">
-                    <div class="wrapper">
-                      <section class="panel no-border bg-primary lt" style="background:#FFFFFF;">
-                      <div class="panel-body">
-                        <div class="row m-t-xl" style="margin:0px;">
-                          <div id="sample" class="flow_chat">
-                            <div class="col-sm-12">
-                              <form action="" method="get" id="wizardform">
-                                <div class="panel panel-default">
-                                
-                                
+      <form:form method="POST" enctype="multipart/form-data"
+								action="./upload">
+             <div class="panel-body">
+                                <div class="line line-lg"></div>
+                                <div class="label-big"> Upload your Dataset </div>
+                                <div class="progress progress-xs m-t-md">
+                                  <div class="progress-bar bg-success" style="width: 100%;"></div>
+                                </div>
+                                <div class="tab-content">
+                                <div id="step1" class="tab-pane active">
+                                  <div class="form-group">
+                                    <label class="col-sm-2 label-sm"><Strong>Browse your file</Strong></label>
+                                     <input type="file" name="file"><br />
+                                     <label class="col-sm-2 label-sm"><Strong>Name: </Strong></label>
+                                     <input type="text" name="name"><br /> <br />
+                                    <div class="col-sm-10">
+                                  <p>
+                                      <input class="btn btn-small btn-primary" type="submit" value="Upload">
+                                        </p>
+                                    </div>
+                                    </div>
                               </div>
-
-						<!-- <div class="inline">
-							<div class="dropdown">
-								<button id="chamber" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-									Select Chamber <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" id="chamberUL">
-<<<<<<< HEAD
-									<li><a href="#">PM1</a></li>
-									<li><a href="#">PM2</a></li>
-									<li><a href="#">PM3</a></li>
-									<li><a href="#">PM4</a></li>
-								</ul>
-							</div>
-						</div>	
-						<div class="inline">
-							<div class="dropdown">
-								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-									Select Job Date <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" id="options">
-									<li><a href="#">PM1</a></li>
-									<li><a href="#">PM2</a></li>
-									<li><a href="#">PM3</a></li>
-									<li><a href="#">PM4</a></li>
-								</ul>
-							</div>
-						</div>
-						<div class="inline">
-							<div class="dropdown">
-								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-									Select File Name <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">PM1</a></li>
-									<li><a href="#">PM2</a></li>
-									<li><a href="#">PM3</a></li>
-									<li><a href="#">PM4</a></li>
-								</ul>
-							</div>
-						</div>
-						<div class="inline">
-							<div class="dropdown">
-								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-									Select Attribute <span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-=======
->>>>>>> d79ba8da98b7315353fac8a8ce7921ea7195b427
-									<li><a href="#">PM1</a></li>
-									<li><a href="#">PM2</a></li>
-									<li><a href="#">PM3</a></li>
-									<li><a href="#">PM4</a></li>
-								</ul>
-							</div>
-						</div> -->	
+                              </form:form>
+        	 
+                               
+<!-- 								File to upload: <input type="file" name="file"><br /> Name: <input -->
+<!-- 									type="text" name="name"><br /> <br /> <input type="submit" -->
+<!-- 									value="Upload"> Press here to upload the file! -->
+									
 						
-						<select id="chamberUL">
-								<option val="#" selected>Select Chamber</option>
-							    <option val="PM1">PM1</option>
-							    <option val="PM2">PM2</option>
-							    <option val="PM3">PM3</option>
-							    <option val="PM4">PM4</option>
-						</select>
-						
-						<select id="dateUL">
-							<option val="#" selected>Select Date</option>
-							
-						</select>
-						<select id="fileUL">
-							<option val="#" selected>Select File</option>
-						</select>
-					
-						<select id="attributeUL">
-							<option val="#" selected>Select Attribute</option>
-						</select>
-						
-							
-							<div id="chartdiv"></div>								
-                         
-                         
-                         
-                         
-                         
-                        </div>
-
-                      </div>
-                    </div>
-                    </div>
-                    </section>
-                    </div>
-                  </section>
-                </section>
-              </aside>
-
-        </section>
-      </section>
-    </section>
+	<section id="content">
     <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a> </section>
 </section>
 </section>
 </section>
-<!-- <script src="js/jquery.min.js"></script>
-Bootstrap
+
+
+<script src="js/jquery.min.js"></script>
+<!-- Bootstrap -->
 <script src="js/bootstrap.js"></script>
-App
+<!-- App -->
 <script src="js/app.js"></script>
 <script src="js/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
-<script src="js/app.plugin.js"></script> -->
+<script src="js/app.plugin.js"></script>
 </body>
 </html>

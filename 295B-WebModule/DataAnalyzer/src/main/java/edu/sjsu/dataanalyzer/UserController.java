@@ -1,5 +1,8 @@
 package edu.sjsu.dataanalyzer;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -11,7 +14,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.SessionAttributes;
+=======
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+>>>>>>> d79ba8da98b7315353fac8a8ce7921ea7195b427
 
 import edu.sjsu.dataanalyzer.bean.User;
 import edu.sjsu.dataanalyzer.service.UserService;
@@ -75,4 +85,47 @@ public class UserController {
 			return "userregistration";
 		}
 	}
+	
+	@RequestMapping(value = "/flowchart", method = RequestMethod.GET)
+	public String flowchart(Locale locale, Model model) {
+		logger.info("user login page");
+		
+		return "flowchart";
+	}
+	
+	
+	@RequestMapping(value = "/fileupload", method = RequestMethod.GET)
+	public String fileupload(Locale locale, Model model) {
+		
+		
+		return "fileupload";
+	}
+	
+	 @RequestMapping(value="/upload", method=RequestMethod.GET)
+	    public @ResponseBody String provideUploadInfo() {
+		 System.out.println("In Provide Upload Info \n");
+	        return "You can upload a file by posting to this same URL.";
+	    }
+	 	//@RequestParam("name") String name,@RequestParam("file") MultipartFile file
+	 @RequestMapping(value="/upload", method=RequestMethod.POST)
+	   public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("name") String name){
+	       System.out.println(file.getName() + name);
+	    	 if (!file.isEmpty()) {
+	            try {
+	                byte[] bytes = file.getBytes();
+	                BufferedOutputStream stream =
+	                        new BufferedOutputStream(new FileOutputStream(new File("C://Users//Shubham//Desktop//Karuna//files//"+name+".xlsx")));
+	                stream.write(bytes);
+	                stream.close();
+	                
+	                System.out.println("Handle File Upload \n");
+	                return "analysis";
+	            } catch (Exception e) {
+	                return "Error";
+	            }
+	        } else {
+	        	return "Error";
+	        }
+	    	
+	    }
 }

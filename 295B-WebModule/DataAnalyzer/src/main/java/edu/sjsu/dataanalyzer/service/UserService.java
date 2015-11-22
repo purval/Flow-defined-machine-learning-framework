@@ -1,5 +1,7 @@
 package edu.sjsu.dataanalyzer.service;
 
+import java.util.List;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,7 +121,11 @@ public class UserService implements IUserService{
 	}
 
 	@Override
+<<<<<<< HEAD
 	public DBObject getLAM(){
+=======
+	public DBObject getLAM(String chamber, String date,String fileName,String Attribute){
+>>>>>>> d79ba8da98b7315353fac8a8ce7921ea7195b427
 		
 		logger.info("Retrieving an existing user");
 
@@ -129,11 +135,10 @@ public class UserService implements IUserService{
 		
 		
 		BasicDBObject query = new BasicDBObject();
-		query.put("PM","PM3");
-		query.put("Date", "2015-08-17");
-		query.put("Recipe", "KTS_0420_CWAC2_Cl2_H2-NF3-30s O2-H2_120C-55_v2");
-		query.put("Attribute", "TCPRFTotalRFOnTime");
-		query.put("fileName", "WDLReplay.kts_6-9-07_09595494-23.229-11_10_30");
+		query.put("PM",chamber);
+		query.put("Date", date);
+		query.put("Attribute", Attribute);
+		query.put("fileName", fileName);
 		//query.put(key, val);
 		//query.put("contents.historicalData", "AverageIBValue");
 		DBCursor cur = coll.find(query);
@@ -173,12 +178,17 @@ public class UserService implements IUserService{
 	}
 
 	@Override
+<<<<<<< HEAD
 	public String getLAMdate(String chamber) {
+=======
+	public List getLAMdate(String chamber) {
+>>>>>>> d79ba8da98b7315353fac8a8ce7921ea7195b427
 		// TODO Auto-generated method stub
 		DBCollection coll = connector.getCollection("LAMDA","fullData");
 		
 		BasicDBObject query = new BasicDBObject();
 		query.put("PM",chamber);
+<<<<<<< HEAD
 		DBCursor cur = coll.find(query);
 		DBObject fullData=null;
 		StringBuilder dates = new StringBuilder();;
@@ -204,6 +214,50 @@ public class UserService implements IUserService{
 			String fileName) {
 		// TODO Auto-generated method stub
 		return null;
+=======
+		//DBCursor cur = coll.find(query);
+		List distDates = coll.distinct("Date", query);
+		System.out.println("distinct dates list: "+distDates);
+//		DBObject fullData=null;
+//		StringBuilder dates = new StringBuilder();;
+//		while(cur.hasNext()){
+//			 fullData = cur.next();
+//			 //values = (BasicDBList) fullData.get("Values");
+//			System.out.println("dates data::: "+fullData);
+//			dates.append(fullData.get("Date")+",");
+//		}
+		
+		System.out.println("Sending dates list in json: "+ distDates);
+		return distDates;
+	}
+
+	@Override
+	public List getLamDateAndFile(String chamber, String date) {
+		// TODO Auto-generated method stub
+		DBCollection coll = connector.getCollection("LAMDA","fullData");
+		
+		BasicDBObject query = new BasicDBObject();
+		query.put("PM",chamber);
+		query.put("Date",date);
+		//DBCursor cur = coll.find(query);
+		List distFiles = coll.distinct("fileName", query);
+		System.out.println("distinct file Names list: "+distFiles);
+		return distFiles;
+	}
+
+	@Override
+	public List getLamDateFileAndAtribute(String chamber, String date,String fileName) {
+		// TODO Auto-generated method stub
+		DBCollection coll = connector.getCollection("LAMDA","fullData");
+		BasicDBObject query = new BasicDBObject();
+		query.put("PM",chamber);
+		query.put("Date",date);
+		query.put("fileName",fileName);
+		//DBCursor cur = coll.find(query);
+		List distAttributes = coll.distinct("Attribute", query);
+		System.out.println("distinct Attributes list: "+distAttributes);
+		return distAttributes;
+>>>>>>> d79ba8da98b7315353fac8a8ce7921ea7195b427
 	}
 
 
