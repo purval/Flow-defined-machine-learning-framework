@@ -10,6 +10,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+
 import edu.sjsu.dataanalyzer.bean.User;
 import edu.sjsu.dataanalyzer.dbutils.MongoConnector;
 
@@ -119,7 +120,7 @@ public class UserService implements IUserService{
 
 	@Override
 	public DBObject getLAM(){
-
+		
 		logger.info("Retrieving an existing user");
 
 		JSONObject json = null;
@@ -169,6 +170,40 @@ public class UserService implements IUserService{
 		
 		return fullData;
 
+	}
+
+	@Override
+	public String getLAMdate(String chamber) {
+		// TODO Auto-generated method stub
+		DBCollection coll = connector.getCollection("LAMDA","fullData");
+		
+		BasicDBObject query = new BasicDBObject();
+		query.put("PM",chamber);
+		DBCursor cur = coll.find(query);
+		DBObject fullData=null;
+		StringBuilder dates = new StringBuilder();;
+		while(cur.hasNext()){
+			 fullData = cur.next();
+			 //values = (BasicDBList) fullData.get("Values");
+			System.out.println("dates data::: "+fullData);
+			dates.append(fullData.get("Date")+",");
+		}
+		
+		System.out.println("Sending dates list in json: "+ dates);
+		return dates.toString();
+	}
+
+	@Override
+	public DBObject getLamDateAndFile(String chamber, String date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DBObject getLamDateFileAndAtribute(String chamber, String date,
+			String fileName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

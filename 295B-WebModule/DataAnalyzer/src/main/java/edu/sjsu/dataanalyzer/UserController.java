@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import edu.sjsu.dataanalyzer.bean.User;
 import edu.sjsu.dataanalyzer.service.UserService;
@@ -29,6 +30,7 @@ public class UserController {
 	
 	@RequestMapping(value = "/loginpage", method = RequestMethod.GET)
 	public String userLogin(Locale locale, Model model) {
+		
 		logger.info("user login page");
 		model.addAttribute("userAttribute", new User());
 		return "userlogin";
