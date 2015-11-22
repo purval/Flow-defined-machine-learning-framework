@@ -2,6 +2,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -27,6 +28,13 @@
 	background:#1aae88;
 }
 </style>
+
+<script type="text/javascript">
+document.getElementById("myExp").onclick = function () {
+    document.location.href = "./fileupload";
+};
+</script>
+
 </head>
 <body>
 
@@ -188,19 +196,7 @@
                         <div class="row m-t-xl" style="margin:0px;">
                           <div id="sample" class="flow_chat">
                             <div class="col-sm-12">
-                              <form action="" method="get" id="wizardform">
-                                <div class="panel panel-default">
-                                <div class="panel-heading">
-                                  <ul class="nav nav-tabs font-bold">
-                                    <li class="active"><a data-toggle="tab" href="#step1">Step 1</a></li>
-                                    <li class=""><a data-toggle="tab" href="#step2">Step 2</a></li>
-                                    <li class=""><a data-toggle="tab" href="#step3">Step 3</a></li>
-                                    <li class=""><a data-toggle="tab" href="#step4">Step 4</a></li>
-                                    <li class=""><a data-toggle="tab" href="#step5">Step 5</a></li>
-                                    <li class=""><a data-toggle="tab" href="#step6">Step 6</a></li>
-                                  </ul>
-                                </div>
-                                <div class="panel-body">
+                               <div class="panel-body">
                                 <div class="line line-lg"></div>
                                 <div class="label-big"> Steps for Analysis..... </div>
                                 <div class="progress progress-xs m-t-md">
@@ -212,178 +208,17 @@
                                     <label class="col-sm-2 label-sm"><Strong>Choose a type!</Strong></label>
                                     <div class="col-sm-10">
                                   <p>
-                                      <button class="btn btn-large btn-primary" type="button">My Experiments</button>
+                                      <button id="myExp" class="btn btn-large btn-primary" type="button">My Experiments</button>
                                         </p>
                                       <p>
-                                        <button class="btn btn-primary btn-large" type="button">New Experiment</button>
+                                        <button class="btn btn-primary btn-large" type="button" onclick="location.href='./fileupload'" >New Experiment</button>
                                            </p>
                                     </div>
                                     </div>
                               </div>
-                            <div id="step2" class="tab-pane">
-                            <div class="form-group">
-                              <label class="col-sm-2 label-sm">File input</label>
-                              <div class="col-sm-10">
-                                <input type="file" class="filestyle" data-icon="false" data-classbutton="btn btn-default" data-classinput="form-control inline v-middle input-s" id="filestyle-0" style="position: fixed; left: -500px;">
-                                <div class="bootstrap-filestyle" style="display: inline;">
-                                  <input type="text" class="form-control inline v-middle input-s" disabled="">
-                                  <label for="filestyle-0" class="btn btn-default"><span>Choose file</span></label>
-                                </div>
                               </div>
-                              <div class="row">
-                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"><br />
-                                  <br />
-                                  <br />
-                                </div>
-                              </div>
-                              <div >
-                                <button type="submit" class="btn btn-default">Submit</button>
-                                <button type="submit" class="btn btn-default col-md-offset-1">Cancel</button>
-                              </div>
-                              <div class="row">
-                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12"><br />
-                                  <br />
-                                  <br />
-                                </div>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                            <div id="step3" class="tab-pane">
-                            <label class="text1"><h3>Select columns for your customized Analysis. Also choose one Target.</h3></label>
-                           <div class="table-responsive">
-                            <table class="table">
-                               <tr class="active"> 
-                                  <th class="active">Select</th>
-								  <th class="active">Measures</th>
-								  <th class="active">Target</th>
-							  </tr>
-                               <tr class=""> 
-                                  <td class=""> Sensor 1</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  <td class=""><input type="radio" name="target" value=""></input></td>
-							  </tr>
-							   <tr class="active"> 
-                                  <td class="active">Sensor 2</td>
-								  <td class="active"><input type="checkbox" value=""></input></td>
-								  <td class="active"><input type="radio" name="target" value=""></input></td>
-							  </tr>
-							  <tr class=""> 
-                                  <td class=""> Sensor 3</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  <td class=""><input type="radio" name="target" value=""></input></td>
-							  </tr>
-							   <tr class="active"> 
-                                  <td class="active">Sensor 4</td>
-								  <td class="active"><input type="checkbox" value=""></input></td>
-								  <td class="active"><input type="radio" name="target" value=""></input></td>
-							  </tr>
-                               <tr class=""> 
-                                  <td class=""> Sensor 4</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  <td class=""><input type="radio" name="target" value=""></input></td>
-							  </tr>
-							   <tr class="active"> 
-                                  <td class="active">Sensor 5</td>
-								  <td class="active"><input type="checkbox" value=""></input></td>
-								  <td class="active"><input type="radio" name="target" value=""></input></td>
-							  </tr>		
-                               <tr class=""> 
-                                  <td class=""> Sensor 6</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  <td class=""><input type="radio" name="target" value=""></input></td>
-							  </tr>
-							   <tr class="active"> 
-                                  <td class="active">Sensor 7</td>
-								  <td class="active"><input type="checkbox" value=""></input></td>
-								  <td class="active"><input type="radio" name="target" value=""></input></td>
-							  </tr>								  					  
-                            </table>
-                            
-                            
-                            </div>
-                            </div>
-                          <div id="step4" class="tab-pane">
-                          <label class="text1"> <h3>Values for precision </h3></label>
-                           <div class="table-responsive">
-                            <table class="table">
-                               <tr class="active"> 
-                                  <td class="active"><label>Split Percentage</label></td>
-								  <td class="active">
-								        <select>
-										  <option value="50-50">50-50</option>
-										  <option value="70-30">70-30</option>
-										</select>
-								  </td>
 
-							  </tr>
-							   <tr class="active"> 
-                                  <td class="active">Missing Values Replacement</td>
 
-								  <td class="active"><input type="text" name="custom" placeholder="0"></td>
-							  </tr>
-						      <tr class="active"> 
-                                  <td class="active">Replace with</td>
-                                  <td class="active">
-								        <select>
-										  <option value="Mean">Mean</option>
-										  <option value="Median">Median</option>
-										  <option value="Median">Custom Value</option>										  
-										</select>
-								  </td>
-
-							  </tr>
-                            </table>
-                            
-                            
-                            </div>
-                            </div>
-                        <div id="step5" class="tab-pane">
-                           <div class="table-responsive">
-                            <table class="table table-bordered">
-                               <tr class="active"> 
-                                  <th class="active">Algorithm</th>
-								  <th class="active">Select</th>
-								 
-							  </tr>
-                               <tr class=""> 
-                                  <td class="">PCA</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								 
-							  </tr>
-							  <tr class="active"> 
-                                  <td class="">K-Means</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  
-							  </tr>
-							  <tr class=""> 
-                                  <td class="">SVM</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  
-							  </tr>
-					          <tr class="active"> 
-                                  <td class="">Knn</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								  
-							  </tr>
-						      <tr class=""> 
-                                  <td class="">Logistic Regression</td>
-								  <td class=""><input type="checkbox" value=""></input></td>
-								 
-							  </tr>
-                            </table>
-                            
-                            
-                            </div>
-                            </div>
-                            <ul class="pager wizard m-b-sm">
-                              <li style="display:none;" class="previous first"><a href="#">First</a></li>
-                              <li class="previous"><a href="#">Previous</a></li>
-                              <li style="display:none;" class="next last "><a href="#">Last</a></li>
-                              <li class="next "><a href="#">Next</a></li>
-                            </ul>
-                          </div>
-                          </form>
                         </div>
 
                       </div>
