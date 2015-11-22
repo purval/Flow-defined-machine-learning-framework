@@ -127,7 +127,7 @@
                       <li > <a href="layout-fluid.html" class="auto"> <i class="i i-dot"></i> <span>Fluid layout</span> </a> </li>
                     </ul>
                   </li>
-                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <i class="i i-lab icon"> </i> <span class="font-bold">Flow Graph</span> </a>
+                  <li > <a href="#" class="auto"> <span class="pull-right text-muted"> <i class="i i-circle-sm-o text"></i> <i class="i i-circle-sm text-active"></i> </span> <i class="i i-lab icon"> </i> <span class="font-bold"></span> </a>
                     <ul class="nav dk">
                       <li > <a href="buttons.html" class="auto"> <i class="i i-dot"></i> <span>Buttons</span> </a> </li>
                       <li > <a href="icons.html" class="auto"> <b class="badge bg-info pull-right">369</b> <i class="i i-dot"></i> <span>Icons</span> </a> </li>
@@ -198,12 +198,14 @@
 
                                   </ul>
                                 </div>
+                                </div>
                                 <div class="panel-body">
                                 <div class="line line-lg"></div>
                                 <div class="label-big"> Steps for Analysis..... </div>
                                 <div class="progress progress-xs m-t-md">
                                   <div class="progress-bar bg-success" style="width: 100%;"></div>
                                 </div>
+                                
                                 <div class="tab-content">
                                 <div id="step1" class="tab-pane active">
                           <label class="text1"><h3>Select columns for your customized Analysis. Also choose one Target.</h3></label>
@@ -290,8 +292,9 @@
 
 							  </tr>
                             </table>
-                            
-                            
+                            </div>
+                            </div>
+                            </div>
                             </div>
                           </form>
                         </div>
