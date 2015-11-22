@@ -3535,4 +3535,7 @@ fieldset[disabled] .i-checks input + i:before {
   .wrapper-lg {
     padding: 15px;
   }
+  .ExpButton {
+  color: #1aae88;
+  }
 }
