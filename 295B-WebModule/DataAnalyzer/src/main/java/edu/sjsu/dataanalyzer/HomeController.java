@@ -56,15 +56,10 @@ public class HomeController {
 		System.out.println("success -- "+chamber_id);
 		
 		UserService us = new UserService();
-<<<<<<< HEAD
-		String values = us.getLAMdate(chamber_id);
-		System.out.println("Dates: "+values);
-		return values;
-=======
+
 		List values = us.getLAMdate(chamber_id);
 		System.out.println("Dates: "+values);
 		return values.toString();
->>>>>>> d79ba8da98b7315353fac8a8ce7921ea7195b427
 	}
 	
 	@RequestMapping(value = "/lam/date/file", method = RequestMethod.GET)

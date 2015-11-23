@@ -14,14 +14,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-<<<<<<< HEAD
-import org.springframework.web.bind.annotation.SessionAttributes;
-=======
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
->>>>>>> d79ba8da98b7315353fac8a8ce7921ea7195b427
 
 import edu.sjsu.dataanalyzer.bean.User;
 import edu.sjsu.dataanalyzer.service.UserService;
