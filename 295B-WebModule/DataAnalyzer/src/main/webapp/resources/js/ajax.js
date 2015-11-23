@@ -1,15 +1,5 @@
 $(document).ready(function(){
-<<<<<<< HEAD
-	$('#chamberUL li > a').click(function(e){
-	    //$('#chamber').text(this.innerHTML);
-	    console.log(this.innerHTML);
-	    
-        var data = 'chamber_id='+this.innerHTML;
 
-        $.ajax({
-          type: "GET",
-          url: "/dataanalyzer/lam/date",
-=======
 	//$('#chamberUL li > a').click(function(e){
 	$('#chamberUL').change(function(){
 	//$('#chamber').text(this.innerHTML);
@@ -47,25 +37,12 @@ $(document).ready(function(){
         $.ajax({
           type: "GET",
           url: "/dataanalyzer/lam/date/file",
->>>>>>> d79ba8da98b7315353fac8a8ce7921ea7195b427
           contentType: "application/json; charset=UTF-8",
           dataType: 'json',
           data: data,
           crossDomain : true,
           error: function( err ) {
-<<<<<<< HEAD
-             console.log(err);
-          },success: function(d){
-        	  console.log(d);
-          }
-        });
-	    
-	});
-	/*$( "#chamber" ).click(function() {
-		console.log($( "#chamber" ).val());
-	});*/
-      
-=======
+
         	  console.log("THIS>>> " + err);
         	  var html = '';
               $("#fileUL").html("");
@@ -225,9 +202,4 @@ function callChart(data) {
 
 	
 	
-	
-	
-	
-	
->>>>>>> d79ba8da98b7315353fac8a8ce7921ea7195b427
 });
