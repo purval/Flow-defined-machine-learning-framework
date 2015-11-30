@@ -22,7 +22,9 @@
     <beans:bean id="mongoConnector" class="edu.sjsu.dataanalyzer.dbutils.MongoConnector">
         <!-- <beans:property name="config" ref="config"></beans:property> -->
     </beans:bean>
-    
+    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <beans:property name="maxUploadSize" value="268435456"/> <!-- 256 megs -->
+    </beans:bean>
     <beans:bean id="userService" class="edu.sjsu.dataanalyzer.service.UserService">
         <!-- <beans:property name="config" ref="config"></beans:property> -->
         <beans:property name="mongoConnector" ref="mongoConnector"></beans:property>
