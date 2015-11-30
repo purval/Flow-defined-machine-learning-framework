@@ -1,0 +1,39 @@
+@CHARSET "UTF-8";
+.custome_bg {
+	background:#1aae88;
+}
+
+body{
+	background:#FFFFFF;
+	color: #404040;
+}
+
+.sidemenu{
+	width:100%;
+	margin-bottom: 5px; 
+    padding: 2px 20px; 
+    background: #e6e6e6;
+    width: 300px;
+    border-radius: 15px; 
+}
+/* border: 1px solid #a1a1a1; */
+.palletey{
+	height: 300px;
+	border: 1px gray; 
+	border-radius: 15px; 
+	background-color:#e6e6e6; 
+}
+
+.divStyle{
+	border: 1px gray; 
+	border-radius: 15px; 
+	background-color:#e6e6e6; 
+	height: 520px;	
+}
+
+#frow{
+	margin: 10px 0px 10px 0px; 
+	border:  1px gray; 
+	border-radius: 15px; 
+	background-color:#e6e6e6;
+}
