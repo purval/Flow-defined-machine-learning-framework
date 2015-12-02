@@ -18,10 +18,12 @@
 <link  href="<c:url value="/resources/css/app.css"  />" rel="stylesheet">
 <link href="<c:url value="/resources/css/generic.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/custom.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/dataTables.bootstrap.min.css" />" rel="stylesheet"> 
 
 <script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
+<script src="<c:url value="/resources/js/dataTables.bootstrap.min.js" />"></script> 
 <script src="<c:url value="/resources/js/go.js" />"></script>
 <script src="<c:url value="/resources/js/flowchart.js" />"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
@@ -29,7 +31,8 @@
 </head>
 <body onload="init()">
 <input type="hidden" id="jsonBom" value='${process_flow}'/>
-<header class="bg-white header header-md navbar navbar-fixed-top-xs box-shadow custome_bg">
+<input type="hidden" id="metadata" value='${metadata}'/>
+ <header class="bg-white header header-md navbar navbar-fixed-top-xs box-shadow custome_bg">
     <div class="navbar-header aside-md dk"> <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav"> <i class="fa fa-bars"></i> </a> <a href="#" class="navbar-brand"><img src="/dataanalyzer/resources/images/logo.png" class="m-r-sm" alt="scale"> <span class="hidden-nav-xs">FDCSD</span> </a> <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user"> <i class="fa fa-cog"></i> </a> </div>
 	
     <ul class="nav navbar-nav navbar-right m-n hidden-xs nav-user user">
@@ -75,7 +78,7 @@
       <a id="delete" href="#" style="margin-left:10px"><img alt="delete" class="img-rounded" src="http://localhost:8080/dataanalyzer/resources/images/delete.png" width="30" height="32"/></a>
     </div>
     <div class="col-md-2" style="margin: 10px 0px 10px 50px;">
-    	<button type="button" class="btn btn-primary">Visualization</button>
+    	<button type="button" class="btn btn-primary" id="visual">Visualization</button>
     	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#help">Help</button> 
     </div>
   </div>
@@ -86,9 +89,9 @@
     		<!-- <img alt="new" class="img-rounded" src="../resources/images/click.png" width="25" height="19"/> --> 
         	<div class="sidemenu" id="dataset" data-toggle="modal" data-target="#fileUploader">
         	<h4>Upload DataSet</h4></div>
-        	<div class="sidemenu" id="fs" data-toggle="modal" data-target="#fSelector"><h4>Feature Selection</h4></div>
+        	<div class="sidemenu" id="fs" data-toggle="modal" data-target="#fSelector"><h4>Project Column Selection</h4></div>
         	<div class="sidemenu" id="parameters" data-toggle="modal" data-target="#paramSetter"><h4>Parameter Setting</h4></div> 
-        	<div class="sidemenu" id="algo"><h4> ML Algorithms </h4></div>
+        	<div class="sidemenu" id="algo"><h4>ML Algorithms</h4></div>
         	<div id="palleteDiv"></div>
         </div>
     </div>
@@ -105,7 +108,130 @@
   <div style="width:100%; white-space:nowrap;">
     
   </div>
+  	
+  	<!--Parameter setting Modal -->
+	<div class="modal fade" id="paramSetter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Parameter Setting</h4>
+	      </div>
+	      
+	      <div class="modal-body">
+				<label for="split"><h4>Train/Test split ratio</h4></label>
+				<input id="split" class="form-control" type="input" name="split_value" placeholder="70/30"/>
+				<br>
+				<div class="dropdown">
+				  <label for="split"><h4>Missing Value Replacement</h4></label><br>
+				  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select >>
+				  <span class="missingval"></span></button>
+				  <ul class="dropdown-menu">
+				    <li><a id="zero" href="#">zero</a></li>
+				    <li><a id="mean" href="#">mean</a></li>
+				    <li><a id="median" href="#">median</a></li>
+				  </ul>
+				</div>	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button id="psButton" class="btn btn-success" name="psButton">Save</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- New Experiment Modal -->
+	<div class="modal fade" id="newEx" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Create New Experiment</h4>
+	      </div>
+	      <c:url var="url" value="/newexperiment" />
+	      <form id="neform" method="POST" action="${url}">
+		      <div class="modal-body">
+				    <label for="exName"><h4>Experiment Name</h4></label>
+					<input id="exName" class="form-control" type="input" name="experiment_name"/>				
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button id="newEx" class="btn btn-success" name="nexbutton" type="submit">Create</button>
+		      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
   
+  	<!-- Help Modal -->
+	<div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Help!</h4>
+	      </div>      
+	      <div class="modal-body">
+				
+				help: instructions to use FDCSD machine learning tool.
+				<p>
+					<br>
+					Save button : save process flow
+					<br>
+					Reset button : start over
+					<br>
+					+ button : create new experiment
+					<br>
+					Delete button : delete current experiment
+					<br>
+					Visualize button : redirect to data visualization page
+					<br>
+					Run button : run process flow
+				</p>
+				<p><br>Step 1: Upload DataSet 
+					<br>import csv dataset</p>
+				<p><br>Step 2: Project Column Selection
+					<br>Selects columns to include or exclude from a dataset in an operation</p>
+				<p><br>Step 3: Parameter Setting
+					<br>Split Data
+					<br>Split the rows of a dataset into two distinct sets
+					<br>Split rows: 70/30</p>
+				<p> <br>Missing Values Scrubber
+				<br>Specifies how to handle values that are missing from a dataset
+				<br>Replace with 0
+				<br>Replace with mean
+				<br>Replace with meadian</p>			
+				<p><br>Step 4: Filter Based Feature Selection
+				<br>Identifies the features in a dataset with the greatest predictive power
+				<br>1. PCA, 2. Pearson correlation</p>
+				<p><br>Step 5:
+				<br>Two-Class Boosted Decision Tree
+				<br>Creates a binary classifier using a boosted decision tree algorithm
+
+				<br>Two-Class Logistic Regression
+				<br>Creates a two-class logistic regression mode
+
+				<br>Two-Class Bayes Point Machine
+				<br>Create a Bayes Point Machine binary classification model</p>
+				<p><br>Step 6:Train Model
+				<br>Train a previously created classification or regression model
+				<br>Train model based on the split ratio
+
+				<br>Score Model
+				<br>Score a trained classification or regression model 
+				<br>Get the result for test dataset
+
+				<br>Evaluate Model
+				<br>Evaluates a scored classification or regression model with standard metrics
+				<br>Test result data with the accuracy</p>
+				<p><br>Step 7: See results in process status console panel</p>
+				
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
     <!-- File upload Modal -->
 	<div class="modal fade" id="fileUploader" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
@@ -138,9 +264,10 @@
 	        <h4 class="modal-title" id="myModalLabel">Select Features</h4>
 	      </div>
 	      <div class="modal-body">
-	        	<form id="fsform"> 
+	      		<div class="row"><p><h4>Exclude columns from the ml flow</h4></p></div>
+	        	<div id="fsdiv"> 
 				    
-				</form>
+				</div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -150,68 +277,6 @@
 	  </div>
 	</div>
   
-  	<!--Parameter setting Modal -->
-	<div class="modal fade" id="paramSetter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Parameter Setting</h4>
-	      </div>
-	      <div class="modal-body">
-	        	<form id="psform"> 
-				   
-				</form>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button id="psButton" class="btn btn-success" name="psButton">Save</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-  
-  	<!-- New Experiment Modal -->
-	<div class="modal fade" id="newEx" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Create New Experiment</h4>
-	      </div>
-	      <c:url var="url" value="/newexperiment" />
-	      <form id="neform" method="POST" action="${url}">
-		      <div class="modal-body">
-					    <label for="exName"><h4>Experiment Name</h4></label>
-						<input id="exName" type="input" name="experiment_name"/>				
-						<!-- <button id="newEx" class="btn btn-success" type="submit" >New Experiment</button> -->
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		        <button id="newEx" class="btn btn-success" name="nexbutton" type="submit">Create</button>
-		      </div>
-	      </form>
-	    </div>
-	  </div>
-	</div>
-  
-  	<!-- Help Modal -->
-	<div class="modal fade" id="help" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Help!</h4>
-	      </div>      
-	      <div class="modal-body">
-				
-				help: instructions to use FDCSD machine learning tool.
-					
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
   <textarea id="mySavedModel" style="width:100%;height:300px" hidden>
   { "class": "go.GraphLinksModel",
   "linkFromPortIdProperty": "fromPort",

@@ -348,12 +348,22 @@ init  = function() {
 		  type: 'POST',
 		  success: function (response) {
 		      var json = JSON.parse(response);
-		      console.log(json);
+		      //console.log(json);
+          $("#fsdiv").html("");
+          var html = '<table id="fstable" class="table table-striped table-bordered"';
+          html += 'cellspacing="0" data-click-to-select="true">';
+          html += '<thead><tr><th data-field="cn">Column Name</th><th data-field="state"';
+          html += 'data-checkbox="true"></th></tr></thead><tbody>';
+
 		      for (var key in json) {
 	    	   if (json.hasOwnProperty(key)) {
 	    	     //console.log(key + " -> " + json[key]);
+            html += '<tr><td></td><td>'+key+'</td></tr>';    
 	    	   }
 	    	  }
+          html += '</tbody></table>';
+          $("#fsdiv").append(html);
+          $('#fstable').DataTable();
 		      $('#fileUploader').modal('hide');
           var diajson = JSON.parse(myDiagram.model.toJson());
           diajson.nodeDataArray.push(graphkeys[7]);

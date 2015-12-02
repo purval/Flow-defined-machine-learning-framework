@@ -18,10 +18,12 @@
 <link  href="<c:url value="/resources/css/app.css"  />" rel="stylesheet">
 <link href="<c:url value="/resources/css/generic.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/custom.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/dataTables.bootstrap.min.css" />" rel="stylesheet">
 
 <script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
+<script src="<c:url value="/resources/js/dataTables.bootstrap.min.js" />"></script>
 <script src="<c:url value="/resources/js/go.js" />"></script>
 <script src="<c:url value="/resources/js/flowchart.js" />"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
@@ -138,9 +140,9 @@
 	        <h4 class="modal-title" id="myModalLabel">Select Features</h4>
 	      </div>
 	      <div class="modal-body">
-	        	<form id="fsform"> 
+	        	<div id="fsdiv"> 
 				    
-				</form>
+				</div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

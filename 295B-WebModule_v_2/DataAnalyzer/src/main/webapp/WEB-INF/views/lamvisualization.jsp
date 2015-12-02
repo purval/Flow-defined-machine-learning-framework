@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Data Analyses tool</title>
+<title>FDCSD - Visualization</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <link  href="<c:url value="/resources/css/bootstrap.css" />" rel="stylesheet">
@@ -17,15 +17,10 @@
 <link  href="<c:url value="/resources/css/icon.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/font.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/app.css"  />" rel="stylesheet">
-<script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
-<script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
-<script src="<c:url value="/resources/js/go.js" />"></script>
-<script src="<c:url value="/resources/js/ajax.js" />"></script>
-
-<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
 <link href="<c:url value="/resources/css/generic.css" />" rel="stylesheet">
+<script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-
+<script src="<c:url value="/resources/js/ajax.js" />"></script>
 <script src="http://www.amcharts.com/lib/3/amcharts.js"></script>
 <script src="http://www.amcharts.com/lib/3/serial.js"></script>
 <script src="http://www.amcharts.com/lib/3/themes/light.js"></script>
@@ -39,9 +34,19 @@
 	width	: 100%;
 	height	: 500px;
 }
+
+#selectiondd {
+  margin: auto;
+  width: 90%;
+}
+
 .inline { 
 	display: inline-block; 
-    margin:10px;
+  margin:10px;
+}
+
+#home{
+  margin-right:10px;
 }
 </style>
 </head>
@@ -70,33 +75,39 @@
 </header>
 
 <div class="container-fluid">
-  <div class="row">
+  <div class="row"> 
     <div class="col-md-2"></div>
     <div class="col-md-8">
-            <select id="chamberUL">
-                <option val="#" selected>Select Chamber</option>
-                  <option val="PM1">PM1</option>
-                  <option val="PM2">PM2</option>
-                  <option val="PM3">PM3</option>
-                  <option val="PM4">PM4</option>
-            </select>
-            
-            <select id="dateUL">
-              <option val="#" selected>Select Date</option>
-              
-            </select>
-            <select id="fileUL">
-              <option val="#" selected>Select File</option>
-            </select>
+      <br>
+      <div class="row">
+        <div class="col-md-2"><a id="home" href="http://localhost:8080/dataanalyzer/"><img alt="new" class="img-rounded" src="http://localhost:8080/dataanalyzer/resources/images/home.png" width="30" height="32"/></a> </div>
+        <div class="col-md-8"><div id="selectiondd">
+          <select id="chamberUL">
+              <option val="#" selected>Select Chamber</option>
+                <option val="PM1">PM1</option>
+                <option val="PM2">PM2</option>
+                <option val="PM3">PM3</option>
+                <option val="PM4">PM4</option>
+          </select>
           
-            <select id="attributeUL">
-              <option val="#" selected>Select Attribute</option>
-            </select>
-              
-            <div id="chartdiv"></div>               
+          <select id="dateUL">
+            <option val="#" selected>Select Date</option>
+            
+          </select>
+          <select id="fileUL">
+            <option val="#" selected>Select File</option>
+          </select>
+        
+          <select id="attributeUL">
+            <option val="#" selected>Select Attribute</option>
+          </select>
+        </div>
+        <div class="col-md-2"></div>
+      </div>  
+      <div id="chartdiv"></div>               
     </div>
     <div class="col-md-2"></div>
-  </div>
+  </div> 
 </div> 
 </body>
 </html>

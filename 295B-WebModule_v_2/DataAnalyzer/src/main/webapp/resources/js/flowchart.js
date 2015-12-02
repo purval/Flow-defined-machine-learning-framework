@@ -1,5 +1,4 @@
 
-
 init  = function() {
     if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
     var dollor = go.GraphObject.make;  // for conciseness in defining templates
@@ -229,19 +228,19 @@ init  = function() {
     );
     // initialize the Palette that is on the left side of the page
     addPallete = function(){
-    myPalette =
+      myPalette =
       dollor(go.Palette, "myPalette",  // must name or refer to the DIV HTML element
-        {
-          "animationManager.duration": 800, // slightly longer than default (600ms) animation
-          nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
-          model: new go.GraphLinksModel([  // specify the contents of the Palette
-            { category: "Comment", text: "Comment" },
-            { text: "Random Forest" },
-            { text: "PCA" },
-            { text: "Logistic Regression" },
-            { text: "Linear Regression" }
-          ])
-        });
+      {
+        "animationManager.duration": 800, // slightly longer than default (600ms) animation
+        nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
+        model: new go.GraphLinksModel([  // specify the contents of the Palette
+          { category: "Comment", text: "Comment" },
+          { text: "Random Forest" },
+          { text: "PCA" },
+          { text: "Logistic Regression" },
+          { text: "Linear Regression" }
+        ])
+      });
     }
   }
 
@@ -303,6 +302,7 @@ init  = function() {
                   +'{"key":-2, "category":"End", "loc":"175 -500", "text":"End!"}],'
                   +'"linkDataArray": []}'; 
     myDiagram.model = go.Model.fromJson(reload);
+    $("#fsdiv").html("");
   }
 
   function setFlow(flow) {
@@ -323,61 +323,137 @@ init  = function() {
   }
 
   $(document).ready(function(){
-	  
-	  var graphkeys = [{"key":-1,"text":"Start", "loc":"70 -500"},{"key":-2,"text":"End!", "loc":"70 -500"}
-	  ,{"key":-3,"text":"Random Forest", "loc":"70 -600"},{"key":-4,"text":"PCA", "loc":"70 -500"}
-	  ,{"key":-5,"text":"Logistic Regression", "loc":"70 -500"},{"key":-6,"text":"Linear Regression", "loc":"70 -500"}
-	  ,{"key":-7,"text":"Comment", "loc":"70 -500"},{"key":-8,"text":"Dataset", "loc":"70 -500"}
-	  ,{"key":-9,"text":"Feature Selection", "loc":"70 -500"},{"key":-10,"text":"Parameter Setting", "loc":"70 -500"}];
-	 /*$("#dataset").click(function(){
-		 if($('#up').is(":visible")){
-			 $('#up').hide();
-		 }else{
-			 $('#up').show();
-		 } 
-	 }); */
-	 
-	 $('#datasetButton').on('click', function () {
-		 var form = new FormData(document.getElementById('datasetform'));
-		 $.ajax({
-		  url: "http://localhost:8080/dataanalyzer/uploaddataset",
-		  data: form,
-		  dataType: 'text',
-		  processData: false,
-		  contentType: false,
-		  type: 'POST',
-		  success: function (response) {
-		      var json = JSON.parse(response);
-		      console.log(json);
-		      for (var key in json) {
-	    	   if (json.hasOwnProperty(key)) {
-	    	     //console.log(key + " -> " + json[key]);
-	    	   }
-	    	  }
-		      $('#fileUploader').modal('hide');
+    var fsjson;
+    var missingval = "zero";
+    var metadata = $("#metadata").val();
+    if(metadata != ''){
+      generate(metadata);
+    }
+
+    var graphkeys = [{"key":-1,"text":"Start", "loc":"70 -500"},{"key":-2,"text":"End!", "loc":"70 -500"}
+    ,{"key":-3,"text":"Random Forest", "loc":"70 -600"},{"key":-4,"text":"PCA", "loc":"70 -600"}
+    ,{"key":-5,"text":"Logistic Regression", "loc":"70 -600"},{"key":-6,"text":"Linear Regression", "loc":"70 -600"}
+    ,{"key":-7,"text":"Comment", "loc":"70 -500"},{"key":-8,"text":"Dataset", "loc":"70 -700"}
+    ,{"key":-9,"text":"Feature Selection", "loc":"70 -650"},{"key":-10,"text":"Parameter Setting", "loc":"100 -650"}];
+   /*$("#dataset").click(function(){
+     if($('#up').is(":visible")){
+       $('#up').hide();
+     }else{
+       $('#up').show();
+     } 
+   }); */
+   
+   $('#datasetButton').on('click', function () {
+     var form = new FormData(document.getElementById('datasetform'));
+     $.ajax({
+      url: "http://localhost:8080/dataanalyzer/uploaddataset",
+      data: form,
+      dataType: 'text',
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: function (response) {
+          reset();
+          generate(response);
+          $('#fileUploader').modal('hide');
           var diajson = JSON.parse(myDiagram.model.toJson());
           diajson.nodeDataArray.push(graphkeys[7]);
           setFlow(diajson);
-		  },
-		  error: function (jqXHR) {
-			  console.log(jqXHR);
-		  }
-		 });
-	  });
-	 
-	 $("#fsButton").click(function(){
-     var diajson = JSON.parse(myDiagram.model.toJson());
-     diajson.nodeDataArray.push(graphkeys[8]);
-     setFlow(diajson);
+          save();
+      },
+      error: function (jqXHR) {
+        console.log(jqXHR);
+      }
+     });
+    });
+
+    function generate(response){
+      var resjson = JSON.parse(response);
+      fsjson = resjson;
+
+      $("#fsdiv").html("");
+      var html = ''; var i;
+      for(i=0;i<resjson.length;i++){
+        html += '<div class="box" id="box'+i+'"><a class="boxclose" id="'+i+'"></a>'+resjson[i].name+'</div>';
+      }
+
+      $("#fsdiv").append(html);
+
+      var j = 0;
+      while(j<i){
+        $('#'+j).click(function(){
+          fsjson[this.id].flag = false;
+          $('#box'+j).hide();
+        });
+        j++;
+      }
+    }
+
+   function queryParams() {
+        return {
+            type: 'owner',
+            sort: 'updated',
+            direction: 'desc',
+            per_page: 100,
+            page: 1
+        };
+    }
+    
+   $("#fsButton").click(function(){
+     console.log(JSON.stringify(fsjson));
+     $.ajax({
+      url: "http://localhost:8080/dataanalyzer/metadata",
+      type: 'POST',
+      dataType: 'text',
+      processData: false,
+      contentType: false,
+      data: JSON.stringify(fsjson),
+      success: function (response) {
+        console.log(response);
+        var diajson = JSON.parse(myDiagram.model.toJson());
+        diajson.nodeDataArray.push(graphkeys[8]);
+        setFlow(diajson);
+        save();
+      },
+      error: function (jqXHR) {
+        console.log("err : ");
+        console.log(jqXHR);
+      }
+     });
      $('#fSelector').modal('hide');
-	 });
-	 
-	 $("#psButton").click(function(){
-		 var diajson = JSON.parse(myDiagram.model.toJson());
-     diajson.nodeDataArray.push(graphkeys[9]);
-     setFlow(diajson);
+   });
+   
+   $("#psButton").click(function(){
+     var split = $("#split").val();
+     if(split == ''){
+      split = "70/30";
+     }
+     console.log(missingval +"  "+split);
+     var obj = {
+        split : split,
+        missingval : missingval
+     };
+     $.ajax({
+      url: "http://localhost:8080/dataanalyzer/parameters",
+      type: 'POST',
+      dataType: 'text',
+      processData: false,
+      contentType: false,
+      data: JSON.stringify(obj),
+      success: function (response) {
+        console.log(response);
+        var diajson = JSON.parse(myDiagram.model.toJson());
+        diajson.nodeDataArray.push(graphkeys[9]);
+        setFlow(diajson);
+        save();
+      },
+      error: function (jqXHR) {
+        console.log("err : ");
+        console.log(jqXHR);
+      }
+     });
      $('#paramSetter').modal('hide');
-	 });
+   });
 
    $("#delete").click(function(){
       $.ajax({
@@ -429,16 +505,31 @@ init  = function() {
        });
    }
 
-	 var flag = true;
-	 $("#algo").click(function(){
-		 if(flag){
-			 var html = '<div id="myPalette" class="palletey"></div>';
-			 $("#palleteDiv").append(html);
-			 addPallete();
-			 flag = false;
-		 }else{
-			 $("#palleteDiv").html("");
-			 flag = true;
-		 }
-	 });
+   $("#zero").click(function(){
+    missingval = this.id;
+   });
+   $("#mean").click(function(){
+    missingval = this.id;
+   });
+   $("#median").click(function(){
+    missingval = this.id;
+   });
+
+   var flag = true;
+   $("#algo").click(function(){
+     if(flag){
+       var html = '<div id="myPalette" class="palletey"></div>';
+       $("#palleteDiv").append(html);
+       addPallete();
+       flag = false;
+     }else{
+       $("#palleteDiv").html("");
+       flag = true;
+     }
+   });
+
+   $("#visual").click(function(){
+    location.href="http://localhost:8080/dataanalyzer/lam";
+   });
+
   });

@@ -58,26 +58,27 @@ public class CommonUtils {
 	
 	public static String iterateForMetadata(String[] metadata, boolean metadataAvailable){
 		StringBuilder builder = new StringBuilder();
-		builder.append("{");
+		builder.append("[");
 		int counter = 0;
 		logger.info("iterate over metadata arr : "+metadata.length);
 		while(counter < metadata.length){
 			if(!metadataAvailable){
 				if(counter == metadata.length-1){
-					builder.append("\"feature"+counter+"\":\"false\"");
+					//builder.append("\"feature"+counter+"\":\"true\"");
+					builder.append("{\"name\":\"feature"+counter+"\",\"flag\":\"true\"}");
 				}else{
-					builder.append("\"feature"+counter+"\":\"false\",");
+					builder.append("{\"name\":\"feature"+counter+"\",\"flag\":\"true\"},");
 				}
 			}else{
 				if(counter == metadata.length-1){
-					builder.append("\""+metadata[counter]+"\":\"false\"");
+					builder.append("{\"name\":\""+metadata[counter]+"\",\"flag\":\"true\"}");
 				}else{
-					builder.append("\""+metadata[counter]+"\":\"false\",");
+					builder.append("{\"name\":\""+metadata[counter]+"\",\"flag\":\"true\"},");
 				}
 			}
 			counter++;
 		}
-		builder.append("}");
+		builder.append("]");
 		return builder.toString();
 	}
 	
@@ -88,6 +89,9 @@ public class CommonUtils {
 			String line = "";
 			while((line = br.readLine()) != null){
 				String[] metadata = line.split(" ");
+				if(metadata.length < 2){
+					metadata = line.split(",");
+				}
 				if(metadata.length < 1){
 					logger.info("split by space failed");
 					return "error";
