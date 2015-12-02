@@ -1,5 +1,8 @@
 package edu.sjsu.dataanalyzer;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
@@ -14,9 +17,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mongodb.DBObject;
 
@@ -141,7 +146,6 @@ public class UserController {
 		return "experiment";
 	}
 	
-<<<<<<< HEAD
 	 @RequestMapping(value="/upload", method=RequestMethod.GET)
 	    public @ResponseBody String provideUploadInfo() {
 		 System.out.println("In Provide Upload Info \n");
@@ -171,7 +175,6 @@ public class UserController {
 	        }
 	    	
 	    }
-=======
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(WebRequest request, SessionStatus status, HttpSession session) {
 		logger.info("end user session");
@@ -180,5 +183,4 @@ public class UserController {
 	    request.removeAttribute("user", WebRequest.SCOPE_SESSION);
 	    return "userlogin";
 	}
->>>>>>> b984448b2b9f2870ee563d8a11896ec7a129a0f5
 }

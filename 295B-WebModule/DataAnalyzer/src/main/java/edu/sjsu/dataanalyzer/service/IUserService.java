@@ -26,10 +26,7 @@ public interface IUserService {
 	public List getLamDateAndFile(String chamber, String date);
 	public List getLamDateFileAndAtribute(String chamber, String date, String fileName);
 
-<<<<<<< HEAD
 	boolean new_experiment(String filename, String filepath,String experiment_name);
 
-=======
 	public List getExperimentList(String email);
->>>>>>> b984448b2b9f2870ee563d8a11896ec7a129a0f5
 }
