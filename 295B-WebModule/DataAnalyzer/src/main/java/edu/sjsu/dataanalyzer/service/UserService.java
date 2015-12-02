@@ -33,7 +33,7 @@ public class UserService implements IUserService{
 		logger.info("Retrieving an existing user");
 
 		// Retrieve collection
-		DBCollection coll = connector.getCollection("cmpedb","usercollection");
+		DBCollection coll = connector.getCollection("cmpedb","user");
 
 		DBObject doc = new BasicDBObject();
 		doc.put("id", email);
@@ -49,17 +49,34 @@ public class UserService implements IUserService{
 
 		return user;
 	}
+	
+	@Override
+	public List getExperimentList(String email) {
+		logger.info("Retrieving experiment list");
+
+		DBCollection coll = connector.getCollection("cmpedb","user");
+		DBObject doc = new BasicDBObject();
+		doc.put("id", email);
+		DBObject dbObject = coll.findOne(doc);
+		if(dbObject==null){
+			return null;
+		}
+		BasicDBList values = (BasicDBList) dbObject.get("experiments");
+		return values;
+	}
 
 	@Override
 	public boolean add(User user) {
 		logger.info("Adding a new user");
 
 		try {
-			DBCollection coll = connector.getCollection("cmpedb","usercollection");
+			DBCollection coll = connector.getCollection("cmpedb","user");
 			BasicDBObject doc = new BasicDBObject();
 			doc.put("id", user.getEmail() ); 
 			doc.put("displayname", user.getDisplayName());
 			doc.put("password", user.getPassword());
+			BasicDBList experiments = new BasicDBList();
+			doc.append("experiments", experiments);
 			coll.insert(doc);
 
 			return true;
@@ -73,7 +90,7 @@ public class UserService implements IUserService{
 	private DBObject getDBObject( String email ) {
 		logger.info("Retrieving an existing mongo object");
 
-		DBCollection coll = connector.getCollection("cmpedb","usercollection");
+		DBCollection coll = connector.getCollection("cmpedb","user");
 		DBObject doc = new BasicDBObject();
 		doc.put("id", email);
 
@@ -86,7 +103,7 @@ public class UserService implements IUserService{
 
 		try {
 			BasicDBObject item = (BasicDBObject) getDBObject(email);
-			DBCollection coll = connector.getCollection("cmpedb","usercollection");
+			DBCollection coll = connector.getCollection("cmpedb","user");
 			coll.remove(item);
 
 			return true;
@@ -104,7 +121,7 @@ public class UserService implements IUserService{
 		try {
 			BasicDBObject existing = (BasicDBObject) getDBObject( user.getEmail() );
 
-			DBCollection coll = connector.getCollection("cmpedb","usercollection");
+			DBCollection coll = connector.getCollection("cmpedb","user");
 			BasicDBObject edited = new BasicDBObject();
 			edited.put("id", user.getEmail()); 
 			edited.put("displayname", user.getDisplayName());
