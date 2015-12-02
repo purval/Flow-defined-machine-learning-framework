@@ -242,5 +242,18 @@ public class UserService implements IUserService{
 		return distAttributes;
 	}
 
+	@Override
+	public boolean new_experiment(String filename, String filepath,String experiment_name) {
+		// TODO Auto-generated method stub
+		DBCollection coll = connector.getCollection("CMPE295","saved_experiments");
+		BasicDBObject query = new BasicDBObject();
+		query.put("file_name",filename);
+		query.put("file_path",filepath);
+		query.put("experiment_name",experiment_name);
+		//DBCursor cur = coll.find(query);
+		return true;
+	}
+	
+	
 
 }

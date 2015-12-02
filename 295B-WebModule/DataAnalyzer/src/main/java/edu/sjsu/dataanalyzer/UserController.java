@@ -1,5 +1,8 @@
 package edu.sjsu.dataanalyzer;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
@@ -14,9 +17,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mongodb.DBObject;
 
@@ -141,6 +146,35 @@ public class UserController {
 		return "experiment";
 	}
 	
+	 @RequestMapping(value="/upload", method=RequestMethod.GET)
+	    public @ResponseBody String provideUploadInfo() {
+		 System.out.println("In Provide Upload Info \n");
+	        return "You can upload a file by posting to this same URL.";
+	    }
+	 	//@RequestParam("name") String name,@RequestParam("file") MultipartFile file
+	 @RequestMapping(value="/upload", method=RequestMethod.POST)
+	   public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("name") String name, @RequestParam("experiment_name") String experiment_name){
+	       //System.out.println(file.getName() + name);
+	    	 if (!file.isEmpty()) {
+	            try {
+	                byte[] bytes = file.getBytes();
+	                String fullFileName= file.getOriginalFilename();
+
+	                BufferedOutputStream stream =new BufferedOutputStream(new FileOutputStream(new File("/Users/ruchas/Desktop/"+fullFileName)));
+	                //C://Users//Shubham//Desktop//Karuna//files/
+	                stream.write(bytes);
+	                stream.close();
+	                System.out.println("Handle File Upload \n");
+	                
+	                return "analysis";
+	            } catch (Exception e) {
+	                return "Error";
+	            }
+	        } else {
+	        	return "Error";
+	        }
+	    	
+	    }
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(WebRequest request, SessionStatus status, HttpSession session) {
 		logger.info("end user session");
