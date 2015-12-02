@@ -188,6 +188,8 @@
                                 <div class="tab-content">
                                 <div id="step1" class="tab-pane active">
                                   <div class="form-group">
+                                     <label class="col-sm-2 label-sm"><Strong>Experiment Name: </Strong></label>
+                                     <input type="text" name="experiment_name"><br /> <br />
                                     <label class="col-sm-2 label-sm"><Strong>Browse your file</Strong></label>
                                      <input type="file" name="file"><br />
                                      <label class="col-sm-2 label-sm"><Strong>Name: </Strong></label>

@@ -105,17 +105,19 @@ public class UserController {
 	    }
 	 	//@RequestParam("name") String name,@RequestParam("file") MultipartFile file
 	 @RequestMapping(value="/upload", method=RequestMethod.POST)
-	   public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("name") String name){
-	       System.out.println(file.getName() + name);
+	   public String handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("name") String name, @RequestParam("experiment_name") String experiment_name){
+	       //System.out.println(file.getName() + name);
 	    	 if (!file.isEmpty()) {
 	            try {
 	                byte[] bytes = file.getBytes();
-	                BufferedOutputStream stream =
-	                        new BufferedOutputStream(new FileOutputStream(new File("C://Users//Shubham//Desktop//Karuna//files//"+name+".xlsx")));
+	                String fullFileName= file.getOriginalFilename();
+
+	                BufferedOutputStream stream =new BufferedOutputStream(new FileOutputStream(new File("/Users/ruchas/Desktop/"+fullFileName)));
+	                //C://Users//Shubham//Desktop//Karuna//files/
 	                stream.write(bytes);
 	                stream.close();
-	                
 	                System.out.println("Handle File Upload \n");
+	                
 	                return "analysis";
 	            } catch (Exception e) {
 	                return "Error";
