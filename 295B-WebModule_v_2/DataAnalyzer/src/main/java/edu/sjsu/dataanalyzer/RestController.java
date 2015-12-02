@@ -114,4 +114,20 @@ public class RestController {
 		experimentService.addProcess(exid, processjson);
 		return "{'status':200,'msg':'process flow added'}";
 	}
+	
+	@RequestMapping(value = "/metadata", method = RequestMethod.POST)
+	public @ResponseBody String addMetaData(@RequestBody String metadata, HttpSession session) {
+		logger.info("add or update metadata json "+ metadata);
+		String exid = (String) session.getAttribute("exid");
+		experimentService.addMetadata(exid, metadata);
+		return "{'status':200,'msg':'process flow added'}";
+	}
+	
+	@RequestMapping(value = "/parameters", method = RequestMethod.POST)
+	public @ResponseBody String addParameters(@RequestBody String parameters, HttpSession session) {
+		logger.info("add or update metadata json "+ parameters);
+		String exid = (String) session.getAttribute("exid");
+		experimentService.addParameters(exid, parameters);
+		return "{'status':200,'msg':'process flow added'}";
+	}
 }

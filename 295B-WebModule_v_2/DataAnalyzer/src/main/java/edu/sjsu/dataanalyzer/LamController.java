@@ -23,7 +23,7 @@ public class LamController {
 	@RequestMapping(value = "/lam", method = RequestMethod.GET)
 	public String lam(Locale locale, Model model) {		
 		logger.info("lam visualization page requested");
-		return "LAM";
+		return "lamvisualization";
 	}
 	
 	@RequestMapping(value = "/lam/date", method = RequestMethod.GET)

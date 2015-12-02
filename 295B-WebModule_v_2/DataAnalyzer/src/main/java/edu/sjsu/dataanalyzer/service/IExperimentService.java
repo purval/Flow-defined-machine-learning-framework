@@ -13,4 +13,8 @@ public interface IExperimentService {
 	public void deleteExperiment(String uuid, String email);
 
 	public void addProcess(String uuid, String processjson);
+
+	public void addMetadata(String uuid, String metadata);
+
+	public void addParameters(String uuid, String parameters);
 }

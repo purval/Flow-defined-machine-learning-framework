@@ -106,4 +106,24 @@ public class ExperimentService implements IExperimentService{
 		DBObject finddoc = new BasicDBObject("id",UUID.fromString(uuid));
 		coll.update(finddoc, adddoc);
 	}
+	
+	@Override
+	public void addMetadata(String uuid, String metadata){
+		logger.info("metadata modification for experiment "+uuid);
+		
+		DBCollection coll = connector.getCollection("cmpedb","experiments");
+		DBObject adddoc = new BasicDBObject("$set", new BasicDBObject("metadata", metadata));
+		DBObject finddoc = new BasicDBObject("id",UUID.fromString(uuid));
+		coll.update(finddoc, adddoc);
+	}
+	
+	@Override
+	public void addParameters(String uuid, String parameters){
+		logger.info("parameters modification for experiment "+uuid);
+		
+		DBCollection coll = connector.getCollection("cmpedb","experiments");
+		DBObject adddoc = new BasicDBObject("$set", new BasicDBObject("parameters", parameters));
+		DBObject finddoc = new BasicDBObject("id",UUID.fromString(uuid));
+		coll.update(finddoc, adddoc);
+	}
 }
