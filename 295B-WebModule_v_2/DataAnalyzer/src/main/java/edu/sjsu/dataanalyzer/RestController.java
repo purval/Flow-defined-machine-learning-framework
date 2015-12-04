@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import edu.sjsu.dataanalyzer.bean.ProcessStatus;
 import edu.sjsu.dataanalyzer.bean.User;
 import edu.sjsu.dataanalyzer.service.ExperimentService;
 import edu.sjsu.dataanalyzer.service.UserService;
@@ -45,6 +46,7 @@ public class RestController {
 	@RequestMapping(value = "/uploaddataset", method = RequestMethod.POST)
 	public @ResponseBody String uploadLogo(MultipartHttpServletRequest request, HttpSession session) {
 	    try {
+	    	String uuid = (String) session.getAttribute("exid");
 	    	Iterator<String> itr = request.getFileNames();
 	    	MultipartFile file = request.getFile(itr.next());
 	    	logger.info("filename : "+file.getOriginalFilename());
@@ -56,6 +58,8 @@ public class RestController {
 	    		return "{'status':400,'msg':'upload failed'}";
 	    	}
 	    	logger.info("filepath : "+filepath);
+	    	CommonUtils.setConsoleLog(uuid, new ProcessStatus("status", "file saved", ""));
+	    	
 	    	// generate metadata
 	    	File metafile = new File(filepath);
 	    	if(!metafile.exists()){
@@ -69,11 +73,14 @@ public class RestController {
 	    	}
 	    	logger.info("metadata json : "+metajson);
 	    	
+	    	CommonUtils.setConsoleLog(uuid, new ProcessStatus("status", "meatajson prepared", ""));
+	    	
 	    	//save metadata with file path into mongodb
-	    	String uuid = (String) session.getAttribute("exid");
 	    	logger.info("uuid : "+uuid);
 	    	experimentService.insertMetaData(metajson, filepath, uuid);
 	    
+	    	CommonUtils.setConsoleLog(uuid, new ProcessStatus("status", "file processed and stored into filesystem", ""));
+	    	
 	    	//return metadata json
 	    	return metajson;
 	    } catch (Exception e) {
@@ -111,6 +118,9 @@ public class RestController {
 	public @ResponseBody String addProcessFlow(@RequestBody String processjson, HttpSession session) {
 		logger.info("add or update process flow json "+ processjson);
 		String exid = (String) session.getAttribute("exid");
+		
+		CommonUtils.setConsoleLog(exid, new ProcessStatus("status", "processflow saved", ""));
+		
 		experimentService.addProcess(exid, processjson);
 		return "{'status':200,'msg':'process flow added'}";
 	}
@@ -129,5 +139,16 @@ public class RestController {
 		String exid = (String) session.getAttribute("exid");
 		experimentService.addParameters(exid, parameters);
 		return "{'status':200,'msg':'process flow added'}";
+	}
+	
+	@RequestMapping(value = "/consolelog", method = RequestMethod.GET)
+	public @ResponseBody String returnConsoleLog(HttpSession session) {
+		logger.info("poll for process status logs");
+		String exid = (String) session.getAttribute("exid");
+		List<String> logs = CommonUtils.getConsoleLog(exid); 
+		if(logs != null){
+			return logs.toString();
+		}
+		return null;
 	}
 }
