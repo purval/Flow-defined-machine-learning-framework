@@ -1,6 +1,7 @@
 package edu.sjsu.dataanalyzer;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,7 +50,6 @@ public class RestController {
 			Iterator<String> itr = request.getFileNames();
 			MultipartFile file = request.getFile(itr.next());
 			logger.info("filename : "+file.getOriginalFilename());
-
 			//save file to local system
 			String filepath = CommonUtils.storeToFileSystem(file);
 			if(filepath.equalsIgnoreCase("error")){
@@ -64,8 +64,8 @@ public class RestController {
 				logger.info("upload failed / file does not exists");
 				return "{'status':400,'msg':'metadata generation failed / file not found'}";
 			}
-			String metajson = CommonUtils.generateMetadata(metafile);
-			if(metajson.equalsIgnoreCase("error")){
+			ArrayList<String> metajson = CommonUtils.generateMetadata(metafile);
+			if(metajson.get(0).equalsIgnoreCase("ERROR")){
 				logger.info("upload failed / metadata generation failed");
 				return "{'status':400,'msg':'metadata generation failed / file not found'}";
 			}
@@ -76,7 +76,7 @@ public class RestController {
 			experimentService.insertMetaData(metajson, filepath, uuid);
 
 			//return metadata json
-			return metajson;
+			return metajson.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -116,11 +116,11 @@ public class RestController {
 		return "{'status':200,'msg':'process flow added'}";
 	}
 
-	@RequestMapping(value = "/metadata", method = RequestMethod.POST)
-	public @ResponseBody String addMetaData(@RequestBody String metadata, HttpSession session) {
-		logger.info("add or update metadata json "+ metadata);
+	@RequestMapping(value = "/exclude", method = RequestMethod.POST)
+	public @ResponseBody String addMetaData(@RequestBody String exclusionList, HttpSession session) {
+		logger.info("add or update excluded column list "+ exclusionList);
 		String exid = (String) session.getAttribute("exid");
-		experimentService.addMetadata(exid, metadata);
+		experimentService.addExclusionList(exid, exclusionList);
 		return "{'status':200,'msg':'process flow added'}";
 	}
 
