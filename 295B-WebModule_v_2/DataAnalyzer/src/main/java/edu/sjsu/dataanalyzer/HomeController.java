@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import edu.sjsu.dataanalyzer.bean.User;
+import edu.sjsu.dataanalyzer.utils.MLhelper;
 
 @Controller
 public class HomeController {
@@ -25,6 +26,7 @@ public class HomeController {
 		User user = (User) session.getAttribute("user");
 		model.addAttribute("user", user);
 		session.removeAttribute("exid");
+		
 		
 		return "home";
 	}
