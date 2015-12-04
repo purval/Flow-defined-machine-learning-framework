@@ -142,4 +142,34 @@ public class CommonUtils {
 		}
 		return null;
 	}
+	
+	public static void runFlow(String[] flowSteps, String uuid){
+//		var graphkeys = [{"key":-1,"text":"Start", "action":""},{"key":-2,"text":"End!", "action":""}
+//        ,{"key":-3,"text":"Random Forest", "action":""},{"key":-4,"text":"PCA", "action":""}
+//        ,{"key":-5,"text":"Logistic Regression", "action":""},{"key":-6,"text":"Linear Regression", "action":""}
+//        ,{"key":-7,"text":"Comment", "action":""},{"key":-8,"text":"Dataset", "action":"fileUploader"}
+//        ,{"key":-9,"text":"Feature Selection", "action":"fSelector"},{"key":-10,"text":"Parameter Setting", "action":"paramSetter"}];
+		
+		// console message type: error, result, status
+		for(String stepX : flowSteps){
+			if(stepX.equals(-1)){
+				setConsoleLog(uuid,"status","The experiment has been started successfully.");
+			}
+			if(stepX.equals(-2)){
+				setConsoleLog(uuid,"status","The experiment completed successfully.");
+			}
+			if(stepX.equals(-8)){
+				
+				setConsoleLog(uuid,"status","The experiment completed successfully.");
+			}
+			
+			
+		}
+		
+		
+		
+		
+	}
+	
+	
 }

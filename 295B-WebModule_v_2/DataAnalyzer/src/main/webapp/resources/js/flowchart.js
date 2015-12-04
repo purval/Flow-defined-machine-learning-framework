@@ -49,10 +49,10 @@ init  = function() {
     function addParameters(key){
         console.log("key"+key);
         
-        var graphkeys = [{"key":-1,"text":"Start", "action":""},{"key":-2,"text":"End!", "action":""}
-        ,{"key":-3,"text":"Random Forest", "action":""},{"key":-4,"text":"PCA", "action":""}
-        ,{"key":-5,"text":"Logistic Regression", "action":""},{"key":-6,"text":"Linear Regression", "action":""}
-        ,{"key":-7,"text":"Comment", "action":""},{"key":-8,"text":"Dataset", "action":"fileUploader"}
+        var graphkeys = [{"key":-1,"text":"Comment", "action":""},{"key":-2,"text":"Boosted Decision Tree", "action":""}
+        ,{"key":-3,"text":"Decision Tree", "action":""},{"key":-4,"text":"Gradient Boosting", "action":""}
+        ,{"key":-5,"text":"Logistic Regression", "action":""},{"key":-6,"text":"Pearson Correlation", "action":""}
+        ,{"key":-7,"text":"PCA", "action":""},{"key":-8,"text":"Dataset", "action":"fileUploader"}
         ,{"key":-9,"text":"Feature Selection", "action":"fSelector"},{"key":-10,"text":"Parameter Setting", "action":"paramSetter"}];
 
         var elem = Math.abs(key)-1;
@@ -235,10 +235,12 @@ init  = function() {
         nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
         model: new go.GraphLinksModel([  // specify the contents of the Palette
           { category: "Comment", text: "Comment" },
-          { text: "Random Forest" },
-          { text: "PCA" },
+          { text: "Boosted Decision Tree" },
+          { text: "Decision Tree" },
+          { text: "Gradient Boosting" },
           { text: "Logistic Regression" },
-          { text: "Linear Regression" }
+          { text: "Pearson Correlation Similarity" },
+          { text: "Principal Component Analysis (PCA)" }
         ])
       });
     }
@@ -360,10 +362,10 @@ init  = function() {
       generate(metadata);
     }
 
-    var graphkeys = [{"key":-1,"text":"Start", "loc":"70 -500"},{"key":-2,"text":"End!", "loc":"70 -500"}
-    ,{"key":-3,"text":"Random Forest", "loc":"70 -600"},{"key":-4,"text":"PCA", "loc":"70 -600"}
-    ,{"key":-5,"text":"Logistic Regression", "loc":"70 -600"},{"key":-6,"text":"Linear Regression", "loc":"70 -600"}
-    ,{"key":-7,"text":"Comment", "loc":"70 -500"},{"key":-8,"text":"Dataset", "loc":"70 -700"}
+    var graphkeys = [{"key":-1,"text":"Comment", "loc":"70 -500"},{"key":-2,"text":"Boosted Decision Tree", "loc":"70 -500"}
+    ,{"key":-3,"text":"Decision Tree", "loc":"70 -600"},{"key":-4,"text":"Gradient Boosting", "loc":"70 -600"}
+    ,{"key":-5,"text":"Logistic Regression", "loc":"70 -600"},{"key":-6,"text":"Pearson Correlation", "loc":"70 -600"}
+    ,{"key":-7,"text":"PCA", "loc":"70 -500"},{"key":-8,"text":"Dataset", "loc":"70 -700"}
     ,{"key":-9,"text":"Feature Selection", "loc":"70 -650"},{"key":-10,"text":"Parameter Setting", "loc":"100 -650"}];
    /*$("#dataset").click(function(){
      if($('#up').is(":visible")){
@@ -371,6 +373,7 @@ init  = function() {
      }else{
        $('#up').show();
      } 
+     
    }); */
    
    $('#datasetButton').on('click', function () {
