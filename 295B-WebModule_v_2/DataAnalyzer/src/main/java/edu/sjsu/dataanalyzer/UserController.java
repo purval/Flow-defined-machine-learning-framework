@@ -1,5 +1,6 @@
 package edu.sjsu.dataanalyzer;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
@@ -173,5 +175,14 @@ public class UserController {
 		return "userlogin";
 	}
 	
+	
+	@RequestMapping(value = "/experiments_metadata", method = RequestMethod.GET)
+	public @ResponseBody String getExperimentColumns() {		
+		logger.info("success :: ");
+		UserService us = new UserService();
+		String values = us.getExperimentInputColumns("email", "exp1");
+		logger.info("Metadata: "+values);
+		return values.toString();
+	}
 	
 }
