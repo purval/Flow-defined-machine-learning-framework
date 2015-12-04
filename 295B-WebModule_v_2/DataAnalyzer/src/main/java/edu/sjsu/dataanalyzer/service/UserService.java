@@ -2,6 +2,7 @@ package edu.sjsu.dataanalyzer.service;
 
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -242,5 +243,32 @@ public class UserService implements IUserService{
 		return distAttributes;
 	}
 
+	@Override
+	public String getExperimentInputColumns(String email, String experiment_name) {
+		// TODO Auto-generated method stub
+		DBCollection coll = connector.getCollection("cmpedb","experiments");
+		BasicDBObject query = new BasicDBObject();
+		query.put("experiment_name","exp1");
+		//query.put("email",email);
+		
+		//DBCursor cur = coll.find(query);
+		List distAttributes = coll.distinct("metadata", query);
+		StringBuilder InputColumns = new StringBuilder();
+		for(Object k : distAttributes){
+			String temp = k.toString().replaceAll("\\}\\{\\[\\]\"", "");
+			String[] splits = temp.split(",");
+			for(int i=0;i<splits.length;i++){
+				if (splits[i].contains("flag") && splits[i].contains("true")){
+					String[] NameANDMetaData = splits[i-1].split(":");
+					InputColumns.append(NameANDMetaData[1].replace("\"", ""));
+					if(i!= splits.length-1){InputColumns.append(",");}
+				}
+			
+			}
+		}
+		System.out.println("distinct metadata list: "+InputColumns);
+		return InputColumns.toString();
+	}
+	
 
 }
