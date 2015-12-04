@@ -100,7 +100,8 @@
     </div>
     <div class="col-md-3">
         <div id="status" class="divStyle">
-          <div style="padding: 2px 20px;"><h4>Process Status</h4></div>
+          <div style="padding: 2px 20px;"><table><tr><td><h4>Process Status</h4></td><td><button id="clear" type="button" class="btn btn-warning" style="margin-left:40px">Clear</button></td></tr></table></div>
+          <div id="consolelog"></div>
         </div>
     </div>
   </div>

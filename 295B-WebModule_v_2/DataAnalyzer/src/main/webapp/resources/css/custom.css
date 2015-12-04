@@ -66,3 +66,17 @@ a.boxclose{
 .boxclose:before {
     content: "×";
 }
+
+#consolelog{
+    background: #000000;
+    overflow-y: scroll;
+    color:#FFFFFF;
+    margin: 0 5px 0 5px;
+    border: 1px gray; 
+    border-radius: 5px; 
+    height: 80%;
+}
+
+.ptext{
+    margin-left: 3px;
+}
