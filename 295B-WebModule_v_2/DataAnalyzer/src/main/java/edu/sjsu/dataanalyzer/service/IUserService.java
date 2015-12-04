@@ -27,4 +27,6 @@ public interface IUserService {
 	public List getLamDateFileAndAtribute(String chamber, String date, String fileName);
 
 	public List getExperimentList(String email);
+	public String getExperimentInputColumns(String email, String experiment_name);
+
 }
