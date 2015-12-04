@@ -1,12 +1,14 @@
 package edu.sjsu.dataanalyzer.service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -70,7 +72,7 @@ public class ExperimentService implements IExperimentService{
 	}
 	
 	@Override
-	public void insertMetaData(String metajson, String filepath, String uuid){
+	public void insertMetaData(ArrayList<String> metajson, String filepath, String uuid){
 		logger.info("insert metajson and file path");
 		
 		DBCollection coll = connector.getCollection("cmpedb","experiments");
@@ -124,6 +126,16 @@ public class ExperimentService implements IExperimentService{
 		DBCollection coll = connector.getCollection("cmpedb","experiments");
 		DBObject adddoc = new BasicDBObject("$set", new BasicDBObject("parameters", parameters));
 		DBObject finddoc = new BasicDBObject("id",UUID.fromString(uuid));
+		coll.update(finddoc, adddoc);
+	}
+	
+	@Override
+	public void addExclusionList(String exid, String exclusionList) {
+		logger.info("excluding columns for experiment: "+exid);
+		
+		DBCollection coll = connector.getCollection("cmpedb","experiments");
+		DBObject adddoc = new BasicDBObject("$set", new BasicDBObject("excludeList", exclusionList));
+		DBObject finddoc = new BasicDBObject("id",UUID.fromString(exid));
 		coll.update(finddoc, adddoc);
 	}
 }

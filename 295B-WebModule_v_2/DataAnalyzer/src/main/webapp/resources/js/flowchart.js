@@ -353,6 +353,7 @@ init  = function() {
 
   $(document).ready(function(){
     var fsjson;
+    var feList = [];
     var missingval = "zero";
     var metadata = $("#metadata").val();
     if(metadata != ''){
@@ -373,7 +374,7 @@ init  = function() {
    }); */
    
    $('#datasetButton').on('click', function () {
-     pollServerLogs();
+     //pollServerLogs();
      var form = new FormData(document.getElementById('datasetform'));
      $.ajax({
       url: "http://localhost:8080/dataanalyzer/uploaddataset",
@@ -398,13 +399,14 @@ init  = function() {
     });
 
     function generate(response){
-      var resjson = JSON.parse(response);
-      fsjson = resjson;
+      feList=[];
+      var replString = response.replace("[","").replace("]","");
+      var resSplit = replString.split(", ");
 
       $("#fsdiv").html("");
       var html = ''; var i;
-      for(i=0;i<resjson.length;i++){
-        html += '<div class="box" id="box'+i+'"><a class="boxclose" id="'+i+'"></a>'+resjson[i].name+'</div>';
+      for(i=0;i<resSplit.length;i++){
+        html += '<div class="box" id="box'+i+'"><a class="boxclose" id="'+i+'"></a>'+resSplit[i]+'</div>';
       }
 
       $("#fsdiv").append(html);
@@ -412,8 +414,8 @@ init  = function() {
       var j = 0;
       while(j<i){
         $('#'+j).click(function(){
-          fsjson[this.id].flag = false;
-          $('#box'+j).hide();
+          feList.push(this.id);
+          $('#box'+this.id).hide();
         });
         j++;
       }
@@ -430,14 +432,14 @@ init  = function() {
     }
     
    $("#fsButton").click(function(){
-     console.log(JSON.stringify(fsjson));
+     console.log(JSON.stringify(feList));
      $.ajax({
-      url: "http://localhost:8080/dataanalyzer/metadata",
+      url: "http://localhost:8080/dataanalyzer/exclude",
       type: 'POST',
       dataType: 'text',
       processData: false,
       contentType: false,
-      data: JSON.stringify(fsjson),
+      data: JSON.stringify(feList),
       success: function (response) {
         console.log(response);
         var diajson = JSON.parse(myDiagram.model.toJson());

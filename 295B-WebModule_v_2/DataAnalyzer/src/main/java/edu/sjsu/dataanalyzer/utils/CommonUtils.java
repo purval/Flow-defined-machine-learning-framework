@@ -60,34 +60,32 @@ public class CommonUtils {
 		return true;  
 	}
 	
-	public static String iterateForMetadata(String[] metadata, boolean metadataAvailable){
-		StringBuilder builder = new StringBuilder();
-		builder.append("[");
+	public static ArrayList<String> iterateForMetadata(String[] metadata, boolean metadataAvailable){
+		ArrayList<String> build = new ArrayList<String>();
 		int counter = 0;
 		logger.info("iterate over metadata arr : "+metadata.length);
 		while(counter < metadata.length){
 			if(!metadataAvailable){
 				if(counter == metadata.length-1){
 					//builder.append("\"feature"+counter+"\":\"true\"");
-					builder.append("{\"name\":\"feature"+counter+"\",\"flag\":\"true\"}");
+					build.add("feature"+counter);
 				}else{
-					builder.append("{\"name\":\"feature"+counter+"\",\"flag\":\"true\"},");
+					build.add("feature"+counter);
 				}
 			}else{
 				if(counter == metadata.length-1){
-					builder.append("{\"name\":\""+metadata[counter]+"\",\"flag\":\"true\"}");
+					build.add(metadata[counter]);
 				}else{
-					builder.append("{\"name\":\""+metadata[counter]+"\",\"flag\":\"true\"},");
+					build.add(metadata[counter]);
 				}
 			}
 			counter++;
 		}
-		builder.append("]");
-		return builder.toString();
+		return build;
 	}
 	
-	public static String generateMetadata(File file){
-		String metadataStr = "";
+	public static ArrayList<String> generateMetadata(File file){
+		ArrayList<String> metadataStr2 = new ArrayList<String>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String line = "";
@@ -98,21 +96,25 @@ public class CommonUtils {
 				}
 				if(metadata.length < 1){
 					logger.info("split by space failed");
-					return "error";
+					ArrayList<String> metadataError = new ArrayList<String>();
+					metadataError.add("ERROR");
+					return metadataError;
 				}else{
 					if(isNumeric(metadata[0])){
-						metadataStr = iterateForMetadata(metadata, false);
+						metadataStr2 = iterateForMetadata(metadata, false);
 					}else{
-						metadataStr = iterateForMetadata(metadata, true);
+						metadataStr2 = iterateForMetadata(metadata, true);
 					}
 				}
 				break;
 			}
 			br.close();
-			return metadataStr;
+			return metadataStr2;
 		} catch (IOException e) {
+			ArrayList<String> metadataError = new ArrayList<String>();
+			metadataError.add(e.toString());
 			e.printStackTrace();
-			return "error";
+			return metadataError;
 		}
 	}
 	

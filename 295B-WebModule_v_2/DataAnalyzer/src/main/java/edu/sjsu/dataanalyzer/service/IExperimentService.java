@@ -1,5 +1,7 @@
 package edu.sjsu.dataanalyzer.service;
 
+import java.util.ArrayList;
+
 import com.mongodb.DBObject;
 
 public interface IExperimentService {
@@ -8,7 +10,7 @@ public interface IExperimentService {
 
 	public DBObject getExperimentDetails(String uuid);
 
-	public void insertMetaData(String metajson, String filepath, String uuid);
+	public void insertMetaData(ArrayList<String> metajson, String filepath, String uuid);
 
 	public void deleteExperiment(String uuid, String email);
 
@@ -17,4 +19,6 @@ public interface IExperimentService {
 	public void addMetadata(String uuid, String metadata);
 
 	public void addParameters(String uuid, String parameters);
+
+	public void addExclusionList(String exid, String exclusionList);
 }
