@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import edu.sjsu.dataanalyzer.bean.ProcessStatus;
 import edu.sjsu.dataanalyzer.bean.User;
 import edu.sjsu.dataanalyzer.service.ExperimentService;
 import edu.sjsu.dataanalyzer.service.UserService;
@@ -28,67 +27,62 @@ import edu.sjsu.dataanalyzer.utils.CommonUtils;
 @Controller
 public class RestController {
 	private static final Logger logger = LoggerFactory.getLogger(RestController.class);
-	
+
 	@Autowired(required=true)
 	@Qualifier(value="userService")
 	private UserService userService;
 	public void setUserService(UserService userService){
 		this.userService = userService;
 	}
-	
+
 	@Autowired(required=true)
 	@Qualifier(value="experimentService")
 	private ExperimentService experimentService;
 	public void setExperimentService(ExperimentService experimentService){
 		this.experimentService = experimentService;
 	}
-	
+
 	@RequestMapping(value = "/uploaddataset", method = RequestMethod.POST)
 	public @ResponseBody String uploadLogo(MultipartHttpServletRequest request, HttpSession session) {
-	    try {
-	    	String uuid = (String) session.getAttribute("exid");
-	    	Iterator<String> itr = request.getFileNames();
-	    	MultipartFile file = request.getFile(itr.next());
-	    	logger.info("filename : "+file.getOriginalFilename());
-	    	
-	    	//save file to local system
-	    	String filepath = CommonUtils.storeToFileSystem(file);
-	    	if(filepath.equalsIgnoreCase("error")){
-	    		logger.info("upload failed / file save fail");
-	    		return "{'status':400,'msg':'upload failed'}";
-	    	}
-	    	logger.info("filepath : "+filepath);
-	    	CommonUtils.setConsoleLog(uuid, new ProcessStatus("status", "file saved", ""));
-	    	
-	    	// generate metadata
-	    	File metafile = new File(filepath);
-	    	if(!metafile.exists()){
-	    		logger.info("upload failed / file does not exists");
-	    		return "{'status':400,'msg':'metadata generation failed / file not found'}";
-	    	}
-	    	String metajson = CommonUtils.generateMetadata(metafile);
-	    	if(metajson.equalsIgnoreCase("error")){
-	    		logger.info("upload failed / metadata generation failed");
-	    		return "{'status':400,'msg':'metadata generation failed / file not found'}";
-	    	}
-	    	logger.info("metadata json : "+metajson);
-	    	
-	    	CommonUtils.setConsoleLog(uuid, new ProcessStatus("status", "meatajson prepared", ""));
-	    	
-	    	//save metadata with file path into mongodb
-	    	logger.info("uuid : "+uuid);
-	    	experimentService.insertMetaData(metajson, filepath, uuid);
-	    
-	    	CommonUtils.setConsoleLog(uuid, new ProcessStatus("status", "file processed and stored into filesystem", ""));
-	    	
-	    	//return metadata json
-	    	return metajson;
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	    }
-	    return "{'status':400,'msg':'upload failed'}";
+		try {
+			String uuid = (String) session.getAttribute("exid");
+			Iterator<String> itr = request.getFileNames();
+			MultipartFile file = request.getFile(itr.next());
+			logger.info("filename : "+file.getOriginalFilename());
+
+			//save file to local system
+			String filepath = CommonUtils.storeToFileSystem(file);
+			if(filepath.equalsIgnoreCase("error")){
+				logger.info("upload failed / file save fail");
+				return "{'status':400,'msg':'upload failed'}";
+			}
+			logger.info("filepath : "+filepath);
+
+			// generate metadata
+			File metafile = new File(filepath);
+			if(!metafile.exists()){
+				logger.info("upload failed / file does not exists");
+				return "{'status':400,'msg':'metadata generation failed / file not found'}";
+			}
+			String metajson = CommonUtils.generateMetadata(metafile);
+			if(metajson.equalsIgnoreCase("error")){
+				logger.info("upload failed / metadata generation failed");
+				return "{'status':400,'msg':'metadata generation failed / file not found'}";
+			}
+			logger.info("metadata json : "+metajson);
+
+			//save metadata with file path into mongodb
+			logger.info("uuid : "+uuid);
+			experimentService.insertMetaData(metajson, filepath, uuid);
+
+			//return metadata json
+			return metajson;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "{'status':400,'msg':'upload failed'}";
 	}
-	
+
 	@RequestMapping(value = "/experimentlist", method = RequestMethod.GET)
 	public @ResponseBody String getExperimentList(HttpSession session) {
 		User user = (User) session.getAttribute("user");
@@ -96,7 +90,7 @@ public class RestController {
 		List list = userService.getExperimentList(user.getEmail());
 		return list.toString();
 	}
-	
+
 	@RequestMapping(value = "/experiment/id/{exid}", method = RequestMethod.DELETE)
 	public @ResponseBody String deleteExperimentById(@PathVariable String exid, HttpSession session) {
 		logger.info("delete experiment by id "+exid);
@@ -104,7 +98,7 @@ public class RestController {
 		experimentService.deleteExperiment(exid, user.getEmail());
 		return "{'status':200,'msg':'experiement deleted'}";
 	}
-	
+
 	@RequestMapping(value = "/experiment", method = RequestMethod.DELETE)
 	public @ResponseBody String deleteExperiment(HttpSession session) {
 		logger.info("delete current experiment");
@@ -113,18 +107,15 @@ public class RestController {
 		experimentService.deleteExperiment(exid, user.getEmail());
 		return "{'status':200,'msg':'experiement deleted'}";
 	}
-	
+
 	@RequestMapping(value = "/processflow", method = RequestMethod.POST)
 	public @ResponseBody String addProcessFlow(@RequestBody String processjson, HttpSession session) {
 		logger.info("add or update process flow json "+ processjson);
 		String exid = (String) session.getAttribute("exid");
-		
-		CommonUtils.setConsoleLog(exid, new ProcessStatus("status", "processflow saved", ""));
-		
 		experimentService.addProcess(exid, processjson);
 		return "{'status':200,'msg':'process flow added'}";
 	}
-	
+
 	@RequestMapping(value = "/metadata", method = RequestMethod.POST)
 	public @ResponseBody String addMetaData(@RequestBody String metadata, HttpSession session) {
 		logger.info("add or update metadata json "+ metadata);
@@ -132,7 +123,7 @@ public class RestController {
 		experimentService.addMetadata(exid, metadata);
 		return "{'status':200,'msg':'process flow added'}";
 	}
-	
+
 	@RequestMapping(value = "/parameters", method = RequestMethod.POST)
 	public @ResponseBody String addParameters(@RequestBody String parameters, HttpSession session) {
 		logger.info("add or update metadata json "+ parameters);
@@ -140,7 +131,7 @@ public class RestController {
 		experimentService.addParameters(exid, parameters);
 		return "{'status':200,'msg':'process flow added'}";
 	}
-	
+
 	@RequestMapping(value = "/consolelog", method = RequestMethod.GET)
 	public @ResponseBody String returnConsoleLog(HttpSession session) {
 		logger.info("poll for process status logs");

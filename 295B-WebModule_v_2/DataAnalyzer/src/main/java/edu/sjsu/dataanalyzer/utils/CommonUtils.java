@@ -116,8 +116,8 @@ public class CommonUtils {
 		}
 	}
 	
-	public static void setConsoleLog(String uuid, ProcessStatus ps){
-		ps.setTimestamp(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime()));
+	public static void setConsoleLog(String uuid, String type, String message){
+		ProcessStatus ps= new ProcessStatus(type, message, new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime()));
 		if(logstore.containsKey(uuid)){
 			Queue<ProcessStatus> logQ = logstore.get(uuid);
 			logQ.add(ps);
