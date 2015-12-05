@@ -332,15 +332,21 @@ init  = function() {
       processData: false,
       contentType: false,
       success: function (response) {
-        var responseJson = JSON.parse(response);
-        if(responseJson.length != 0){
-          var html = "";
-          for(var i=0;i<responseJson.length;i++){
-            html+= '<p class="ptext"> >> '+responseJson[i].timestamp+' : '+responseJson[i].message+'</p>';
-          }
-          $("#consolelog").append(html);
-          $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0);
-        }
+    	  try{
+              var responseJson = JSON.parse(response);
+              if(responseJson.length != 0){
+                var html = "";
+                for(var i=0;i<responseJson.length;i++){
+                  html+= '<p class="ptext"> >> '+responseJson[i].timestamp+' : '+responseJson[i].message+'</p>';
+                }
+                $("#consolelog").append(html);
+                $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0);
+              }
+            }catch(err){
+              console.log(err);
+              $("#consolelog").append(response);
+              $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0);
+            }
       },
       error: function (jqXHR) {
         console.log("err : ");
@@ -379,10 +385,7 @@ init  = function() {
    }); */
    
    $('#datasetButton').on('click', function () {
-<<<<<<< HEAD
      pollServerLogs();
-=======
->>>>>>> 93ce4dea40b8be54f271f6f24ac3c4cf6f322f74
      var form = new FormData(document.getElementById('datasetform'));
      $.ajax({
       url: "http://localhost:8080/dataanalyzer/uploaddataset",
