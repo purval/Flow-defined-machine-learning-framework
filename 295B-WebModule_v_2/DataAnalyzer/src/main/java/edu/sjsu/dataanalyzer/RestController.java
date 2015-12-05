@@ -142,4 +142,12 @@ public class RestController {
 		}
 		return null;
 	}
+	
+	@RequestMapping(value = "/execute", method = RequestMethod.POST)
+	public @ResponseBody String executeFlow(@RequestBody String flow, HttpSession session) {
+		logger.info("validated process flow"+ flow);
+		String exid = (String) session.getAttribute("exid");
+		
+		return "{'status':200,'msg':'process flow added'}";
+	}
 }

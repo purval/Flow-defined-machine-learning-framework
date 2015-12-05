@@ -356,8 +356,10 @@ init  = function() {
   $(document).ready(function(){
     var fsjson;
     var feList = [];
+    var autosearch = [];
     var missingval = "zero";
     var metadata = $("#metadata").val();
+
     if(metadata != ''){
       generate(metadata);
     }
@@ -372,12 +374,11 @@ init  = function() {
        $('#up').hide();
      }else{
        $('#up').show();
-     } 
-     
+     }     
    }); */
    
    $('#datasetButton').on('click', function () {
-     //pollServerLogs();
+     pollServerLogs();
      var form = new FormData(document.getElementById('datasetform'));
      $.ajax({
       url: "http://localhost:8080/dataanalyzer/uploaddataset",
@@ -403,15 +404,15 @@ init  = function() {
 
     function generate(response){
       feList=[];
-      var replString = response.replace("[","").replace("]","");
-      var resSplit = replString.split(", ");
-
+      var replString = response.replace('[','').replace(']','');
+      var resSplit = replString.split(",");
+      autosearch = [];
       $("#fsdiv").html("");
       var html = ''; var i;
       for(i=0;i<resSplit.length;i++){
-        html += '<div class="box" id="box'+i+'"><a class="boxclose" id="'+i+'"></a>'+resSplit[i]+'</div>';
+        html += '<div class="box" id="box'+i+'"><a class="boxclose" id="'+i+'"></a>'+resSplit[i].trim().replace('\"','').replace('\"','')+'</div>';
+        autosearch.push(resSplit[i].trim().replace('\"','').replace('\"',''));
       }
-
       $("#fsdiv").append(html);
 
       var j = 0;
@@ -434,6 +435,16 @@ init  = function() {
         };
     }
     
+   function checkDuplicates(nodeDataArray, graphkey){
+      var flag = false;
+      for(var i=0; i<nodeDataArray.length;i++){
+        if(nodeDataArray[i].key == graphkey.key){
+          flag = true;
+        } 
+      }
+      return flag;
+   } 
+
    $("#fsButton").click(function(){
      console.log(JSON.stringify(feList));
      $.ajax({
@@ -446,9 +457,11 @@ init  = function() {
       success: function (response) {
         console.log(response);
         var diajson = JSON.parse(myDiagram.model.toJson());
-        diajson.nodeDataArray.push(graphkeys[8]);
-        setFlow(diajson);
-        save();
+        if(!checkDuplicates(diajson.nodeDataArray, graphkeys[8])){
+          diajson.nodeDataArray.push(graphkeys[8]);
+          setFlow(diajson);
+          save();
+        }
       },
       error: function (jqXHR) {
         console.log("err : ");
@@ -463,11 +476,14 @@ init  = function() {
      if(split == ''){
       split = "70/30";
      }
-     console.log(missingval +"  "+split);
+     var target = $("#featuresearch").val();
+
      var obj = {
         split : split,
-        missingval : missingval
+        missingval : missingval,
+        target : target
      };
+
      $.ajax({
       url: "http://localhost:8080/dataanalyzer/parameters",
       type: 'POST',
@@ -476,11 +492,16 @@ init  = function() {
       contentType: false,
       data: JSON.stringify(obj),
       success: function (response) {
-        console.log(response);
+        //console.log(response);
         var diajson = JSON.parse(myDiagram.model.toJson());
-        diajson.nodeDataArray.push(graphkeys[9]);
+        /*diajson.nodeDataArray.push(graphkeys[9]);
         setFlow(diajson);
-        save();
+        save();*/
+        if(!checkDuplicates(diajson.nodeDataArray, graphkeys[8])){
+          diajson.nodeDataArray.push(graphkeys[9]);
+          setFlow(diajson);
+          save();
+        }
       },
       error: function (jqXHR) {
         console.log("err : ");
@@ -570,5 +591,9 @@ init  = function() {
    $("#clear").click(function(){
     $("#consolelog").html("");
    });
+
+  $('#featuresearch').autocomplete({
+    source: autosearch
+  });
 
 });
