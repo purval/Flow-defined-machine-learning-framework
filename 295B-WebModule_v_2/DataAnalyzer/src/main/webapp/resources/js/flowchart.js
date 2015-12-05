@@ -41,20 +41,32 @@ init  = function() {
           // handle mouse enter/leave events to show/hide the ports
           mouseEnter: function (e, obj) { showPorts(obj.part, true); },
           mouseLeave: function (e, obj) { showPorts(obj.part, false); },
-          doubleClick: function(e, obj) { addParameters(obj.part.data.key) } 
+          doubleClick: function(e, obj) { addParameters(obj.part.data.text) } 
         }
       ];
     }
 
-    function addParameters(key){
-        console.log("key"+key);
+    function addParameters(text){
+        console.log("text "+text);
         
         var graphkeys = [{"key":-1,"text":"Comment", "action":""},{"key":-2,"text":"Boosted Decision Tree", "action":""}
         ,{"key":-3,"text":"Decision Tree", "action":""},{"key":-4,"text":"Gradient Boosting", "action":""}
-        ,{"key":-5,"text":"Logistic Regression", "action":""},{"key":-6,"text":"Pearson Correlation", "action":""}
-        ,{"key":-7,"text":"PCA", "action":""},{"key":-8,"text":"Dataset", "action":"fileUploader"}
-        ,{"key":-9,"text":"Feature Selection", "action":"fSelector"},{"key":-10,"text":"Parameter Setting", "action":"paramSetter"}];
+        ,{"key":-5,"text":"Logistic Regression", "action":""},{"key":-6,"text":"Extra Trees Classifier", "action":""}
+        ,{"key":-7,"text":"K-best Features", "action":""},{"key":-8,"text":"Recursive Feature Elimination", "action":""}
+        ,{"key":-9,"text":"Dataset", "action":"fileUploader"},{"key":-10,"text":"Feature Selection", "action":"fSelector"}
+        ,{"key":-11,"text":"Parameter Setting", "action":"paramSetter"}];
 
+        for(var i=0;i<graphkeys.length;i++){
+          if(graphkeys[i].text === text){
+            try{
+              $('#'+graphkeys[i].action).modal('show');
+            }catch(err){
+              console.log("model not present");
+            }
+          }
+        }
+
+        /*
         var elem = Math.abs(key)-1;
         
         if(graphkeys[elem].action != ''){
@@ -62,7 +74,7 @@ init  = function() {
           $('#'+graphkeys[elem].action).modal('show');
         }else{
           console.log("no action for "+graphkeys[elem].text);
-        }
+        }*/
     }
     
     // Define a function for creating a "port" that is normally transparent.
@@ -226,6 +238,7 @@ init  = function() {
       dollor(go.TextBlock, { name: "TB" },
         new go.Binding("text", "color"))
     );
+    
     // initialize the Palette that is on the left side of the page
     addPallete = function(){
       myPalette =
@@ -239,8 +252,9 @@ init  = function() {
           { text: "Decision Tree" },
           { text: "Gradient Boosting" },
           { text: "Logistic Regression" },
-          { text: "Pearson Correlation Similarity" },
-          { text: "Principal Component Analysis (PCA)" }
+          { text: "Extra Trees Classifier" },
+          { text: "K-best Features" },
+          { text: "Recursive Feature Elimination" }
         ])
       });
     }
@@ -332,21 +346,21 @@ init  = function() {
       processData: false,
       contentType: false,
       success: function (response) {
-    	  try{
-              var responseJson = JSON.parse(response);
-              if(responseJson.length != 0){
-                var html = "";
-                for(var i=0;i<responseJson.length;i++){
-                  html+= '<p class="ptext"> >> '+responseJson[i].timestamp+' : '+responseJson[i].message+'</p>';
-                }
-                $("#consolelog").append(html);
-                $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0);
-              }
-            }catch(err){
-              console.log(err);
-              $("#consolelog").append(response);
-              $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0);
+        try{
+          var responseJson = JSON.parse(response);
+          if(responseJson.length != 0){
+            var html = "";
+            for(var i=0;i<responseJson.length;i++){
+              html+= '<p class="ptext"> >> '+responseJson[i].timestamp+' : '+responseJson[i].message+'</p>';
             }
+            $("#consolelog").append(html);
+            $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0);
+          }
+        }catch(err){
+          console.log(err);
+          $("#consolelog").append(response);
+          $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0);
+        }
       },
       error: function (jqXHR) {
         console.log("err : ");
@@ -360,7 +374,7 @@ init  = function() {
   }
 
   $(document).ready(function(){
-	pollServerLogs();
+	//pollServerLogs();
 	var fsjson;
     var feList = [];
     var autosearch = [];
@@ -371,11 +385,20 @@ init  = function() {
       generate(metadata);
     }
 
-    var graphkeys = [{"key":-1,"text":"Comment", "loc":"70 -500"},{"key":-2,"text":"Boosted Decision Tree", "loc":"70 -500"}
-    ,{"key":-3,"text":"Decision Tree", "loc":"70 -600"},{"key":-4,"text":"Gradient Boosting", "loc":"70 -600"}
-    ,{"key":-5,"text":"Logistic Regression", "loc":"70 -600"},{"key":-6,"text":"Pearson Correlation", "loc":"70 -600"}
-    ,{"key":-7,"text":"PCA", "loc":"70 -500"},{"key":-8,"text":"Dataset", "loc":"70 -700"}
-    ,{"key":-9,"text":"Feature Selection", "loc":"70 -650"},{"key":-10,"text":"Parameter Setting", "loc":"100 -650"}];
+    var graphkeys = [{"key":-1,"text":"Comment", "loc":"70 -500"}
+    ,{"key":-2,"text":"Boosted Decision Tree", "loc":"70 -500"}
+    ,{"key":-3,"text":"Decision Tree", "loc":"70 -600"}
+    ,{"key":-4,"text":"Gradient Boosting", "loc":"70 -600"}
+    ,{"key":-5,"text":"Logistic Regression", "loc":"70 -600"}
+    ,{"key":-6,"text":"Extra Trees Classifier", "loc":"70 -600"}
+    ,{"key":-7,"text":"K-best Features", "loc":"70 -500"}
+    ,{"key":-8,"text":"Recursive Feature Elimination", "loc":"70 -500"}
+    ,{"key":-100,"text":"Dataset", "loc":"70 -700"}
+    ,{"key":-101,"text":"Feature Selection", "loc":"70 -650"}
+    ,{"key":-102,"text":"Parameter Setting", "loc":"100 -650"}];
+
+    var graphtext = [""];
+    
    /*$("#dataset").click(function(){
      if($('#up').is(":visible")){
        $('#up').hide();
@@ -385,7 +408,6 @@ init  = function() {
    }); */
    
    $('#datasetButton').on('click', function () {
-     pollServerLogs();
      var form = new FormData(document.getElementById('datasetform'));
      $.ajax({
       url: "http://localhost:8080/dataanalyzer/uploaddataset",
@@ -399,7 +421,7 @@ init  = function() {
           generate(response);
           $('#fileUploader').modal('hide');
           var diajson = JSON.parse(myDiagram.model.toJson());
-          diajson.nodeDataArray.push(graphkeys[7]);
+          diajson.nodeDataArray.push(graphkeys[8]);
           setFlow(diajson);
           save();
       },
@@ -421,7 +443,6 @@ init  = function() {
         autosearch.push(resSplit[i].trim().replace('\"','').replace('\"',''));
       }
       $("#fsdiv").append(html);
-
       var j = 0;
       while(j<i){
         $('#'+j).click(function(){
@@ -430,6 +451,10 @@ init  = function() {
         });
         j++;
       }
+
+      $('#featuresearch').autocomplete({
+        source: autosearch
+      });
     }
 
    function queryParams() {
@@ -464,8 +489,8 @@ init  = function() {
       success: function (response) {
         console.log(response);
         var diajson = JSON.parse(myDiagram.model.toJson());
-        if(!checkDuplicates(diajson.nodeDataArray, graphkeys[8])){
-          diajson.nodeDataArray.push(graphkeys[8]);
+        if(!checkDuplicates(diajson.nodeDataArray, graphkeys[9])){
+          diajson.nodeDataArray.push(graphkeys[9]);
           setFlow(diajson);
           save();
         }
@@ -499,13 +524,9 @@ init  = function() {
       contentType: false,
       data: JSON.stringify(obj),
       success: function (response) {
-        //console.log(response);
         var diajson = JSON.parse(myDiagram.model.toJson());
-        /*diajson.nodeDataArray.push(graphkeys[9]);
-        setFlow(diajson);
-        save();*/
-        if(!checkDuplicates(diajson.nodeDataArray, graphkeys[8])){
-          diajson.nodeDataArray.push(graphkeys[9]);
+        if(!checkDuplicates(diajson.nodeDataArray, graphkeys[10])){
+          diajson.nodeDataArray.push(graphkeys[10]);
           setFlow(diajson);
           save();
         }
@@ -537,22 +558,78 @@ init  = function() {
 
    $("#run").click(function(){
       var idx = document.title.indexOf("*");
-      if (idx >= 0){
-        console.log("saving the process..");
-        save();
-        run();
-        //TODO: run flow / send process flow to backend
-        console.log("running process");
+      var processjson = myDiagram.model.toJson();
+      var diajson = JSON.parse(myDiagram.model.toJson());
+      var orderedProcess = validateFlow(diajson.linkDataArray, diajson.nodeDataArray);
+      if(orderedProcess.length > 0){
+        if (idx >= 0){
+          console.log("saving the process..");
+          save();
+          console.log("running process");
+          run(orderedProcess);
+        }else{
+          console.log("running process");
+          run(orderedProcess);
+        }
       }else{
-        //TODO: run flow / send process flow to backend
-    	run();
-        console.log("running process");
-      } 
-      
+        alert("Compelete the process flow to execute: Start --> x --> y --> z --> End!");
+      }
    });
 
-   function run(){
-      var processjson = myDiagram.model.toJson();
+   function validateConnectedFlow(linkDataArray){
+    var counter = 0;
+    var index = 0;
+    var valid = false;
+    for(var i=0;i<linkDataArray.length;i++){
+      if(linkDataArray[i].from === -1){
+        index = i;
+      }
+    }
+    while(counter < linkDataArray.length){
+      if(linkDataArray[index].to == -2){
+        valid = true;
+        break;
+      }
+      for(var i=0;i<linkDataArray.length;i++){
+        if(linkDataArray[i].from === linkDataArray[index].to){
+          index = i;
+          break;
+        }
+      }
+      counter++;
+    }
+    return valid;
+   }
+
+   function getText(key, nodeDataArray){
+    for(var i=0;i<nodeDataArray.length;i++){
+      if(nodeDataArray[i].key === key){
+        return nodeDataArray[i].text;
+      }
+    }
+   } 
+
+   function validateFlow(linkDataArray, nodeDataArray){
+      console.log("validating process flow");
+      var orderedProcess = [];
+      if(validateConnectedFlow(linkDataArray)){
+        for(var i=0;i<linkDataArray.length;i++){
+          if($.inArray(linkDataArray[i].from,orderedProcess) === -1){
+            orderedProcess.push(getText(linkDataArray[i].from, nodeDataArray));
+            if(linkDataArray[i].to === -2){
+              orderedProcess.push(getText(linkDataArray[i].to, nodeDataArray));
+              break;  
+            }
+          }
+        }
+        console.log(orderedProcess);  
+        return orderedProcess;
+      }else{
+        return orderedProcess;
+      }
+   } 
+
+   function run(processjson){
       $.ajax({
         url: "http://localhost:8080/dataanalyzer/execute",
         type: 'POST',
@@ -600,9 +677,4 @@ init  = function() {
    $("#clear").click(function(){
     $("#consolelog").html("");
    });
-
-  $('#featuresearch').autocomplete({
-    source: autosearch
-  });
-
 });
