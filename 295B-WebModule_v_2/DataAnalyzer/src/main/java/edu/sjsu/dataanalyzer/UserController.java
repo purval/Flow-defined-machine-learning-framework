@@ -24,7 +24,6 @@ import com.mongodb.DBObject;
 import edu.sjsu.dataanalyzer.bean.User;
 import edu.sjsu.dataanalyzer.service.ExperimentService;
 import edu.sjsu.dataanalyzer.service.UserService;
-import edu.sjsu.dataanalyzer.utils.MLhelper;
 
 @Controller
 @SessionAttributes("user")
@@ -169,7 +168,7 @@ public class UserController {
 		 * Check your path accordingly and put them there. 
 		 * ***** SOMEHOW IT CHECKS FOR SESSION FIRST. IT WON'T WORK UNLESS A USER IS LOGGED IN. NEED TO ASK PURVAL. *****
 		 */
-		MLhelper.pyAlgorithms(Algorithm,workingDir+"/secom_train.csv",workingDir+"/secom_test.csv", inputColumns, outputColumns);
+		//MLhelper.pyAlgorithms(Algorithm,workingDir+"/secom_train.csv",workingDir+"/secom_test.csv", inputColumns, outputColumns);
 		
 		return "userlogin";
 	}
