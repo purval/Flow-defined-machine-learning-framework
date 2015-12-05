@@ -374,7 +374,7 @@ init  = function() {
   }
 
   $(document).ready(function(){
-	//pollServerLogs();
+	pollServerLogs();
 	var fsjson;
     var feList = [];
     var autosearch = [];

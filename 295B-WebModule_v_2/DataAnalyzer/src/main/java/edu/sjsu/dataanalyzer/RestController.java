@@ -152,13 +152,14 @@ public class RestController {
 		logger.info("validated process flow "+ flow);
 		String exid = (String) session.getAttribute("exid");
 		
-		String replacFlow = flow.replaceAll("(?=[]\\[+&|!(){}^\"~*?:\\\\-])", "");
-		String[] flowSteps = replacFlow.split(",");
+		//String replacFlow = flow.replaceAll("(?=[]\\[+&|!(){}^\"~*?:\\\\-])", "");
+		//String[] flowSteps = replacFlow.split(",");
+		
 		DBObject runTimeDetails =  experimentService.getExperimentDetails(exid);
 		BasicDBList inputCols =  (BasicDBList) runTimeDetails.get("metadata");
-		String outputColumns = (String) runTimeDetails.get("target");
-		String train_data_path = (String) runTimeDetails.get("train_data_path");
-		String test_data_path = (String) runTimeDetails.get("test_data_path");
+		String parameters = (String) runTimeDetails.get("parameters");
+		String train_data_path = "/Users/ruchas/Desktop/eclipse/Eclipse.app/Contents/MacOS/secom_train.csv";//(String) runTimeDetails.get("train_data_path");
+		String test_data_path = "/Users/ruchas/Desktop/eclipse/Eclipse.app/Contents/MacOS/secom_test.csv";//(String) runTimeDetails.get("test_data_path");
 		String excludeColumns =  (String) runTimeDetails.get("excludeList");
 		String original_data_path =  (String) runTimeDetails.get("filepath");
 		String NUMBER_OF_FEATURES = "50"; // BRING FROM DB LATER.
@@ -178,8 +179,10 @@ public class RestController {
 				}
 			
 		}
-		
-		CommonUtils.runFlow(flowSteps, exid, inputColumns.toString().substring(0, inputColumns.length()-1), outputColumns, train_data_path, test_data_path,original_data_path,NUMBER_OF_FEATURES);
+		System.out.println(parameters);
+		String tar = parameters.substring(parameters.indexOf("target")+9, parameters.length()-2);
+		System.out.println(tar);
+		CommonUtils.runFlow(flow, exid, inputColumns.toString().substring(0, inputColumns.length()-1), tar, train_data_path, test_data_path,original_data_path,NUMBER_OF_FEATURES);
 		return "{'status':200,'msg':'process flow added'}";
 	}
 }

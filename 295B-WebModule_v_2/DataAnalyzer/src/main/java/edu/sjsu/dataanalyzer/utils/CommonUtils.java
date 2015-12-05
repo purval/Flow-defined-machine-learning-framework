@@ -143,7 +143,7 @@ public class CommonUtils {
 		return null;
 	}
 	
-	public static void runFlow(String[] flowSteps, String uuid, String inputColumns, String outputColumns, String train_data_path, String test_data_path, String original_data_path, String NUMBER_OF_FEATURES){
+	public static void runFlow(String flow, String uuid, String inputColumns, String outputColumns, String train_data_path, String test_data_path, String original_data_path, String NUMBER_OF_FEATURES){
 //		 var graphkeys = [{"key":-1,"text":"Comment", "loc":"70 -500"},{"key":-2,"text":"Boosted Decision Tree", "loc":"70 -500"}
 //		    ,{"key":-3,"text":"Decision Tree", "loc":"70 -600"},{"key":-4,"text":"Gradient Boosting", "loc":"70 -600"}
 //		    ,{"key":-5,"text":"Logistic Regression", "loc":"70 -600"},{"key":-6,"text":"Pearson Correlation", "loc":"70 -600"}
@@ -166,10 +166,10 @@ public class CommonUtils {
 		 * ***** SOMEHOW IT CHECKS FOR SESSION FIRST. IT WON'T WORK UNLESS A USER IS LOGGED IN. NEED TO ASK PURVAL. *****
 		 */		
 		
-		String[] flowSteps1 = {"Start","Feature Selection","Parameter Setting","Extra Trees Classifier","Decision Tree","End!"};
+		//String[] flowSteps1 = {"Start","Feature Selection","Parameter Setting","Extra Trees Classifier","Decision Tree","End!"};
+		String[] flowSteps= flow.split(",");
 		
-		
-		for(String stepX : flowSteps1){
+		for(String stepX : flowSteps){
 			if(stepX.equalsIgnoreCase("Start")){
 				setConsoleLog(uuid,"status","The experiment has been started successfully.");
 			}
