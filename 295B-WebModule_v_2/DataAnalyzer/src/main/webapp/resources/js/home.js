@@ -51,4 +51,8 @@ $(document).ready(function(){
           }
         });
 	});
+	
+	$("#visual").click(function(){
+      location.href="http://localhost:8080/dataanalyzer/lam";
+    });
 });

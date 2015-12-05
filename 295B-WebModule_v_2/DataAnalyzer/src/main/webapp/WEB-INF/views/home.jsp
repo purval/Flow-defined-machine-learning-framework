@@ -120,7 +120,7 @@ body {
 												<table>
 													<tr><td><label for="visual"><h4>My Visualizations</h4></label></td></tr><tr><td><br><br></td></tr>
 													<tr><td>
-														<button type="button" class="btn btn-primary">View</button>
+														<button id="visual" type="button" class="btn btn-primary">View</button>
 													</td></tr>
 												</table>
 											</td>

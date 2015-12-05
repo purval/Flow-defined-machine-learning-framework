@@ -17,13 +17,11 @@
 <link  href="<c:url value="/resources/css/font.css"  />" rel="stylesheet">
 <link  href="<c:url value="/resources/css/app.css"  />" rel="stylesheet">
 <link href="<c:url value="/resources/css/generic.css" />" rel="stylesheet">
-<link href="<c:url value="/resources/css/custom.css" />" rel="stylesheet">
-<link href="<c:url value="/resources/css/dataTables.bootstrap.min.css" />" rel="stylesheet"> 
+<link href="<c:url value="/resources/css/custom.css" />" rel="stylesheet"> 
 
 <script src="<c:url value="/resources/js/jquery-2.1.4.min.js" />"></script>
+<script src="<c:url value="/resources/js/jquery-ui.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-<script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
-<script src="<c:url value="/resources/js/dataTables.bootstrap.min.js" />"></script> 
 <script src="<c:url value="/resources/js/go.js" />"></script>
 <script src="<c:url value="/resources/js/flowchart.js" />"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script>
@@ -32,6 +30,7 @@
 <body onload="init()">
 <input type="hidden" id="jsonBom" value='${process_flow}'/>
 <input type="hidden" id="metadata" value='${metadata}'/>
+
  <header class="bg-white header header-md navbar navbar-fixed-top-xs box-shadow custome_bg">
     <div class="navbar-header aside-md dk"> <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav"> <i class="fa fa-bars"></i> </a> <a href="#" class="navbar-brand"><img src="/dataanalyzer/resources/images/logo.png" class="m-r-sm" alt="scale"> <span class="hidden-nav-xs">FDCSD</span> </a> <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user"> <i class="fa fa-cog"></i> </a> </div>
 	
@@ -120,6 +119,9 @@
 	      </div>
 	      
 	      <div class="modal-body">
+	      		<label for="featuresearch"><h4>Select Target Feature</h4></label>
+				<input id="featuresearch" class="form-control autocomplete"/>
+				<br>
 				<label for="split"><h4>Train/Test split ratio</h4></label>
 				<input id="split" class="form-control" type="input" name="split_value" placeholder="70/30"/>
 				<br>
