@@ -8,7 +8,7 @@ public class MLhelper {
 	public static void pathHelper(){
 		
 	}
-	public static void pyAlgorithms(String Algorithm,String trainDataPath,String testDataPath,String inputColumns, String outputColumns) {
+	public static void pyAlgorithms(String uuid,String Algorithm,String trainDataPath,String testDataPath,String inputColumns, String outputColumns) {
 		// String saveOutputPath
 		/*
 		 * USAGE:
@@ -32,7 +32,21 @@ public class MLhelper {
 				
 				final String dir = System.getProperty("user.dir");
 		        System.out.println("current dir = " + dir);
-				
+				System.out.println("**** ALGORITHM PARAMETERS ****");
+		        System.out.println("Algorithm to be applied: "+Algorithm);
+		        System.out.println("Train Data path: "+trainDataPath);
+		        System.out.println("Test Data path: "+testDataPath);
+		        System.out.println("INPUT COLUMNS: "+inputColumns);
+		        System.out.println("TARGET COLUMNS: "+outputColumns);
+
+				CommonUtils.setConsoleLog(uuid, "result", "**** ALGORITHM PARAMETERS ****");
+				CommonUtils.setConsoleLog(uuid, "result", "Algorithm to be applied: "+Algorithm);
+				CommonUtils.setConsoleLog(uuid, "result", "Train Data path: "+trainDataPath);
+				CommonUtils.setConsoleLog(uuid, "result", "Test Data path: "+testDataPath);
+				CommonUtils.setConsoleLog(uuid, "result", "INPUT COLUMNS: "+inputColumns);
+
+		        
+				System.out.println("******************************");
 				Process process = Runtime.getRuntime().exec("python "+dir+"/pyAlgorithms.py "+Algorithm+" "+trainDataPath+" "+testDataPath+" "+inputColumns+" "+outputColumns);
 				InputStream inputStream = process.getInputStream();
 				InputStream errorStream = process.getErrorStream();
@@ -57,6 +71,8 @@ public class MLhelper {
 							message.append("ERROR: ");
 							message.append(lineIn);
 							message.append(System.getProperty("line.separator"));
+							CommonUtils.setConsoleLog(uuid, "error", lineIn);
+							CommonUtils.setConsoleLog(uuid, "error", System.getProperty("line.separator"));
 						}
 					}
 					try
@@ -69,6 +85,9 @@ public class MLhelper {
 						Thread.sleep(1000);
 					}
 				}
+				
+
+				CommonUtils.setConsoleLog(uuid, "result", message.toString());
 				bufferedInput.close();
 				bufferedError.close();
 			}

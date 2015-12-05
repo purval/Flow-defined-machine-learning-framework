@@ -354,7 +354,8 @@ init  = function() {
   }
 
   $(document).ready(function(){
-    var fsjson;
+	pollServerLogs();
+	var fsjson;
     var feList = [];
     var missingval = "zero";
     var metadata = $("#metadata").val();
@@ -377,7 +378,6 @@ init  = function() {
    }); */
    
    $('#datasetButton').on('click', function () {
-     //pollServerLogs();
      var form = new FormData(document.getElementById('datasetform'));
      $.ajax({
       url: "http://localhost:8080/dataanalyzer/uploaddataset",
@@ -512,10 +512,12 @@ init  = function() {
       if (idx >= 0){
         console.log("saving the process..");
         save();
+        run();
         //TODO: run flow / send process flow to backend
         console.log("running process");
       }else{
         //TODO: run flow / send process flow to backend
+    	run();
         console.log("running process");
       } 
       
