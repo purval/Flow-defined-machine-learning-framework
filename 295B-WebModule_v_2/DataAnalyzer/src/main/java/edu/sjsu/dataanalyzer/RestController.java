@@ -144,12 +144,12 @@ public class RestController {
 		if(logs != null){
 			return logs.toString();
 		}
-		return null;
+		return "[]";
 	}
 
 	@RequestMapping(value = "/execute", method = RequestMethod.POST)
 	public @ResponseBody String executeFlow(@RequestBody String flow, HttpSession session) throws InterruptedException {
-		logger.info("validated process flow"+ flow);
+		logger.info("validated process flow "+ flow);
 		String exid = (String) session.getAttribute("exid");
 		
 		String replacFlow = flow.replaceAll("(?=[]\\[+&|!(){}^\"~*?:\\\\-])", "");
