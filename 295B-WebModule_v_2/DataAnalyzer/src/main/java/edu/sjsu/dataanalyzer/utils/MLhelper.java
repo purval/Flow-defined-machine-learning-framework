@@ -32,21 +32,26 @@ public class MLhelper {
 				
 				final String dir = System.getProperty("user.dir");
 		        System.out.println("current dir = " + dir);
+		        
+		        
+		        
 				System.out.println("**** ALGORITHM PARAMETERS ****");
 		        System.out.println("Algorithm to be applied: "+Algorithm);
 		        System.out.println("Train Data path: "+trainDataPath);
 		        System.out.println("Test Data path: "+testDataPath);
 		        System.out.println("INPUT COLUMNS: "+inputColumns);
 		        System.out.println("TARGET COLUMNS: "+outputColumns);
-
+		        System.out.println("******************************");
+				
 				CommonUtils.setConsoleLog(uuid, "result", "**** ALGORITHM PARAMETERS ****");
 				CommonUtils.setConsoleLog(uuid, "result", "Algorithm to be applied: "+Algorithm);
 				CommonUtils.setConsoleLog(uuid, "result", "Train Data path: "+trainDataPath);
 				CommonUtils.setConsoleLog(uuid, "result", "Test Data path: "+testDataPath);
 				CommonUtils.setConsoleLog(uuid, "result", "INPUT COLUMNS: "+inputColumns);
-
+				CommonUtils.setConsoleLog(uuid, "result", "TARGET COLUMNS: "+outputColumns);
+				CommonUtils.setConsoleLog(uuid, "result", "******************************");
 		        
-				System.out.println("******************************");
+				
 				Process process = Runtime.getRuntime().exec("python "+dir+"/pyAlgorithms.py "+Algorithm+" "+trainDataPath+" "+testDataPath+" "+inputColumns+" "+outputColumns);
 				InputStream inputStream = process.getInputStream();
 				InputStream errorStream = process.getErrorStream();
@@ -71,13 +76,12 @@ public class MLhelper {
 							message.append("ERROR: ");
 							message.append(lineIn);
 							message.append(System.getProperty("line.separator"));
-							CommonUtils.setConsoleLog(uuid, "error", lineIn);
-							CommonUtils.setConsoleLog(uuid, "error", System.getProperty("line.separator"));
 						}
 					}
 					try
 					{
 						process.exitValue();
+						CommonUtils.setConsoleLog(uuid, "result", "The process "+Algorithm+" for "+uuid+" ended with exit status: "+process.exitValue());
 						break;
 					}
 					catch (Throwable throwable)
@@ -99,6 +103,109 @@ public class MLhelper {
 			System.out.println(message.toString()); // output string. Parse it and store the result in mongo db
 		
 	}
+	
+	////// FEATURE SELECTION METHOD /////////
+	public static String pyFeatures(String uuid,String Algorithm,String fullDataPath,String inputColumns, String outputColumns,int number_of_features) {
+		
+			StringBuffer message = new StringBuffer();
+			try
+			{
+				
+				final String dir = System.getProperty("user.dir");
+		        System.out.println("current dir = " + dir);
+		        
+		        
+		        
+				System.out.println("**** ALGORITHM PARAMETERS ****");
+		        System.out.println("Algorithm to be applied: "+Algorithm);
+		        System.out.println("Data path: "+fullDataPath);
+		        System.out.println("INPUT COLUMNS: "+inputColumns);
+		        System.out.println("TARGET COLUMNS: "+outputColumns);
+		        System.out.println("Reducing to: "+number_of_features+" features");
+		        System.out.println("******************************");
+				
+				CommonUtils.setConsoleLog(uuid, "result", "**** ALGORITHM PARAMETERS ****");
+				CommonUtils.setConsoleLog(uuid, "result", "Algorithm to be applied: "+Algorithm);
+				CommonUtils.setConsoleLog(uuid, "result", "Original Data path: "+fullDataPath);
+				CommonUtils.setConsoleLog(uuid, "result", "INPUT COLUMNS: "+inputColumns);
+				CommonUtils.setConsoleLog(uuid, "result", "TARGET COLUMNS: "+outputColumns);
+				CommonUtils.setConsoleLog(uuid, "result", "Reducing to: "+number_of_features+" features");
+				CommonUtils.setConsoleLog(uuid, "result", "******************************");
+		        
+				
+				Process process = Runtime.getRuntime().exec("python "+dir+"/pyFeatures.py "+Algorithm+" "+fullDataPath+" "+inputColumns+" "+outputColumns+" "+number_of_features);
+				InputStream inputStream = process.getInputStream();
+				InputStream errorStream = process.getErrorStream();
+				BufferedReader bufferedInput = new BufferedReader(new InputStreamReader(inputStream));
+				BufferedReader bufferedError = new BufferedReader(new InputStreamReader(errorStream));
+				while (true)
+				{
+					if (inputStream.available() > 0)
+					{
+						String lineIn;
+						while ((lineIn = bufferedInput.readLine()) != null)
+						{
+							message.append(lineIn);
+							message.append(System.getProperty("line.separator"));
+						}
+					}
+					if (errorStream.available() > 0)
+					{
+						String lineIn;
+						while ((lineIn = bufferedError.readLine()) != null)
+						{
+							message.append("ERROR: ");
+							message.append(lineIn);
+							message.append(System.getProperty("line.separator"));
+						}
+					}
+					try
+					{
+						process.exitValue();
+						CommonUtils.setConsoleLog(uuid, "result", "The process "+Algorithm+" for "+uuid+" ended with exit status: "+process.exitValue());
+						break;
+					}
+					catch (Throwable throwable)
+					{
+						Thread.sleep(1000);
+					}
+				}
+				
+
+				CommonUtils.setConsoleLog(uuid, "result", message.toString());
+				
+				
+				bufferedInput.close();
+				bufferedError.close();
+			}
+			catch (Throwable throwable)
+			{
+				throwable.printStackTrace();
+			}
+			
+			System.out.println(message.toString()); // output string. Parse it and store the result in mongo db
+			String temp = message.substring(message.indexOf("features")+10, message.length()-2);
+			String replaceTemp = temp.replace("\\[", "").replace("\\]","").replace("features", "");
+			String getIndexes = replaceTemp.replaceAll("[\\t\\n\\r]"," ");
+			String indexes = getIndexes.trim().replaceAll(" +", ",");//.split(" ");
+			String[] toBeSelected = indexes.split(",");
+			//System.out.println("BOOM:"+indexes);
+			String[] inputColSplit = inputColumns.split(",");
+			StringBuilder selectedFeatures = new StringBuilder();
+			for(int i=0;i<toBeSelected.length;i++){
+				if(i<toBeSelected.length-1){
+					selectedFeatures.append(inputColSplit[Integer.parseInt(toBeSelected[i])]+",");
+				} else{
+					selectedFeatures.append(inputColSplit[Integer.parseInt(toBeSelected[i])]);
+				}
+			}
+			System.out.println("These features are VERY important:"+selectedFeatures.toString());
+			return selectedFeatures.toString();
+
+	}
+	
+	
+	
 	
 	
 }
