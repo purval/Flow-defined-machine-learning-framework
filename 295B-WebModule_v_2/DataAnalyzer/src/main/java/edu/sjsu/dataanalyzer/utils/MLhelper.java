@@ -91,7 +91,6 @@ public class MLhelper {
 				}
 				
 
-				CommonUtils.setConsoleLog(uuid, "result", message.toString());
 				bufferedInput.close();
 				bufferedError.close();
 			}
@@ -99,7 +98,7 @@ public class MLhelper {
 			{
 				throwable.printStackTrace();
 			}
-			
+			CommonUtils.setConsoleLog(uuid, "result", message.toString());
 			System.out.println(message.toString()); // output string. Parse it and store the result in mongo db
 		
 	}
