@@ -2,6 +2,7 @@ package edu.sjsu.dataanalyzer;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.mongodb.BasicDBList;
+import com.mongodb.DBObject;
 
 import edu.sjsu.dataanalyzer.bean.User;
 import edu.sjsu.dataanalyzer.service.ExperimentService;
@@ -142,12 +146,39 @@ public class RestController {
 		}
 		return null;
 	}
-	
+
 	@RequestMapping(value = "/execute", method = RequestMethod.POST)
-	public @ResponseBody String executeFlow(@RequestBody String flow, HttpSession session) {
+	public @ResponseBody String executeFlow(@RequestBody String flow, HttpSession session) throws InterruptedException {
 		logger.info("validated process flow"+ flow);
 		String exid = (String) session.getAttribute("exid");
 		
+		String replacFlow = flow.replaceAll("(?=[]\\[+&|!(){}^\"~*?:\\\\-])", "");
+		String[] flowSteps = replacFlow.split(",");
+		DBObject runTimeDetails =  experimentService.getExperimentDetails(exid);
+		BasicDBList inputCols =  (BasicDBList) runTimeDetails.get("metadata");
+		String outputColumns = (String) runTimeDetails.get("target");
+		String train_data_path = (String) runTimeDetails.get("train_data_path");
+		String test_data_path = (String) runTimeDetails.get("test_data_path");
+		String excludeColumns =  (String) runTimeDetails.get("excludeList");
+		
+
+		String replacExclude = excludeColumns.replace("\\[", "").replace("\\]", "").replace("\"", "");
+		String replacExclude1 = replacExclude.substring(1, replacExclude.length()-1);
+		String[] excludeCols = replacExclude1.split(",");
+		HashMap<Integer,Integer> excludeColumnsMap = new HashMap();
+		for(int i=0;i<excludeCols.length;i++){
+			excludeColumnsMap.put(Integer.parseInt(excludeCols[i]), 1);
+			System.out.print(excludeCols[i]+" ");
+		}
+		StringBuilder inputColumns =new StringBuilder();
+		for(int i=0;i<inputCols.size();i++){
+				if(!excludeColumnsMap.containsKey(i)){
+					inputColumns.append(inputCols.get(i)+",");
+				}
+			
+		}
+		
+		CommonUtils.runFlow(flowSteps, exid, inputColumns.toString().substring(0, inputColumns.length()-1), outputColumns, train_data_path, test_data_path);
 		return "{'status':200,'msg':'process flow added'}";
 	}
 }
