@@ -8,7 +8,7 @@ public class MLhelper {
 	public static void pathHelper(){
 		
 	}
-	public static void pyAlgorithms(String uuid,String Algorithm,String trainDataPath,String testDataPath,String inputColumns, String outputColumns) {
+	public static String pyAlgorithms(String uuid,String Algorithm,String trainDataPath,String testDataPath,String inputColumns, String outputColumns) {
 		// String saveOutputPath
 		/*
 		 * USAGE:
@@ -100,7 +100,7 @@ public class MLhelper {
 			}
 			CommonUtils.setConsoleLog(uuid, "result", message.toString());
 			System.out.println(message.toString()); // output string. Parse it and store the result in mongo db
-		
+			return message.toString();
 	}
 	
 	////// FEATURE SELECTION METHOD /////////

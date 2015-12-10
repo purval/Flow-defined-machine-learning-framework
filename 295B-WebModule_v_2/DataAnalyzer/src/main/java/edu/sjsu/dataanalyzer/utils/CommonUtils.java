@@ -179,18 +179,21 @@ public class CommonUtils {
 			if(stepX.equalsIgnoreCase("Boosted Decision Tree") ){ // BOOSTED DECISION TREE
 				setConsoleLog(uuid,"status","Starting Boosted Decision Trees regressor on the dataset");
 				System.out.println("INSIDE BOOSTED DECISION TREE");
-				MLhelper.pyAlgorithms(uuid,"BOOSTED_DECISION_TREE",workingDir+"/secom_train.csv",workingDir+"/secom_test.csv", inputColumns, outputColumns);
-
+				String message=MLhelper.pyAlgorithms(uuid,"BOOSTED_DECISION_TREE",workingDir+"/secom_train.csv",workingDir+"/secom_test.csv", inputColumns, outputColumns);
+				String messageOutput = message.substring(1, message.length()-2);
+				System.out.println(messageOutput);
 			}
 			if(stepX.equalsIgnoreCase("Decision Tree")){ // DECISION TREE
 				setConsoleLog(uuid,"status","Starting Decision Trees regressor on the dataset");
-				MLhelper.pyAlgorithms(uuid,"DECISION_TREE",workingDir+"/secom_train.csv",workingDir+"/secom_test.csv", inputColumns, outputColumns);
-
+				String message=MLhelper.pyAlgorithms(uuid,"DECISION_TREE",workingDir+"/secom_train.csv",workingDir+"/secom_test.csv", inputColumns, outputColumns);
+				String messageOutput = message.substring(1, message.length()-2);
+				System.out.println(messageOutput);
 			}
 			if(stepX.equalsIgnoreCase("Gradient Boosting")){ // GRADIENT BOOSTING
 				setConsoleLog(uuid,"status","Starting Gradient Boosted regressor on the dataset");
-				MLhelper.pyAlgorithms(uuid,"GRADIENT_BOOSTING",workingDir+"/secom_train.csv",workingDir+"/secom_test.csv", inputColumns, outputColumns);
-
+				String message=MLhelper.pyAlgorithms(uuid,"GRADIENT_BOOSTING",workingDir+"/secom_train.csv",workingDir+"/secom_test.csv", inputColumns, outputColumns);
+				String messageOutput = message.substring(1, message.length()-2);
+				System.out.println(messageOutput);
 			}
 			if(stepX.equalsIgnoreCase("Logistic Regression")){
 				
@@ -198,7 +201,7 @@ public class CommonUtils {
 			}
 			if(stepX.equalsIgnoreCase("Extra Trees Classifier")){
 				
-				setConsoleLog(uuid,"status","The experiment completed successfully. End of experiment.");
+				setConsoleLog(uuid,"status","Starting Extra Trees Classifier for feature reduction...");
 				String reducedFeatures = MLhelper.pyFeatures(uuid,"EXTRA_TREE_CLASSIFIER",workingDir+"/secom_full.csv", inputColumns, outputColumns,Integer.parseInt(NUMBER_OF_FEATURES));
 				inputColumns=reducedFeatures;
 			}
