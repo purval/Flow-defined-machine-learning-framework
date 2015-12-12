@@ -506,14 +506,27 @@ init  = function() {
    $("#psButton").click(function(){
      var split = $("#split").val();
      if(split == ''){
-      split = "70/30";
+      split = "0.75";
+     }
+     var bf = $("#bf").val();
+     if(split == ''){
+      bf = "50";
      }
      var target = $("#featuresearch").val();
+     if(target == ''){
+      alert("Please select targer field!!!");
+      return;
+     }
+     var st = $('input[name=st]:checked').val();
+     var ot = $('input[name=ot]:checked').val();
 
      var obj = {
         split : split,
         missingval : missingval,
-        target : target
+        target : target,
+        splittype : st,
+        outputtype : ot,
+        bestfeatures : bf
      };
 
      $.ajax({

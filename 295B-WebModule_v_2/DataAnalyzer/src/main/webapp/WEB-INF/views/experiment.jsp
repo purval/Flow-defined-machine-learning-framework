@@ -122,8 +122,43 @@
 	      		<label for="featuresearch"><h4>Select Target Feature</h4></label>
 				<input id="featuresearch" class="form-control autocomplete"/>
 				<br>
-				<label for="split"><h4>Train/Test split ratio</h4></label>
-				<input id="split" class="form-control" type="input" name="split_value" placeholder="70/30"/>
+				<label for="bf"><h4>Number of best Features</h4></label>
+				<input id="bf" class="form-control" type="input" name="bf" placeholder="40"/>
+            	<br>
+            	<div class="control-group">
+			        <label class="control-label"><h4>Split Type</h4></label>
+			        <div class="controls">
+			            <label class="radio inline">
+			                <input type="radio" value="shuffle" name="st" checked/>
+			                shuffle
+			            </label>
+			            <label class="radio inline">
+			                <input type="radio" value="fixed" name="st"/>
+			                fixed
+			            </label>
+			            <label class="radio inline">
+			                <input type="radio" value="custom" name="st"/>
+			                custom
+			            </label>
+			        </div>
+			    </div>
+				<br>
+				<label for="split"><h4>Train/Test ratio</h4></label>
+				<input id="split" class="form-control" type="input" name="split_value" placeholder="0.75"/>
+				<br>
+				<div class="control-group">
+			        <label class="control-label"><h4>Output Type</h4></label>
+			        <div class="controls">
+			            <label class="radio inline">
+			                <input type="radio" value="rounded" name="ot" checked/>
+			                rounded
+			            </label>
+			            <label class="radio inline">
+			                <input type="radio" value="exact" name="ot"/>
+			                exact
+			            </label>
+			        </div>
+			    </div>
 				<br>
 				<div class="dropdown">
 				  <label for="split"><h4>Missing Value Replacement</h4></label><br>
@@ -132,7 +167,6 @@
 				  <ul class="dropdown-menu">
 				    <li><a id="zero" href="#">zero</a></li>
 				    <li><a id="mean" href="#">mean</a></li>
-				    <li><a id="median" href="#">median</a></li>
 				  </ul>
 				</div>	
 	      </div>

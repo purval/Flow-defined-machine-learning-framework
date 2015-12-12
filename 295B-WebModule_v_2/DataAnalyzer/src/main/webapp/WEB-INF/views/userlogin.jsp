@@ -62,7 +62,7 @@
 			</p>
 			<br>
 			<p>
-				<a href="./registrationpage" ><h4><u>New User? <i>register here!!!</i></u></h4></a>
+				<a href="http://localhost:8080/dataanalyzer/registrationpage" ><h4><u>New User? <i>register here!!!</i></u></h4></a>
 			</p>
 		</fieldset>
 	</form:form>
