@@ -143,7 +143,7 @@ public class CommonUtils {
 		return null;
 	}
 	
-	public static void runFlow(String flow, String uuid, String inputColumns, String outputColumns, String train_data_path, String test_data_path, String original_data_path, String NUMBER_OF_FEATURES){
+	public static void runFlow(String flow, String uuid, String inputColumns, String outputColumns, String original_data_path, String NUMBER_OF_FEATURES, String SPLIT_TYPE,String TRAIN_SPLIT_RATIO){
 //		 var graphkeys = [{"key":-1,"text":"Comment", "loc":"70 -500"},{"key":-2,"text":"Boosted Decision Tree", "loc":"70 -500"}
 //		    ,{"key":-3,"text":"Decision Tree", "loc":"70 -600"},{"key":-4,"text":"Gradient Boosting", "loc":"70 -600"}
 //		    ,{"key":-5,"text":"Logistic Regression", "loc":"70 -600"},{"key":-6,"text":"Pearson Correlation", "loc":"70 -600"}
@@ -179,19 +179,19 @@ public class CommonUtils {
 			if(stepX.equalsIgnoreCase("Boosted Decision Tree") ){ // BOOSTED DECISION TREE
 				setConsoleLog(uuid,"status","Starting Boosted Decision Trees regressor on the dataset");
 				System.out.println("INSIDE BOOSTED DECISION TREE");
-				String message=MLhelper.pyAlgorithms(uuid,"BOOSTED_DECISION_TREE",workingDir+"/secom_train.csv",workingDir+"/secom_test.csv", inputColumns, outputColumns);
+				String message=MLhelper.pyAlgorithms(uuid,"BOOSTED_DECISION_TREE",original_data_path,SPLIT_TYPE, inputColumns, outputColumns,TRAIN_SPLIT_RATIO);
 				String messageOutput = message.substring(1, message.length()-2);
 				System.out.println(messageOutput);
 			}
 			if(stepX.equalsIgnoreCase("Decision Tree")){ // DECISION TREE
 				setConsoleLog(uuid,"status","Starting Decision Trees regressor on the dataset");
-				String message=MLhelper.pyAlgorithms(uuid,"DECISION_TREE",workingDir+"/secom_train.csv",workingDir+"/secom_test.csv", inputColumns, outputColumns);
+				String message=MLhelper.pyAlgorithms(uuid,"DECISION_TREE",original_data_path,SPLIT_TYPE, inputColumns, outputColumns,TRAIN_SPLIT_RATIO);
 				String messageOutput = message.substring(1, message.length()-2);
 				System.out.println(messageOutput);
 			}
 			if(stepX.equalsIgnoreCase("Gradient Boosting")){ // GRADIENT BOOSTING
 				setConsoleLog(uuid,"status","Starting Gradient Boosted regressor on the dataset");
-				String message=MLhelper.pyAlgorithms(uuid,"GRADIENT_BOOSTING",workingDir+"/secom_train.csv",workingDir+"/secom_test.csv", inputColumns, outputColumns);
+				String message=MLhelper.pyAlgorithms(uuid,"GRADIENT_BOOSTING",original_data_path,SPLIT_TYPE, inputColumns, outputColumns,TRAIN_SPLIT_RATIO);
 				String messageOutput = message.substring(1, message.length()-2);
 				System.out.println(messageOutput);
 			}

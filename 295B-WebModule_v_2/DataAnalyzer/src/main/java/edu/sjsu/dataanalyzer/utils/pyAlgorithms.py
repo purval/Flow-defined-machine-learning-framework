@@ -4,6 +4,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import AdaBoostRegressor
 from django.core.files.storage import default_storage
 from sklearn import ensemble
+from sklearn.cross_validation import train_test_split
 import sys
 #from pymongo import MongoClient
 
@@ -11,15 +12,24 @@ import sys
 #client = MongoClient('localhost', 27017)
 #db = client.cmpedb
 
-path1 = open(sys.argv[2]) #train data
-path2 = open(sys.argv[3]) #test data
+#path1 = open(sys.argv[2]) #train data
+#path2 = open(sys.argv[3]) #test data
+#train_data = pd.read_csv(path1, parse_dates=[0])
+#test_data = pd.read_csv(path2, parse_dates=[0])
 
-train_data = pd.read_csv(path1, parse_dates=[0])
-test_data = pd.read_csv(path2, parse_dates=[0])
+path1 = open(sys.argv[2]) #FULL data
+full_data = pd.read_csv(path1, parse_dates=[0])
+if(sys.argv[3]=="SHUFFLE_SPLIT"):
+    train_data, test_data = train_test_split(full_data, train_size=float(sys.argv[6]))
+elif(sys.argv[3]=="FIXED_SPLIT"):
+    train_data, test_data = train_test_split(full_data, train_size=float(sys.argv[6]),random_state=1)
+elif(sys.argv[3]=="CUSTOM_SPLIT"):
+    train_data=full_data[:int(sys.argv[6])]
+    test_data=full_data[int(sys.argv[6]):]
 
 inputColumns= sys.argv[4].split(',')
 outputColumns=sys.argv[5]
-
+print "Your TEST dataset--> ",test_data
 
 if(sys.argv[1]=='BOOSTED_DECISION_TREE'):
 	# BOOSTED DECISION TREE

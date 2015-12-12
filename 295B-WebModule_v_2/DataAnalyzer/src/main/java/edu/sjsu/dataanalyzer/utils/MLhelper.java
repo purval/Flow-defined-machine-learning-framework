@@ -8,7 +8,7 @@ public class MLhelper {
 	public static void pathHelper(){
 		
 	}
-	public static String pyAlgorithms(String uuid,String Algorithm,String trainDataPath,String testDataPath,String inputColumns, String outputColumns) {
+	public static String pyAlgorithms(String uuid,String Algorithm,String fullDataPath,String SPLIT_TYPE,String inputColumns, String outputColumns,String TRAIN_SPLIT_RATIO) {
 		// String saveOutputPath
 		/*
 		 * USAGE:
@@ -19,6 +19,9 @@ public class MLhelper {
 		 * outputColumns = string containing only one column name
 		 * 
 		 */
+		
+		
+		
 		
 		/*  ***SAMPLE*** 
 		String Algorithm = "BOOSTED_DECISION_TREE";
@@ -37,22 +40,33 @@ public class MLhelper {
 		        
 				System.out.println("**** ALGORITHM PARAMETERS ****");
 		        System.out.println("Algorithm to be applied: "+Algorithm);
-		        System.out.println("Train Data path: "+trainDataPath);
-		        System.out.println("Test Data path: "+testDataPath);
+		        System.out.println("Data path: "+fullDataPath);
+		        //System.out.println("Test Data path: "+testDataPath);
 		        System.out.println("INPUT COLUMNS: "+inputColumns);
 		        System.out.println("TARGET COLUMNS: "+outputColumns);
 		        System.out.println("******************************");
 				
 				CommonUtils.setConsoleLog(uuid, "result", "**** ALGORITHM PARAMETERS ****");
 				CommonUtils.setConsoleLog(uuid, "result", "Algorithm to be applied: "+Algorithm);
-				CommonUtils.setConsoleLog(uuid, "result", "Train Data path: "+trainDataPath);
-				CommonUtils.setConsoleLog(uuid, "result", "Test Data path: "+testDataPath);
+				CommonUtils.setConsoleLog(uuid, "result", "Data path: "+fullDataPath);
+				//CommonUtils.setConsoleLog(uuid, "result", "Test Data path: "+testDataPath);
 				CommonUtils.setConsoleLog(uuid, "result", "INPUT COLUMNS: "+inputColumns);
 				CommonUtils.setConsoleLog(uuid, "result", "TARGET COLUMNS: "+outputColumns);
 				CommonUtils.setConsoleLog(uuid, "result", "******************************");
-		        
+				/*
+				 * #1=algorithm
+					#2=full data path
+					#3=SHUFFLE_SPLIT OR FIXED_SPLIT
+					#4=input_columns
+					#5=output_columns
+					#6=train data split ratio e.g.: 0.7
+				 * 
+				 */
+				//String fullDataPath="secom_full.csv";
+				//String split_type="SHUFFLE_SPLIT";
+				//String split_ratio="0.7";
 				
-				Process process = Runtime.getRuntime().exec("python "+dir+"/pyAlgorithms.py "+Algorithm+" "+trainDataPath+" "+testDataPath+" "+inputColumns+" "+outputColumns);
+				Process process = Runtime.getRuntime().exec("python "+dir+"/pyAlgorithms.py "+Algorithm+" "+fullDataPath+" "+SPLIT_TYPE+" "+inputColumns+" "+outputColumns+" "+TRAIN_SPLIT_RATIO);
 				InputStream inputStream = process.getInputStream();
 				InputStream errorStream = process.getErrorStream();
 				BufferedReader bufferedInput = new BufferedReader(new InputStreamReader(inputStream));
