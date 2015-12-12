@@ -158,12 +158,15 @@ public class RestController {
 		DBObject runTimeDetails =  experimentService.getExperimentDetails(exid);
 		BasicDBList inputCols =  (BasicDBList) runTimeDetails.get("metadata");
 		String parameters = (String) runTimeDetails.get("parameters");
-		String train_data_path = "/Users/ruchas/Desktop/eclipse/Eclipse.app/Contents/MacOS/secom_train.csv";//(String) runTimeDetails.get("train_data_path");
-		String test_data_path = "/Users/ruchas/Desktop/eclipse/Eclipse.app/Contents/MacOS/secom_test.csv";//(String) runTimeDetails.get("test_data_path");
+		//String train_data_path = "/Users/ruchas/Desktop/eclipse/Eclipse.app/Contents/MacOS/secom_train.csv";//(String) runTimeDetails.get("train_data_path");
+		//String test_data_path = "/Users/ruchas/Desktop/eclipse/Eclipse.app/Contents/MacOS/secom_test.csv";//(String) runTimeDetails.get("test_data_path");
 		String excludeColumns =  (String) runTimeDetails.get("excludeList");
 		String original_data_path =  (String) runTimeDetails.get("filepath");
-		String NUMBER_OF_FEATURES = "50"; // BRING FROM DB LATER.
-
+		
+		String NUMBER_OF_FEATURES = (String) runTimeDetails.get("num_features");//"50"; // BRING FROM DB LATER.
+		String SPLIT_TYPE=(String) runTimeDetails.get("split_type");//"SHUFFLE_SPLIT";
+		String TRAIN_SPLIT_RATIO=(String) runTimeDetails.get("train_split_ratio");//"0.7";
+		
 		String replacExclude = excludeColumns.replace("\\[", "").replace("\\]", "").replace("\"", "");
 		String replacExclude1 = replacExclude.substring(1, replacExclude.length()-1);
 		String[] excludeCols = replacExclude1.split(",");
@@ -182,7 +185,7 @@ public class RestController {
 		System.out.println(parameters);
 		String tar = parameters.substring(parameters.indexOf("target")+9, parameters.length()-2);
 		System.out.println(tar);
-		CommonUtils.runFlow(flow, exid, inputColumns.toString().substring(0, inputColumns.length()-1), tar, train_data_path, test_data_path,original_data_path,NUMBER_OF_FEATURES);
+		CommonUtils.runFlow(flow, exid, inputColumns.toString().substring(0, inputColumns.length()-1), tar,original_data_path,NUMBER_OF_FEATURES,SPLIT_TYPE,TRAIN_SPLIT_RATIO);
 		return "{'status':200,'msg':'process flow added'}";
 	}
 }
