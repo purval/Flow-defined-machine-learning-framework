@@ -165,8 +165,8 @@ public class RestController {
 		
 		String NUMBER_OF_FEATURES = (String) runTimeDetails.get("num_features");//"50"; // BRING FROM DB LATER.
 		String SPLIT_TYPE=(String) runTimeDetails.get("split_type");//"SHUFFLE_SPLIT";
-		String TRAIN_SPLIT_RATIO=(String) runTimeDetails.get("train_split_ratio");//"0.7";
-		
+		String TRAIN_SPLIT_RATIO=(String) runTimeDetails.get("train_split_ratio");//"0.7"; OR a number like 1500 i.e. first 1500 samples as train data.
+		String OUTPUT_TYPE=(String) runTimeDetails.get("OUTPUT_TYPE");//"EXACT_OUTPUT","ROUNDED_OUTPUT";
 		String replacExclude = excludeColumns.replace("\\[", "").replace("\\]", "").replace("\"", "");
 		String replacExclude1 = replacExclude.substring(1, replacExclude.length()-1);
 		String[] excludeCols = replacExclude1.split(",");
@@ -185,7 +185,7 @@ public class RestController {
 		System.out.println(parameters);
 		String tar = parameters.substring(parameters.indexOf("target")+9, parameters.length()-2);
 		System.out.println(tar);
-		CommonUtils.runFlow(flow, exid, inputColumns.toString().substring(0, inputColumns.length()-1), tar,original_data_path,NUMBER_OF_FEATURES,SPLIT_TYPE,TRAIN_SPLIT_RATIO);
+		CommonUtils.runFlow(flow, exid, inputColumns.toString().substring(0, inputColumns.length()-1), tar,original_data_path,NUMBER_OF_FEATURES,SPLIT_TYPE,TRAIN_SPLIT_RATIO, OUTPUT_TYPE);
 		return "{'status':200,'msg':'process flow added'}";
 	}
 }

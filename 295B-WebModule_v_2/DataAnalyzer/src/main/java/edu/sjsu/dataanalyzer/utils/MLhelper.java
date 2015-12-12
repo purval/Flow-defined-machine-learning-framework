@@ -8,7 +8,7 @@ public class MLhelper {
 	public static void pathHelper(){
 		
 	}
-	public static String pyAlgorithms(String uuid,String Algorithm,String fullDataPath,String SPLIT_TYPE,String inputColumns, String outputColumns,String TRAIN_SPLIT_RATIO) {
+	public static String pyAlgorithms(String uuid,String Algorithm,String fullDataPath,String SPLIT_TYPE,String inputColumns, String outputColumns,String TRAIN_SPLIT_RATIO, String OUTPUT_TYPE) {
 		// String saveOutputPath
 		/*
 		 * USAGE:
@@ -52,6 +52,10 @@ public class MLhelper {
 				//CommonUtils.setConsoleLog(uuid, "result", "Test Data path: "+testDataPath);
 				CommonUtils.setConsoleLog(uuid, "result", "INPUT COLUMNS: "+inputColumns);
 				CommonUtils.setConsoleLog(uuid, "result", "TARGET COLUMNS: "+outputColumns);
+				CommonUtils.setConsoleLog(uuid, "result", "SPLIT RATIO: "+TRAIN_SPLIT_RATIO);
+				CommonUtils.setConsoleLog(uuid, "result", "SPLIT TYPE: "+SPLIT_TYPE);
+				CommonUtils.setConsoleLog(uuid, "result", "OUTPUT TYPE: "+OUTPUT_TYPE);
+
 				CommonUtils.setConsoleLog(uuid, "result", "******************************");
 				/*
 				 * #1=algorithm
@@ -66,7 +70,7 @@ public class MLhelper {
 				//String split_type="SHUFFLE_SPLIT";
 				//String split_ratio="0.7";
 				
-				Process process = Runtime.getRuntime().exec("python "+dir+"/pyAlgorithms.py "+Algorithm+" "+fullDataPath+" "+SPLIT_TYPE+" "+inputColumns+" "+outputColumns+" "+TRAIN_SPLIT_RATIO);
+				Process process = Runtime.getRuntime().exec("python "+dir+"/pyAlgorithms.py "+Algorithm+" "+fullDataPath+" "+SPLIT_TYPE+" "+inputColumns+" "+outputColumns+" "+TRAIN_SPLIT_RATIO+" "+OUTPUT_TYPE);
 				InputStream inputStream = process.getInputStream();
 				InputStream errorStream = process.getErrorStream();
 				BufferedReader bufferedInput = new BufferedReader(new InputStreamReader(inputStream));
