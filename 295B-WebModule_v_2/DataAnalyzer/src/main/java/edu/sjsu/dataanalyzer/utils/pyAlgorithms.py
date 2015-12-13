@@ -31,7 +31,7 @@ inputColumns= sys.argv[4].split(',')
 outputColumns=sys.argv[5]
 #with pd.option_context('display.max_rows', 10000, 'display.max_columns', 5000):
     #print "Your TEST dataset-->",test_data, "<--TEST data ends here."
-
+outputCol="Predicted_"+sys.argv[5]
 
 
 if(sys.argv[1]=='BOOSTED_DECISION_TREE'):
@@ -42,10 +42,10 @@ if(sys.argv[1]=='BOOSTED_DECISION_TREE'):
     y_2 = trained2.predict(test_data[inputColumns])
     if sys.argv[7]=="exact":
         print y_2
-        test_data['Output']=y_2
+        test_data[outputCol]=y_2
     elif sys.argv[7]=="rounded":
         print(y_2.astype(np.int64))
-        test_data['Output']=y_2.astype(np.int64)
+        test_data[outputCol]=y_2.astype(np.int64)
 elif(sys.argv[1]=='DECISION_TREE'):
 	# DECISION TREE
     regr_1 = DecisionTreeRegressor(max_depth=4)
@@ -53,10 +53,10 @@ elif(sys.argv[1]=='DECISION_TREE'):
     y_1 = trained1.predict(test_data[inputColumns])
     if(sys.argv[7]=="exact"):
         print y_1
-        test_data['Output']=y_1
+        test_data[outputCol]=y_1
     elif(sys.argv[7]=="rounded"):
         print(y_1.astype(np.int64))
-        test_data['Output']=y_1.astype(np.int64)
+        test_data[outputCol]=y_1.astype(np.int64)
 elif(sys.argv[1]=='GRADIENT_BOOSTING'):
 	# GRADIENT BOOSTING
     regr_3 = ensemble.GradientBoostingRegressor(n_estimators=80, learning_rate = .05, max_depth = 10,min_samples_leaf = 20)
@@ -65,8 +65,8 @@ elif(sys.argv[1]=='GRADIENT_BOOSTING'):
 	#y_4 = regr_3.score(train_data[inputColumns].values, train_data[outputColumns].values,sample_weight=None)
     if(sys.argv[7]=="exact"):
         print y_3
-        test_data['Output']=y_3
+        test_data[outputCol]=y_3
     elif(sys.argv[7]=="rounded"):
         print(y_3.astype(np.int64))
-        test_data['Output']=y_3.astype(np.int64)
+        test_data[outputCol]=y_3.astype(np.int64)
 test_data.to_csv(os.path.join(os.path.expanduser('~'),"test_output.csv"))
