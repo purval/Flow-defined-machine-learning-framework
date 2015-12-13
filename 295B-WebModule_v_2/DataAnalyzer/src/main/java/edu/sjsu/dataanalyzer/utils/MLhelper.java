@@ -4,10 +4,19 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import edu.sjsu.dataanalyzer.service.ExperimentService;
+
 public class MLhelper {
 	public static void pathHelper(){
 		
 	}
+
+	private static ExperimentService experimentService= new ExperimentService();
+	
+	
 	public static String pyAlgorithms(String uuid,String Algorithm,String fullDataPath,String SPLIT_TYPE,String inputColumns, String outputColumns,String TRAIN_SPLIT_RATIO, String OUTPUT_TYPE) {
 		// String saveOutputPath
 		/*
@@ -120,8 +129,12 @@ public class MLhelper {
 			//String temp = message.substring(message.indexOf("-->")+3,message.indexOf("<--T")-2);
 			//String temp2 = temp.trim().replaceAll(" ", ",").replaceAll("\\t", ",").replaceAll("\\n", ",");
 			//System.out.println(temp2);
+			
 			CommonUtils.setConsoleLog(uuid, "result", message.toString());
 			//System.out.println(message.toString()); // output string. Parse it and store the result in mongo db
+			String outPath = message.substring(message.indexOf(">>>>>")+6, message.indexOf("<<<<<")-1);
+			System.out.println("OUTPUT_PATH:::"+outPath);
+			experimentService.insertOutputDataPath(outPath,uuid);
 			return message.toString();
 	}
 	

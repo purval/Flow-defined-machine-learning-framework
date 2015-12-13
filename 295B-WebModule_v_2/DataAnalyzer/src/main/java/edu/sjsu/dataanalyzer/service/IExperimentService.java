@@ -22,4 +22,6 @@ public interface IExperimentService {
 
 	public void addExclusionList(String exid, String exclusionList);
 
+	public void insertOutputDataPath(String filepath, String uuid);
+
 }
