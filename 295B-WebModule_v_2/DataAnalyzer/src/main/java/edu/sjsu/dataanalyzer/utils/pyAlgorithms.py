@@ -18,16 +18,19 @@ import sys
 #test_data = pd.read_csv(path2, parse_dates=[0])
 path1 = open(sys.argv[2]) #FULL data
 full_data = pd.read_csv(path1, parse_dates=[0])
-if(sys.argv[3]=="SHUFFLE_SPLIT"):
+if(sys.argv[3]=="shuffle"):
     train_data, test_data = train_test_split(full_data, train_size=float(sys.argv[6]))
-elif(sys.argv[3]=="FIXED_SPLIT"):
+elif(sys.argv[3]=="fixed"):
     train_data, test_data = train_test_split(full_data, train_size=float(sys.argv[6]),random_state=1)
-elif(sys.argv[3]=="CUSTOM_SPLIT"):
+elif(sys.argv[3]=="custom"):
     train_data=full_data[:int(sys.argv[6])]
     test_data=full_data[int(sys.argv[6]):]
 inputColumns= sys.argv[4].split(',')
 outputColumns=sys.argv[5]
-print "Your TEST dataset-->",test_data, "<--TEST data ends here."
+#with pd.option_context('display.max_rows', 10000, 'display.max_columns', 5000):
+    #print "Your TEST dataset-->",test_data, "<--TEST data ends here."
+
+
 
 if(sys.argv[1]=='BOOSTED_DECISION_TREE'):
 	# BOOSTED DECISION TREE
@@ -35,26 +38,33 @@ if(sys.argv[1]=='BOOSTED_DECISION_TREE'):
     regr_2 = AdaBoostRegressor(DecisionTreeRegressor(max_depth=4), n_estimators=300, random_state=rng)
     trained2=regr_2.fit(train_data[inputColumns].values, train_data[outputColumns].values)
     y_2 = trained2.predict(test_data[inputColumns])
-    if sys.argv[7]=="EXACT_OUTPUT":
+    if sys.argv[7]=="exact":
         print y_2
-    elif sys.argv[7]=="ROUNDED_OUTPUT":
+        test_data['Output']=y_2
+    elif sys.argv[7]=="rounded":
         print(y_2.astype(np.int64))
+        test_data['Output']=y_2.astype(np.int64)
 elif(sys.argv[1]=='DECISION_TREE'):
 	# DECISION TREE
     regr_1 = DecisionTreeRegressor(max_depth=4)
     trained1=regr_1.fit(train_data[inputColumns].values, train_data[outputColumns].values)
     y_1 = trained1.predict(test_data[inputColumns])
-    if(sys.argv[7]=="EXACT_OUTPUT"):
+    if(sys.argv[7]=="exact"):
         print y_1
-    elif(sys.argv[7]=="ROUNDED_OUTPUT"):
+        test_data['Output']=y_1
+    elif(sys.argv[7]=="rounded"):
         print(y_1.astype(np.int64))
+        test_data['Output']=y_1.astype(np.int64)
 elif(sys.argv[1]=='GRADIENT_BOOSTING'):
 	# GRADIENT BOOSTING
     regr_3 = ensemble.GradientBoostingRegressor(n_estimators=80, learning_rate = .05, max_depth = 10,min_samples_leaf = 20)
     trained3= regr_3.fit(train_data[inputColumns].values, train_data[outputColumns].values)
     y_3 = trained3.predict(test_data[inputColumns])
 	#y_4 = regr_3.score(train_data[inputColumns].values, train_data[outputColumns].values,sample_weight=None)
-    if(sys.argv[7]=="EXACT_OUTPUT"):
+    if(sys.argv[7]=="exact"):
         print y_3
-    elif(sys.argv[7]=="ROUNDED_OUTPUT"):
+        test_data['Output']=y_3
+    elif(sys.argv[7]=="rounded"):
         print(y_3.astype(np.int64))
+        test_data['Output']=y_3.astype(np.int64)
+test_data.to_csv("/Users/ruchas/Desktop/test_temp.csv")

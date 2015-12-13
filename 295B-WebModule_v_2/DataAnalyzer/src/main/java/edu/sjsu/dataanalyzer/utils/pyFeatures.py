@@ -32,20 +32,10 @@ if(sys.argv[1]=='EXTRA_TREE_CLASSIFIER'):
 	print(model.feature_importances_)
 	#makeArr = np.array(model.feature_importances_)
 	importances = model.feature_importances_ #array with importances of each feature
-	#idx = np.arange(0, fullData[attrib].values.shape[1]) #create an index array, with the number of features
-	#features_to_keep = idx[importances > np.mean(importances)] #only keep features whose importance is greater than the mean importance
-	#should be about an array of size 3 (about)
-	#print features_to_keep.shape
-
-	#x_feature_selected = fullData[attrib].values[:,features_to_keep] #pull X values corresponding to the most important features
-	#print x_feature_selected
-
-	#sorted_idx = np.argsort(importances)[::-1]
 	print "Reducing to ",number_of_features," features"
 	sorted_lastN_features = np.argsort(importances)[::-1][:number_of_features]
 	#print sorted_idx
 	print sorted_lastN_features
-
 elif(sys.argv[1]=='SELECT_K_BEST'):
 	# TESTING SELCT K BEST USING CHI SQUARED MODEL
 	print "........ STARTING K-BEST FEATURE SELECTOR USING CHI SQUARED AS MODEL........"
@@ -53,7 +43,7 @@ elif(sys.argv[1]=='SELECT_K_BEST'):
 	featureSelector = SelectKBest(score_func=chi2,k=number_of_features)
 	featureSelector.fit(full_data[inputColumns].values, full_data[outputColumns].values)
 	assumed_to_be_the_feature_ids_of_the_top_k_features = list(featureSelector.get_support(indices=True)) #indices=False just gives me a list of True,False etc...
-    print "Reducing to ",number_of_features," features"
+	print "Reducing to ",number_of_features," features"
 	print assumed_to_be_the_feature_ids_of_the_top_k_features
 elif(sys.argv[1]=='RFE'):
 	#RFE MODEL FOR FEATURE SELECTION
@@ -63,5 +53,5 @@ elif(sys.argv[1]=='RFE'):
 	rfe = rfe.fit(full_data[inputColumns].values, full_data[outputColumns].values)
 	# summarize the selection of the attributes
 	print(rfe.support_)
-    print "Reducing to ",number_of_features," features"
+	print "Reducing to ",number_of_features," features"
 	print(rfe.ranking_)

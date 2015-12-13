@@ -33,7 +33,7 @@ public class MLhelper {
 			try
 			{
 				
-				final String dir = System.getProperty("user.dir");
+				final String dir = System.getProperty("user.home");
 		        System.out.println("current dir = " + dir);
 		        
 		        
@@ -116,8 +116,12 @@ public class MLhelper {
 			{
 				throwable.printStackTrace();
 			}
+			
+			//String temp = message.substring(message.indexOf("-->")+3,message.indexOf("<--T")-2);
+			//String temp2 = temp.trim().replaceAll(" ", ",").replaceAll("\\t", ",").replaceAll("\\n", ",");
+			//System.out.println(temp2);
 			CommonUtils.setConsoleLog(uuid, "result", message.toString());
-			System.out.println(message.toString()); // output string. Parse it and store the result in mongo db
+			//System.out.println(message.toString()); // output string. Parse it and store the result in mongo db
 			return message.toString();
 	}
 	
@@ -128,7 +132,7 @@ public class MLhelper {
 			try
 			{
 				
-				final String dir = System.getProperty("user.dir");
+				final String dir = System.getProperty("user.home");
 		        System.out.println("current dir = " + dir);
 		        
 		        

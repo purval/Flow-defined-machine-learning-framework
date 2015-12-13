@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,10 +164,15 @@ public class RestController {
 		String excludeColumns =  (String) runTimeDetails.get("excludeList");
 		String original_data_path =  (String) runTimeDetails.get("filepath");
 		
-		String NUMBER_OF_FEATURES = (String) runTimeDetails.get("num_features");//"50"; // BRING FROM DB LATER.
-		String SPLIT_TYPE=(String) runTimeDetails.get("split_type");//"SHUFFLE_SPLIT";
-		String TRAIN_SPLIT_RATIO=(String) runTimeDetails.get("train_split_ratio");//"0.7"; OR a number like 1500 i.e. first 1500 samples as train data.
-		String OUTPUT_TYPE=(String) runTimeDetails.get("OUTPUT_TYPE");//"EXACT_OUTPUT","ROUNDED_OUTPUT";
+		JSONObject paramJson = new JSONObject(parameters);
+		
+		
+		String NUMBER_OF_FEATURES = (String) paramJson.getString("bestfeatures");//"50"; // BRING FROM DB LATER.
+		String SPLIT_TYPE=(String) paramJson.getString("splittype");//"SHUFFLE_SPLIT";
+		String TRAIN_SPLIT_RATIO=(String) paramJson.getString("split");//"0.7"; OR a number like 1500 i.e. first 1500 samples as train data.
+		String OUTPUT_TYPE=(String) paramJson.getString("outputtype");//"EXACT_OUTPUT","ROUNDED_OUTPUT";
+		String TARGET=(String) paramJson.getString("target");//"SHUFFLE_SPLIT";
+
 		String replacExclude = excludeColumns.replace("\\[", "").replace("\\]", "").replace("\"", "");
 		String replacExclude1 = replacExclude.substring(1, replacExclude.length()-1);
 		String[] excludeCols = replacExclude1.split(",");
@@ -182,10 +188,17 @@ public class RestController {
 				}
 			
 		}
-		System.out.println(parameters);
-		String tar = parameters.substring(parameters.indexOf("target")+9, parameters.length()-2);
-		System.out.println(tar);
-		CommonUtils.runFlow(flow, exid, inputColumns.toString().substring(0, inputColumns.length()-1), tar,original_data_path,NUMBER_OF_FEATURES,SPLIT_TYPE,TRAIN_SPLIT_RATIO, OUTPUT_TYPE);
+		
+		logger.info("Features:"+NUMBER_OF_FEATURES);
+		logger.info("Split type:"+SPLIT_TYPE);
+		logger.info("Train split ratio:"+TRAIN_SPLIT_RATIO);
+		logger.info("Output type:"+OUTPUT_TYPE);
+		logger.info("Target:"+TARGET);
+
+		//System.out.println(parameters);
+		//String tar = parameters.substring(parameters.indexOf("target")+9, parameters.length()-2);
+		//System.out.println(tar);
+		CommonUtils.runFlow(flow, exid, inputColumns.toString().substring(0, inputColumns.length()-1), TARGET,original_data_path,NUMBER_OF_FEATURES,SPLIT_TYPE,TRAIN_SPLIT_RATIO, OUTPUT_TYPE);
 		return "{'status':200,'msg':'process flow added'}";
 	}
 }
