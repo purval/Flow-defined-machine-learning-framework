@@ -528,7 +528,8 @@ init  = function() {
         outputtype : ot,
         bestfeatures : bf
      };
-
+     console.log(obj);
+     
      $.ajax({
       url: "http://localhost:8080/dataanalyzer/parameters",
       type: 'POST',
