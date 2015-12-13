@@ -6,8 +6,10 @@ from django.core.files.storage import default_storage
 from sklearn import ensemble
 from sklearn.cross_validation import train_test_split
 import sys
+import os
 #from pymongo import MongoClient
-
+#print os.path.join(os.path.expanduser('~'),"test_output.csv")
+print ">>>>>",os.path.join(os.path.expanduser('~'),"test_output.csv"),"<<<<<"
 #client = MongoClient()
 #client = MongoClient('localhost', 27017)
 #db = client.cmpedb
@@ -67,4 +69,4 @@ elif(sys.argv[1]=='GRADIENT_BOOSTING'):
     elif(sys.argv[7]=="rounded"):
         print(y_3.astype(np.int64))
         test_data['Output']=y_3.astype(np.int64)
-test_data.to_csv("/Users/ruchas/Desktop/test_temp.csv")
+test_data.to_csv(os.path.join(os.path.expanduser('~'),"test_output.csv"))

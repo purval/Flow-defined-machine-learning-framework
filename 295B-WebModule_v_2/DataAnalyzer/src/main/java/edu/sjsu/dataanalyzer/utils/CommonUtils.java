@@ -183,14 +183,20 @@ public class CommonUtils {
 				setConsoleLog(uuid,"status","Starting Boosted Decision Trees regressor on the dataset");
 				System.out.println("INSIDE BOOSTED DECISION TREE");
 				String message=MLhelper.pyAlgorithms(uuid,"BOOSTED_DECISION_TREE",original_data_path,SPLIT_TYPE, inputColumns, outputColumns,TRAIN_SPLIT_RATIO, OUTPUT_TYPE);
+				
+				
+
 				String messageOutput = message.substring(1, message.length()-2);
-				System.out.println(messageOutput);
+				System.out.println("message out:"+messageOutput);
 			}
 			if(stepX.equalsIgnoreCase("Decision Tree")){ // DECISION TREE
 				setConsoleLog(uuid,"status","Starting Decision Trees regressor on the dataset");
 				String message=MLhelper.pyAlgorithms(uuid,"DECISION_TREE",original_data_path,SPLIT_TYPE, inputColumns, outputColumns,TRAIN_SPLIT_RATIO, OUTPUT_TYPE);
+				
+				
+				
 				String messageOutput = message.substring(1, message.length()-2);
-				System.out.println(messageOutput);
+				System.out.println("message out:"+messageOutput);
 			}
 			if(stepX.equalsIgnoreCase("Gradient Boosting")){ // GRADIENT BOOSTING
 				setConsoleLog(uuid,"status","Starting Gradient Boosted regressor on the dataset");

@@ -357,9 +357,17 @@ init  = function() {
             $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0);
           }
         }catch(err){
-          console.log(err);
-          $("#consolelog").append(response);
-          $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0);
+          var processstr = response;
+          var len = processstr.length;
+
+          while(processstr.indexOf("}") != -1){
+            var sindex = processstr.indexOf("{");
+            var eindex = processstr.indexOf("}");
+            var res = processstr.substring(sindex, eindex+1);
+            appendLogs(res);
+            processstr = processstr.substring(eindex+2,len);
+            console.log(processstr);
+          }  
         }
       },
       error: function (jqXHR) {
@@ -367,6 +375,21 @@ init  = function() {
         console.log(jqXHR);
       }
     });
+  }
+
+  function appendLogs(res){
+    try{
+      var responseJson = JSON.parse(res);
+      var htmlstr = '<p class="ptext"> >> '+responseJson.timestamp+' : '+responseJson.message+'</p>';
+      $("#consolelog").append(htmlstr);
+      $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0);
+      return;
+    }catch(error){
+      console.log(error);
+      $("#consolelog").append(res);
+      $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0);
+      return;
+    }
   }
 
   function pollServerLogs(){

@@ -138,7 +138,16 @@ public class ExperimentService implements IExperimentService{
 		coll.update(finddoc, adddoc);
 	}
 	
-	
+	@Override
+	public void insertOutputDataPath(String filepath, String uuid){
+		logger.info("insert metajson and file path");
+		
+		DBCollection coll = connector.getCollection("cmpedb","experiments");
+		DBObject adddoc = new BasicDBObject("$set", new BasicDBObject("outputDataPath", filepath));
+		DBObject finddoc = new BasicDBObject("id",UUID.fromString(uuid));
+		coll.update(finddoc, adddoc);
+		
+	}
 	
 	
 }
