@@ -19,13 +19,13 @@ import edu.sjsu.dataanalyzer.service.UserService;
 @Controller
 public class LamController {
 	private static final Logger logger = LoggerFactory.getLogger(LamController.class);
-	
+
 	@RequestMapping(value = "/lam", method = RequestMethod.GET)
 	public String lam(Locale locale, Model model) {		
 		logger.info("lam visualization page requested");
 		return "lamvisualization";
 	}
-	
+
 	@RequestMapping(value = "/lam/date", method = RequestMethod.GET)
 	public @ResponseBody String getDates(@RequestParam("chamber_id") String chamber_id) {		
 		logger.info("success :: "+chamber_id);
@@ -34,7 +34,7 @@ public class LamController {
 		logger.info("Dates: "+values);
 		return values.toString();
 	}
-	
+
 	@RequestMapping(value = "/lam/date/file", method = RequestMethod.GET)
 	public @ResponseBody String getFiles(@RequestParam("chamber_id") String chamber_id, @RequestParam("date_id") String date_id) {		
 		logger.info(chamber_id+" << chamber, date>>"+date_id);
@@ -43,7 +43,7 @@ public class LamController {
 		logger.info("File names: "+values);
 		return values.toString();
 	}
-	
+
 	@RequestMapping(value = "/lam/date/file/attribute", method = RequestMethod.GET)
 	public @ResponseBody String getAttributes(@RequestParam("chamber_id") String chamber_id, @RequestParam("date_id") String date_id, @RequestParam("file_id") String file_id) {		
 		logger.info(chamber_id+" << chamber, date>>"+date_id+" >> file id >> "+file_id);
@@ -51,7 +51,7 @@ public class LamController {
 		List values = us.getLamDateFileAndAtribute(chamber_id,date_id,file_id);
 		return values.toString();
 	}
-	
+
 	@RequestMapping(value = "/lam/graphs", method = RequestMethod.GET)
 	public @ResponseBody String getGraphs(@RequestParam("chamber_id") String chamber_id, @RequestParam("date_id") String date_id, @RequestParam("file_id") String file_id, @RequestParam("attribute_id") String attribute_id) {		
 		logger.info(chamber_id+" << chamber, date>>"+date_id+" >> file id >>" +file_id+" >> attribute_id >> "+attribute_id);

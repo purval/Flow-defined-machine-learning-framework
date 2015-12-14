@@ -4,9 +4,9 @@ public class User {
 	String email;
 	String displayName;
 	String password;
-	
+
 	public User(){}
-	
+
 	public User(String email, String displayName, String password) {
 		this.email = email;
 		this.displayName = displayName;

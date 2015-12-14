@@ -2,7 +2,6 @@ package edu.sjsu.dataanalyzer.service;
 
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +49,7 @@ public class UserService implements IUserService{
 
 		return user;
 	}
-	
+
 	@Override
 	public List getExperimentList(String email) {
 		logger.info("Retrieving experiment list");
@@ -140,14 +139,14 @@ public class UserService implements IUserService{
 
 	@Override
 	public DBObject getLAM(String chamber, String date,String fileName,String Attribute){
-		
+
 		logger.info("Retrieving an existing user");
 
 		JSONObject json = null;
 		// Retrieve collection
 		DBCollection coll = connector.getCollection("LAMDA","fullData");
-		
-		
+
+
 		BasicDBObject query = new BasicDBObject();
 		query.put("PM",chamber);
 		query.put("Date", date);
@@ -158,24 +157,24 @@ public class UserService implements IUserService{
 		DBCursor cur = coll.find(query);
 		//DBCursor temp = cur;
 		//System.out.println(cur);
-//		DBObject fullData,content,historicalData,BiasMatchSeriesCapPosition_AI;//,values = null;
-//		BasicDBList values=null;
-		
+		//		DBObject fullData,content,historicalData,BiasMatchSeriesCapPosition_AI;//,values = null;
+		//		BasicDBList values=null;
+
 		//System.out.println("CP1");
-//		while(cur.hasNext()){
-//			fullData= cur.next();
-//			//System.out.println("CURSOR QUERY: "+fullData);
-//			//content= (BasicDBObject) fullData.get("contents");
-//			System.out.println("CP2");
-//			//historicalData= (BasicDBObject) content.get("historicalData");
-//			//System.out.println("HISTORICAL DATA ONLY::: "+historicalData);
-//			System.out.println("CP3");
-//			BiasMatchSeriesCapPosition_AI= (BasicDBObject) fullData.get("BiasMatchSeriesCapPosition_AI");
-//			values = (BasicDBList) BiasMatchSeriesCapPosition_AI.get("Values");
-//			System.out.println("VALUES::: "+values);
-//
-//		}
-		
+		//		while(cur.hasNext()){
+		//			fullData= cur.next();
+		//			//System.out.println("CURSOR QUERY: "+fullData);
+		//			//content= (BasicDBObject) fullData.get("contents");
+		//			System.out.println("CP2");
+		//			//historicalData= (BasicDBObject) content.get("historicalData");
+		//			//System.out.println("HISTORICAL DATA ONLY::: "+historicalData);
+		//			System.out.println("CP3");
+		//			BiasMatchSeriesCapPosition_AI= (BasicDBObject) fullData.get("BiasMatchSeriesCapPosition_AI");
+		//			values = (BasicDBList) BiasMatchSeriesCapPosition_AI.get("Values");
+		//			System.out.println("VALUES::: "+values);
+		//
+		//		}
+
 		//BasicDBObject dat = (BasicDBObject) temp.next();
 		//return dat;
 		DBObject fullData = null;
@@ -183,10 +182,10 @@ public class UserService implements IUserService{
 		//System.out.println("got data: "+cur);
 		while(cur.hasNext()){
 			fullData= cur.next();
-			 //values = (BasicDBList) fullData.get("Values");
+			//values = (BasicDBList) fullData.get("Values");
 			System.out.println("got data::: "+fullData);
 		}
-		
+
 		return fullData;
 
 	}
@@ -195,22 +194,22 @@ public class UserService implements IUserService{
 	public List getLAMdate(String chamber) {
 		// TODO Auto-generated method stub
 		DBCollection coll = connector.getCollection("LAMDA","fullData");
-		
+
 		BasicDBObject query = new BasicDBObject();
 		query.put("PM",chamber);
 
 		//DBCursor cur = coll.find(query);
 		List distDates = coll.distinct("Date", query);
 		System.out.println("distinct dates list: "+distDates);
-//		DBObject fullData=null;
-//		StringBuilder dates = new StringBuilder();;
-//		while(cur.hasNext()){
-//			 fullData = cur.next();
-//			 //values = (BasicDBList) fullData.get("Values");
-//			System.out.println("dates data::: "+fullData);
-//			dates.append(fullData.get("Date")+",");
-//		}
-		
+		//		DBObject fullData=null;
+		//		StringBuilder dates = new StringBuilder();;
+		//		while(cur.hasNext()){
+		//			 fullData = cur.next();
+		//			 //values = (BasicDBList) fullData.get("Values");
+		//			System.out.println("dates data::: "+fullData);
+		//			dates.append(fullData.get("Date")+",");
+		//		}
+
 		System.out.println("Sending dates list in json: "+ distDates);
 		return distDates;
 	}
@@ -219,7 +218,7 @@ public class UserService implements IUserService{
 	public List getLamDateAndFile(String chamber, String date) {
 		// TODO Auto-generated method stub
 		DBCollection coll = connector.getCollection("LAMDA","fullData");
-		
+
 		BasicDBObject query = new BasicDBObject();
 		query.put("PM",chamber);
 		query.put("Date",date);
@@ -250,7 +249,7 @@ public class UserService implements IUserService{
 		BasicDBObject query = new BasicDBObject();
 		query.put("experiment_name","exp1");
 		//query.put("email",email);
-		
+
 		//DBCursor cur = coll.find(query);
 		List distAttributes = coll.distinct("metadata", query);
 		StringBuilder InputColumns = new StringBuilder();
@@ -263,12 +262,12 @@ public class UserService implements IUserService{
 					InputColumns.append(NameANDMetaData[1].replace("\"", ""));
 					if(i!= splits.length-1){InputColumns.append(",");}
 				}
-			
+
 			}
 		}
 		System.out.println("distinct metadata list: "+InputColumns);
 		return InputColumns.toString();
 	}
-	
+
 
 }

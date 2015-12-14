@@ -1,11 +1,11 @@
 package edu.sjsu.dataanalyzer.bean;
 
 public class ProcessStatus {	
-	
+
 	String type;
 	String message;
 	String timestamp;
-	
+
 	public ProcessStatus() {
 	}
 

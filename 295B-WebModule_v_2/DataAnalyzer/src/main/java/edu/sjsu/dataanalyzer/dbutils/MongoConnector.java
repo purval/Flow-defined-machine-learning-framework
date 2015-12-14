@@ -11,14 +11,14 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 
 public class MongoConnector {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(MongoConnector.class);
-	
+
 	private Mongo mongo;
 	//private ConfigProperties config;
-	
+
 	public MongoConnector() {}
-	
+
 	/*public void setConfigurations(ConfigProperties config){
 		this.config = config;
 	}*/
@@ -36,12 +36,12 @@ public class MongoConnector {
 		}
 		return mongo;
 	}
-	
+
 	public DB getDB(String dbname) {
 		logger.debug("Retrieving db: " + dbname);
 		return getMongo().getDB(dbname);
 	}
-	
+
 	public DBCollection getCollection(String dbname, String collection) {
 		logger.debug("Retrieving collection: " + collection);
 		return getDB(dbname).getCollection(collection);
