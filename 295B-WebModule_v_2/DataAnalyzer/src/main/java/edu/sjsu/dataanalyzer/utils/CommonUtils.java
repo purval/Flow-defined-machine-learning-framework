@@ -211,7 +211,7 @@ public class CommonUtils {
 			if(stepX.equalsIgnoreCase("Extra Trees Classifier")){
 				
 				setConsoleLog(uuid,"status","Starting Extra Trees Classifier for feature reduction...");
-				String reducedFeatures = MLhelper.pyFeatures(uuid,"EXTRA_TREE_CLASSIFIER",workingDir+"/secom_full.csv", inputColumns, outputColumns,Integer.parseInt(NUMBER_OF_FEATURES));
+				String reducedFeatures = MLhelper.pyFeatures(uuid,"EXTRA_TREE_CLASSIFIER",original_data_path, inputColumns, outputColumns,Integer.parseInt(NUMBER_OF_FEATURES));
 				inputColumns=reducedFeatures;
 			}
 			if(stepX.equalsIgnoreCase("K-best Features")){
