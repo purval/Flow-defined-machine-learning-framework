@@ -140,6 +140,10 @@ public class UserController {
 			logger.info("process flow set ");
 			model.addAttribute("process_flow", dbOject.get("process_flow"));
 		}
+		if(dbOject.get("outputDataPath") != null){
+			logger.info("outputDataPath set ");
+			model.addAttribute("outputDataPath", dbOject.get("outputDataPath"));
+		}
 		return "experiment";
 	}
 

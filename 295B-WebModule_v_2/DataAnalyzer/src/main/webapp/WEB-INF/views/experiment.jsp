@@ -30,6 +30,7 @@
 <body onload="init()">
 <input type="hidden" id="jsonBom" value='${process_flow}'/>
 <input type="hidden" id="metadata" value='${metadata}'/>
+<input type="hidden" id="outputDataPath" value='${outputDataPath}'/>
 
  <header class="bg-white header header-md navbar navbar-fixed-top-xs box-shadow custome_bg">
     <div class="navbar-header aside-md dk"> <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen" data-target="#nav"> <i class="fa fa-bars"></i> </a> <a href="#" class="navbar-brand"><img src="/dataanalyzer/resources/images/logo.png" class="m-r-sm" alt="scale"> <span class="hidden-nav-xs">FDCSD</span> </a> <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user"> <i class="fa fa-cog"></i> </a> </div>
@@ -101,6 +102,7 @@
         <div id="status" class="divStyle">
           <div style="padding: 2px 20px;"><table><tr><td><h4>Process Status</h4></td><td><button id="clear" type="button" class="btn btn-warning" style="margin-left:40px">Clear</button></td></tr></table></div>
           <div id="consolelog"></div>
+          <a class="btn btn-default" href="#" role="button" id="download">Download Results</a>
         </div>
     </div>
   </div>

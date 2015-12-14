@@ -1,11 +1,16 @@
 package edu.sjsu.dataanalyzer;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -146,6 +151,35 @@ public class RestController {
 			return logs.toString();
 		}
 		return "[]";
+	}
+
+	@RequestMapping(value = "/download", method = RequestMethod.GET)
+	public void download(HttpServletResponse response, HttpSession session) throws IOException {
+		String exid = (String) session.getAttribute("exid");
+		logger.info("retrive output result file for experiment : "+exid);
+
+		String resultFilePath = experimentService.getOutputDataPath(exid);
+		if(resultFilePath == null){
+			response.sendError(400, "result output not available");
+		}else{
+			File file = new File(resultFilePath);
+			InputStream is = new FileInputStream(file);
+			// MIME type of the file
+			response.setContentType("application/octet-stream");
+			// Response header
+			response.setHeader("Content-Disposition", "attachment; filename=\""
+					+ file.getName() + "\"");
+			// Read from the file and write into the response
+			OutputStream os = response.getOutputStream();
+			byte[] buffer = new byte[1024];
+			int len;
+			while ((len = is.read(buffer)) != -1) {
+				os.write(buffer, 0, len);
+			}
+			os.flush();
+			os.close();
+			is.close();
+		}
 	}
 
 	@RequestMapping(value = "/execute", method = RequestMethod.POST)

@@ -149,5 +149,18 @@ public class ExperimentService implements IExperimentService{
 
 	}
 
+	@Override
+	public String getOutputDataPath(String uuid) {
+		logger.info("Retrieving output file path "+uuid);
 
+		DBCollection coll = connector.getCollection("cmpedb","experiments");
+		DBObject doc = new BasicDBObject();
+		doc.put("id", UUID.fromString(uuid));
+		doc.put("outputDataPath", new BasicDBObject("$exists",true));
+		DBObject dbObject = coll.findOne(doc);
+		if(dbObject==null){
+			return null;
+		}
+		return dbObject.get("outputDataPath").toString();
+	}
 }
