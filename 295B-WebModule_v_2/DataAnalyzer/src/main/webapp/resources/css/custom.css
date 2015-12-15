@@ -94,6 +94,9 @@ a.boxclose{
   font-size: 12px;
 }
 
+.ui-helper-hidden-accessible{
+	display: none;
+}
 .ui-autocomplete {
   position: absolute;
   top: 100%;
@@ -149,6 +152,13 @@ a.boxclose{
     margin-left: 3px;
 }
 
-#download{
-	margin: 10px 10px 10px 30px;
+#fileViewer .modal-dialog  {
+	width:90%;
+	height:90%;
+	overflow-x: auto;
+	overflow-y: auto;
+}
+
+#results{
+	margin: 15px 30px 10px 30px;
 }

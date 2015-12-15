@@ -102,7 +102,10 @@
         <div id="status" class="divStyle">
           <div style="padding: 2px 20px;"><table><tr><td><h4>Process Status</h4></td><td><button id="clear" type="button" class="btn btn-warning" style="margin-left:40px">Clear</button></td></tr></table></div>
           <div id="consolelog"></div>
-          <a class="btn btn-default" href="#" role="button" id="download">Download Results</a>
+          <div id="results">
+	          <button id="download" type="button" class="btn btn-default">Download</button> &nbsp;&nbsp;&nbsp;
+	          <button id="view" type="button" class="btn btn-default">View Results</button>
+          </div>
         </div>
     </div>
   </div>
@@ -289,6 +292,21 @@
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	        <button id="datasetButton" class="btn btn-success" name="datasetbutton">Upload</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- File viewer Modal -->
+	<div class="modal fade" id="fileViewer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Output csv</h4>
+	      </div>
+	      <div class="modal-body">
+	        	<p id="output"></p>
 	      </div>
 	    </div>
 	  </div>

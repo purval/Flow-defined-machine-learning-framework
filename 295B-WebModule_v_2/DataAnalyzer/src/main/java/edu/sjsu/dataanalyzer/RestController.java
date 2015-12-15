@@ -220,7 +220,6 @@ public class RestController {
 			if(!excludeColumnsMap.containsKey(i)){
 				inputColumns.append(inputCols.get(i)+",");
 			}
-
 		}
 
 		logger.info("Features:"+NUMBER_OF_FEATURES);

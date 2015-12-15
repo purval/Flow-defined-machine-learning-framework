@@ -724,6 +724,39 @@ init  = function() {
      }
    });
 
+   $("#view").click(function(){
+	   $.ajax({
+	        type: 'GET',
+	        url: 'http://localhost:8080/dataanalyzer/download',
+	        processData: false,
+	        contentType: false,
+	        success: function (data) {
+	            $("#output").append(data);
+	            $('.modal .modal-body').css('overflow-y', 'auto'); 
+	            $('.modal .modal-body').css('max-height', $(window).height() * 0.7);
+	            $('#fileViewer').modal('show');
+	        },
+	        error:function (xhr, ajaxOptions, thrownError){
+	            alert("results are not yet generated");
+	        } 
+	    });
+   });
+   
+   $("#download").click(function(){
+	   $.ajax({
+	        type: 'GET',
+	        url: 'http://localhost:8080/dataanalyzer/download',
+	        processData: false,
+	        contentType: false,
+	        success: function (data) {
+	            var win = window.open('http://localhost:8080/dataanalyzer/download', '_blank');
+	        },
+	        error:function (xhr, ajaxOptions, thrownError){
+	        	alert("results are not yet generated");
+	        } 
+	    });
+   });
+   
    $("#visual").click(function(){
     location.href="http://localhost:8080/dataanalyzer/lam";
    });
