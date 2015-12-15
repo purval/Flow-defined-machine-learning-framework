@@ -408,12 +408,6 @@ init  = function() {
       generate(metadata);
     }
 
-    var outputDataPath = $("#outputDataPath").val();
-
-    if(outputDataPath != ''){
-      $("#download").attr("href", "http://localhost:8080/dataanalyzer/download");
-    }
-
     var graphkeys = [{"key":-1,"text":"Comment", "loc":"70 -500"}
     ,{"key":-2,"text":"Boosted Decision Tree", "loc":"70 -500"}
     ,{"key":-3,"text":"Decision Tree", "loc":"70 -600"}
