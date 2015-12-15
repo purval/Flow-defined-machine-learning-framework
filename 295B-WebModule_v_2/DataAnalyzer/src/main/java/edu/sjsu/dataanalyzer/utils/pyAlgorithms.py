@@ -19,6 +19,7 @@ print ">>>>>",os.path.join(os.path.expanduser('~'),sys.argv[2]+datetime.datetime
 #path2 = open(sys.argv[3]) #test data
 #train_data = pd.read_csv(path1, parse_dates=[0])
 #test_data = pd.read_csv(path2, parse_dates=[0])
+pd.options.mode.chained_assignment = None  # default='warn'
 path1 = open(sys.argv[2]) #FULL data
 full_data = pd.read_csv(path1, parse_dates=[0])
 if(sys.argv[3]=="shuffle"):
