@@ -7,9 +7,11 @@ from sklearn import ensemble
 from sklearn.cross_validation import train_test_split
 import sys
 import os
+import datetime
 #from pymongo import MongoClient
 #print os.path.join(os.path.expanduser('~'),"test_output.csv")
-print ">>>>>",os.path.join(os.path.expanduser('~'),"test_output.csv"),"<<<<<"
+outputFilePath = os.path.join(os.path.expanduser('~'),sys.argv[2]+datetime.datetime.now().strftime('%Y%m%d%H%M%S')+".csv")
+print ">>>>>",outputFilePath,"<<<<<"
 #client = MongoClient()
 #client = MongoClient('localhost', 27017)
 #db = client.cmpedb
@@ -18,6 +20,7 @@ print ">>>>>",os.path.join(os.path.expanduser('~'),"test_output.csv"),"<<<<<"
 #path2 = open(sys.argv[3]) #test data
 #train_data = pd.read_csv(path1, parse_dates=[0])
 #test_data = pd.read_csv(path2, parse_dates=[0])
+pd.options.mode.chained_assignment = None  # default='warn'
 path1 = open(sys.argv[2]) #FULL data
 full_data = pd.read_csv(path1, parse_dates=[0])
 if(sys.argv[3]=="shuffle"):
@@ -69,4 +72,5 @@ elif(sys.argv[1]=='GRADIENT_BOOSTING'):
     elif(sys.argv[7]=="rounded"):
         print(y_3.astype(np.int64))
         test_data[outputCol]=y_3.astype(np.int64)
-test_data.to_csv(os.path.join(os.path.expanduser('~'),"test_output.csv"))
+test_data.to_csv(outputFilePath)
+## os.path.join(os.path.expanduser('~'),sys.argv[2]+datetime.datetime.now().strftime('%Y%m%d%H%M%S')+".csv")
