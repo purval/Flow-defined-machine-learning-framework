@@ -187,4 +187,9 @@ public class UserController {
 		return values.toString();
 	}
 
+	@RequestMapping(value = "/infovideo", method = RequestMethod.GET)
+	public String infoVideo() {
+		logger.info("info video page");
+		return "infovideo";
+	}
 }

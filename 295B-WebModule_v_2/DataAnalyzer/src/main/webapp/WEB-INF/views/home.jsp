@@ -6,9 +6,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
+
 <meta charset="utf-8" />
 <title>FDCSD - Homepage</title>
-
+<link rel='shortcut icon' type='image/x-icon' href='<c:url value="/resources/images/logo.png" />' />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1" />
 <link href="<c:url value="/resources/css/bootstrap.css" />"
