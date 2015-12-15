@@ -22,11 +22,11 @@ public class ExperimentService implements IExperimentService{
 	public void setMongoConnector(MongoConnector connector){
 		this.connector = connector;
 	}
-	
+
 	@Override
 	public String pushNewExperiement(String email, String experimentName) {
 		DBCollection coll = connector.getCollection("cmpedb","user");
-		
+
 		UUID uuid = UUID.randomUUID();
 		String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
 		logger.info("uuid : "+uuid+" timestamp : "+timeStamp);
@@ -39,7 +39,7 @@ public class ExperimentService implements IExperimentService{
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
-		
+
 		logger.info("user collection updated");
 		DBCollection experimentColl = connector.getCollection("cmpedb","experiments");
 		//insert new experiments into user experiments details 
@@ -55,7 +55,7 @@ public class ExperimentService implements IExperimentService{
 		logger.info("experiment collection updated");
 		return uuid.toString();
 	}
-	
+
 	@Override
 	public DBObject getExperimentDetails(String uuid) {
 		logger.info("Retrieving experiment details "+uuid);
@@ -69,11 +69,11 @@ public class ExperimentService implements IExperimentService{
 		}
 		return dbObject;
 	}
-	
+
 	@Override
 	public void insertMetaData(ArrayList<String> metajson, String filepath, String uuid){
 		logger.info("insert metajson and file path");
-		
+
 		DBCollection coll = connector.getCollection("cmpedb","experiments");
 		DBObject adddoc = new BasicDBObject("$set", new BasicDBObject("filepath", filepath));
 		DBObject finddoc = new BasicDBObject("id",UUID.fromString(uuid));
@@ -81,73 +81,86 @@ public class ExperimentService implements IExperimentService{
 		adddoc = new BasicDBObject("$set", new BasicDBObject("metadata", metajson));
 		coll.update(finddoc, adddoc);
 	}
-	
+
 	@Override
 	public void deleteExperiment(String uuid, String email){
 		logger.info("delete experiment deatils from experiments and user collection");
-		
+
 		DBCollection coll = connector.getCollection("cmpedb","experiments");
 		BasicDBObject document = new BasicDBObject("id", UUID.fromString(uuid));
 		coll.remove(document);
 		logger.info("experiment document removed from experiments collection");
-		
+
 		DBCollection collUser = connector.getCollection("cmpedb","user");
 		BasicDBObject match = new BasicDBObject("id", email); 
 		BasicDBObject update = new BasicDBObject("experiments", new BasicDBObject("uuid", UUID.fromString(uuid)));
 		collUser.update(match, new BasicDBObject("$pull", update));
 		logger.info("experiment details removed from user collection");
 	}
-	
+
 	@Override
 	public void addProcess(String uuid, String processjson){
 		logger.info("process flow modification for experiment "+uuid);
-		
+
 		DBCollection coll = connector.getCollection("cmpedb","experiments");
 		DBObject adddoc = new BasicDBObject("$set", new BasicDBObject("process_flow", processjson));
 		DBObject finddoc = new BasicDBObject("id",UUID.fromString(uuid));
 		coll.update(finddoc, adddoc);
 	}
-	
+
 	@Override
 	public void addMetadata(String uuid, String metadata){
 		logger.info("metadata modification for experiment "+uuid);
-		
+
 		DBCollection coll = connector.getCollection("cmpedb","experiments");
 		DBObject adddoc = new BasicDBObject("$set", new BasicDBObject("metadata", metadata));
 		DBObject finddoc = new BasicDBObject("id",UUID.fromString(uuid));
 		coll.update(finddoc, adddoc);
 	}
-	
+
 	@Override
 	public void addParameters(String uuid, String parameters){
 		logger.info("parameters modification for experiment "+uuid);
-		
+
 		DBCollection coll = connector.getCollection("cmpedb","experiments");
 		DBObject adddoc = new BasicDBObject("$set", new BasicDBObject("parameters", parameters));
 		DBObject finddoc = new BasicDBObject("id",UUID.fromString(uuid));
 		coll.update(finddoc, adddoc);
 	}
-	
+
 	@Override
 	public void addExclusionList(String exid, String exclusionList) {
 		logger.info("excluding columns for experiment: "+exid);
-		
+
 		DBCollection coll = connector.getCollection("cmpedb","experiments");
 		DBObject adddoc = new BasicDBObject("$set", new BasicDBObject("excludeList", exclusionList));
 		DBObject finddoc = new BasicDBObject("id",UUID.fromString(exid));
 		coll.update(finddoc, adddoc);
 	}
-	
+
 	@Override
 	public void insertOutputDataPath(String filepath, String uuid){
 		logger.info("insert metajson and file path");
-		
+
 		DBCollection coll = connector.getCollection("cmpedb","experiments");
 		DBObject adddoc = new BasicDBObject("$set", new BasicDBObject("outputDataPath", filepath));
 		DBObject finddoc = new BasicDBObject("id",UUID.fromString(uuid));
 		coll.update(finddoc, adddoc);
-		
+
 	}
-	
-	
+
+	@Override
+	public String getOutputDataPath(String uuid) {
+		logger.info("Retrieving output file path "+uuid);
+
+		DBCollection coll = connector.getCollection("cmpedb","experiments");
+		DBObject doc = new BasicDBObject();
+		doc.put("id", UUID.fromString(uuid));
+		doc.put("outputDataPath", new BasicDBObject("$exists",true));
+		DBObject dbObject = coll.findOne(doc);
+		if(dbObject==null){
+			return null;
+		}
+		return dbObject.get("outputDataPath").toString();
+	}
 }

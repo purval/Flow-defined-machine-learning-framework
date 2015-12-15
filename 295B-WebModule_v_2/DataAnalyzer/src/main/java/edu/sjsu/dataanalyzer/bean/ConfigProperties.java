@@ -4,9 +4,9 @@ public class ConfigProperties {
 	String mongodUrl;
 	String mongodPort;
 	String db;
-	
+
 	public ConfigProperties(){}
-	
+
 	public String getMongodUrl() {
 		return mongodUrl;
 	}

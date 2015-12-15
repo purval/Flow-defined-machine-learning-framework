@@ -3,9 +3,12 @@ package edu.sjsu.dataanalyzer.utils;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -143,9 +146,6 @@ public class CommonUtils {
 		return null;
 	}
 	
-	
-	
-	
 	public static void runFlow(String flow, String uuid, String inputColumns, String outputColumns, String original_data_path, String NUMBER_OF_FEATURES, String SPLIT_TYPE,String TRAIN_SPLIT_RATIO, String OUTPUT_TYPE){
 //		 var graphkeys = [{"key":-1,"text":"Comment", "loc":"70 -500"},{"key":-2,"text":"Boosted Decision Tree", "loc":"70 -500"}
 //		    ,{"key":-3,"text":"Decision Tree", "loc":"70 -600"},{"key":-4,"text":"Gradient Boosting", "loc":"70 -600"}
@@ -229,15 +229,6 @@ public class CommonUtils {
 			if(stepX.equalsIgnoreCase("Feature Selection")){
 				setConsoleLog(uuid,"status","Features have been selected as defined in Feature Selection box");
 			}
-			
-			
 		}
-		
-		
-		
-		
 	}
-
-	
-	
 }

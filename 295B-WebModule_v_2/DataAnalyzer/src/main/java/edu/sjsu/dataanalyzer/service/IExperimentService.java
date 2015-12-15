@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.mongodb.DBObject;
 
 public interface IExperimentService {
-	
+
 	public String pushNewExperiement(String email, String experimentName);
 
 	public DBObject getExperimentDetails(String uuid);
@@ -23,5 +23,6 @@ public interface IExperimentService {
 	public void addExclusionList(String exid, String exclusionList);
 
 	public void insertOutputDataPath(String filepath, String uuid);
-
+	
+	public String getOutputDataPath(String uuid);
 }

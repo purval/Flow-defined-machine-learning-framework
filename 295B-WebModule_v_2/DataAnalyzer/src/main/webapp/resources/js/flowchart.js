@@ -387,7 +387,7 @@ init  = function() {
     }catch(error){
       console.log(error);
       $("#consolelog").append(res);
-      $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0);
+      $('#consolelog').animate({scrollTop: $('#consolelog').get(0).scrollHeight}, 0)
       return;
     }
   }
@@ -406,6 +406,12 @@ init  = function() {
 
     if(metadata != ''){
       generate(metadata);
+    }
+
+    var outputDataPath = $("#outputDataPath").val();
+
+    if(outputDataPath != ''){
+      $("#download").attr("href", "http://localhost:8080/dataanalyzer/download");
     }
 
     var graphkeys = [{"key":-1,"text":"Comment", "loc":"70 -500"}
@@ -526,6 +532,18 @@ init  = function() {
      $('#fSelector').modal('hide');
    });
    
+    $('input:radio[name=st]').change(function() {
+        if (this.value == 'shuffle') {
+          $('#split').attr("placeholder","0.75"); 
+        }
+        else if (this.value == 'fixed') {
+          $('#split').attr("placeholder","0.75");  
+        }
+        else if (this.value == 'custom') {
+          $('#split').attr("placeholder","1400"); 
+        }
+    });
+
    $("#psButton").click(function(){
      var split = $("#split").val();
      if(split == ''){
@@ -551,8 +569,7 @@ init  = function() {
         outputtype : ot,
         bestfeatures : bf
      };
-     console.log(obj);
-     
+
      $.ajax({
       url: "http://localhost:8080/dataanalyzer/parameters",
       type: 'POST',
