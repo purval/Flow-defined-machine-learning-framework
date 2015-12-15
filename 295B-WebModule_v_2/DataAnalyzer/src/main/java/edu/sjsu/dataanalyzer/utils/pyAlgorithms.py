@@ -10,7 +10,8 @@ import os
 import datetime
 #from pymongo import MongoClient
 #print os.path.join(os.path.expanduser('~'),"test_output.csv")
-print ">>>>>",os.path.join(os.path.expanduser('~'),sys.argv[2]+datetime.datetime.now().strftime('%Y%m%d%H%M%S')+".csv"),"<<<<<"
+outputFilePath = os.path.join(os.path.expanduser('~'),sys.argv[2]+datetime.datetime.now().strftime('%Y%m%d%H%M%S')+".csv")
+print ">>>>>",outputFilePath,"<<<<<"
 #client = MongoClient()
 #client = MongoClient('localhost', 27017)
 #db = client.cmpedb
@@ -71,4 +72,5 @@ elif(sys.argv[1]=='GRADIENT_BOOSTING'):
     elif(sys.argv[7]=="rounded"):
         print(y_3.astype(np.int64))
         test_data[outputCol]=y_3.astype(np.int64)
-test_data.to_csv(os.path.join(os.path.expanduser('~'),sys.argv[2]+datetime.datetime.now().strftime('%Y%m%d%H%M%S')+".csv"))
+test_data.to_csv(outputFilePath)
+## os.path.join(os.path.expanduser('~'),sys.argv[2]+datetime.datetime.now().strftime('%Y%m%d%H%M%S')+".csv")
